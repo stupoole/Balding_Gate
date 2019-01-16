@@ -60,7 +60,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile "com.badlogicgames.ashley:ashley:1.7.3"
-
+        testCompile "org.jetbrains.kotlin:kotlin-test"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit"
     }
 }
 
