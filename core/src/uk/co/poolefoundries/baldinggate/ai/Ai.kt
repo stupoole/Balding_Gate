@@ -1,6 +1,14 @@
 package uk.co.poolefoundries.baldinggate.ai
 
+import com.sun.org.apache.xpath.internal.operations.Bool
+
 typealias WorldState = Map<String, Any>
+fun (WorldState).get(key:String, default:Int):Int {
+    return this.getOrDefault(key, default) as Int
+}
+fun (WorldState).get(key:String, default:Boolean):Boolean {
+    return this.getOrDefault(key, default) as Boolean
+}
 
 
 data class Goal(val action: Action, val priority: Double)

@@ -15,8 +15,7 @@ class AiTest{
     fun fireTest(){
         val actions = listOf(MakeFire, GetTinderbox, GetWood)
         val goal = Goal(MakeFire, 1.0)
-        val startState = mapOf("tinderbox" to false, "wood" to 0)
-        val plan = getActionPlan(startState, actions, goal)
+        val plan = getActionPlan(emptyMap(), actions, goal)
         assertEquals(80.0, plan?.cost)
 
     }
@@ -41,12 +40,12 @@ object MakeFire:Action{
     override val cost = 20.0
 
     override fun prerequisite(state: WorldState): Boolean {
-        return state["tinderbox"] as Boolean && state["wood"] as Int >= 3
+        return state.get("tinderbox", false) && state.get("wood",0) >= 3
     }
 
     override fun update(state: WorldState): WorldState {
         val newState = state.toMutableMap()
-        newState["wood"] = newState["wood"] as Int - 3
+        newState["wood"] = newState.get("wood", 0) - 3
         return newState
     }
 
@@ -59,7 +58,7 @@ object GetWood:Action{
 
     override fun update(state: WorldState): WorldState {
         val newState = state.toMutableMap()
-        newState["wood"] = newState["wood"] as Int + 1
+        newState["wood"] = newState.get("wood", 0) + 1
         return newState
     }
 
