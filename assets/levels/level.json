@@ -1,0 +1,36 @@
+{
+  "name": "Meeting Tavern",
+  "tiles": [
+    {"tileType": "wall", "position": {"x":  0, "y": 0}},
+    {"tileType": "wall", "position": {"x":  1, "y": 0}},
+    {"tileType": "wall", "position": {"x":  2, "y": 0}},
+    {"tileType": "wall", "position": {"x":  3, "y": 0}},
+    {"tileType": "wall", "position": {"x":  4, "y": 0}},
+    {"tileType": "wall", "position": {"x":  0, "y": 1}},
+    {"tileType": "floor", "position": {"x":  1, "y": 1}},
+    {"tileType": "floor", "position": {"x":  2, "y": 1}},
+    {"tileType": "floor", "position": {"x":  3, "y": 1}},
+    {"tileType": "wall", "position": {"x":  4, "y": 1}},
+    {"tileType": "wall", "position": {"x":  0, "y": 2}},
+    {"tileType": "floor", "position": {"x":  1, "y": 2}},
+    {"tileType": "floor", "position": {"x":  2, "y": 2}},
+    {"tileType": "floor", "position": {"x":  3, "y": 2}},
+    {"tileType": "wall", "position": {"x":  4, "y": 2}},
+    {"tileType": "wall", "position": {"x":  0, "y": 3}},
+    {"tileType": "floor", "position": {"x":  1, "y": 3}},
+    {"tileType": "floor", "position": {"x":  2, "y": 3}},
+    {"tileType": "floor", "position": {"x":  3, "y": 3}},
+    {"tileType": "wall", "position": {"x":  4, "y": 3}},
+    {"tileType": "wall", "position": {"x":  0, "y": 4}},
+    {"tileType": "wall", "position": {"x":  1, "y": 4}},
+    {"tileType": "wall", "position": {"x":  2, "y": 4}},
+    {"tileType": "wall", "position": {"x":  3, "y": 4}},
+    {"tileType": "wall", "position": {"x":  4, "y": 4}}
+  ],
+  "tileTypes": [
+    {"name": "wall", "texture": "wall.png", "passable": false},
+    {"name": "floor", "texture": "floor.png", "passable": true},
+    {"name": "door-vert", "texture": "door-vertical.png", "passable": true},
+    {"name": "door-horiz", "texture": "door-horizontal.png", "passable": true}
+  ]
+}

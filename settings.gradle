@@ -1,1 +1,1 @@
-include 'desktop', 'core'
+rootProject.name = 'BaldingGate'
