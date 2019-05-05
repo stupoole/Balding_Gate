@@ -32,5 +32,14 @@
     {"name": "floor", "texture": "floor.png", "passable": true},
     {"name": "door-vert", "texture": "door-vertical.png", "passable": true},
     {"name": "door-horiz", "texture": "door-horizontal.png", "passable": true}
+  ],
+  "mobs": [
+    {"mobType": "player", "position": {"x": 2, "y": 2}}
+  ],
+  "mobTypes": [
+    {
+      "name": "player",
+      "texture": "player.png"
+    }
   ]
 }

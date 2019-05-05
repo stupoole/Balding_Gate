@@ -27,7 +27,7 @@ fun createSkeleton(x : Int, y : Int): Entity {
     return entity
 }
 
-class SkeletonSystem() : IntervalIteratingSystem(Family.all(StatsComponent::class.java, PositionComponent::class.java).get(), 1f) {
+class SkeletonSystem : IntervalIteratingSystem(Family.all(StatsComponent::class.java, PositionComponent::class.java).get(), 1f) {
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
 
     private var walls = ImmutableArray(Array<Entity>())
