@@ -14,8 +14,8 @@ data class Level(
     val tileTypes: List<TileType>,
     val mobs: List<Mob>,
     val mobTypes: List<MobType>
-
 )
+
 data class Stats(
     val vitality: Int,
     val hitPoints: Int,

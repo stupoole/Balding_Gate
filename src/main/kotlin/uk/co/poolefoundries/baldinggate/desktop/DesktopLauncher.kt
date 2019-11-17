@@ -10,3 +10,4 @@ object DesktopLauncher {
         LwjglApplication(Application(), LwjglApplicationConfiguration())
     }
 }
+
