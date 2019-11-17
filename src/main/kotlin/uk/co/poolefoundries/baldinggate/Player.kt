@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.utils.Array
 import uk.co.poolefoundries.baldinggate.model.PlayerComponent
 import uk.co.poolefoundries.baldinggate.model.SkeletonComponent
+import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
 import kotlin.random.Random
 
 val UP = PositionComponent(0, 1)

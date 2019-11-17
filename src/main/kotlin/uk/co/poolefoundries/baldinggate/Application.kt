@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.loadLevelJson
 import uk.co.poolefoundries.baldinggate.model.toEntities
+import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
 
 
 // TODO: Add a turn based entity system in order to make all updates to game at the end of a turn

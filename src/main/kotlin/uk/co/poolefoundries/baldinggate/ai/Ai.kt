@@ -1,31 +1,44 @@
 package uk.co.poolefoundries.baldinggate.ai
 
 typealias WorldState = Map<String, Any>
-fun (WorldState).get(key:String, default:Int):Int {
+
+fun (WorldState).get(key: String, default: Int): Int {
     return this.getOrDefault(key, default) as Int
 }
-fun (WorldState).get(key:String, default:Boolean):Boolean {
+
+fun (WorldState).get(key: String, default: Boolean): Boolean {
     return this.getOrDefault(key, default) as Boolean
 }
 
+fun (WorldState).withValue(key: String, value: Any): WorldState {
+    val newState = this.toMutableMap()
+    newState[key] = value
+    return newState.toMap()
+}
 
 data class Goal(val action: Action, val priority: Double)
 
 interface Action {
-    val cost : Double
-    fun prerequisite(state : WorldState) : Boolean
-    fun update(state: WorldState) : WorldState
+    // How much time this action should take in arbitrary units
+    val cost: Double
 
-    fun apply(branch: Branch) : Branch {
+    // If for the given world state this action can be performed at all
+    fun prerequisite(state: WorldState): Boolean
+
+    // Update the world state as if this action was performed
+    fun update(state: WorldState): WorldState
+
+    // Produce a new branch where this action has been performed
+    fun apply(branch: Branch): Branch {
         val newState = update(branch.state)
-        return Branch(branch.actions+this, newState, branch.cost + cost)
+        return Branch(branch.actions + this, newState, branch.cost + cost)
     }
 }
 
 data class Branch(val actions: List<Action>, val state: WorldState, val cost: Double)
 
 fun List<Action>.applyValidActions(branch: Branch) =
-        this.filter { it.prerequisite(branch.state) }.map { it.apply(branch) }
+    this.filter { it.prerequisite(branch.state) }.map { it.apply(branch) }
 
 
 fun getActionPlan(state: WorldState, actions: List<Action>, primaryGoal: Goal): Branch? {
@@ -40,7 +53,7 @@ fun getActionPlan(actions: List<Action>, primaryGoal: Goal, openSet: List<Branch
 
 
     val newBestOption = goalAchievedBranches.minBy { it.cost }
-    if (newBestOption != null) newOpenSet = newOpenSet.filter{it.cost < newBestOption.cost}
+    if (newBestOption != null) newOpenSet = newOpenSet.filter { it.cost < newBestOption.cost }
 
 
     newOpenSet = newOpenSet.flatMap { actions.applyValidActions(it) }
