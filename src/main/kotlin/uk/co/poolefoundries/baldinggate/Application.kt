@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.*
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -15,6 +16,7 @@ import uk.co.poolefoundries.baldinggate.model.loadLevelJson
 import uk.co.poolefoundries.baldinggate.model.toEntities
 
 
+// TODO: Add a turn based entity system in order to make all updates to game at the end of a turn
 
 // Main game application
 class Application : ApplicationAdapter() {
@@ -42,8 +44,13 @@ object Game {
     fun init() {
         loadLevel("level").toEntities().forEach(engine::addEntity)
         engine.addSystem(RenderingSystem(camera))
-        engine.addSystem(SkeletonSystem())
-        Gdx.input.inputProcessor = PanHandler(camera)
+        engine.addSystem(SkeletonSystem)
+        engine.addSystem(PlayerSystem)
+
+        val input = InputMultiplexer()
+        input.addProcessor(PanHandler(camera))
+        input.addProcessor(PlayerInputHandler)
+        Gdx.input.inputProcessor = input
     }
 
 }

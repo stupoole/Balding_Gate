@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.utils.Array
 import javafx.geometry.Pos
+import uk.co.poolefoundries.baldinggate.model.PlayerComponent
 import uk.co.poolefoundries.baldinggate.model.SkeletonComponent
 import uk.co.poolefoundries.baldinggate.model.Stats
 import kotlin.random.Random
@@ -31,30 +32,36 @@ data class StatsComponent(val stats: Stats) : Component
 //}
 
 
-class SkeletonSystem :
-    IntervalIteratingSystem(
-        Family.all(
-            StatsComponent::class.java,
-            PositionComponent::class.java,
-            SkeletonComponent::class.java
-        ).get(), 1f
-    ) {
+object SkeletonSystem : EntitySystem() {
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
 
     private var walls = ImmutableArray(Array<Entity>())
+    private var skeletons = ImmutableArray(Array<Entity>())
 
     override fun addedToEngine(engine: Engine) {
         super.addedToEngine(engine)
-        walls = engine.getEntitiesFor(Family.all(WallComponent::class.java, PositionComponent::class.java).get())
+        walls = engine.getEntitiesFor(
+            Family.all(WallComponent::class.java, PositionComponent::class.java).get()
+        )
+        skeletons = engine.getEntitiesFor(
+            Family.all(
+                SkeletonComponent::class.java,
+                PositionComponent::class.java,
+                StatsComponent::class.java
+            ).get()
+        )
     }
 
-    override fun processEntity(skeleton: Entity) {
-        val pos = positionMapper.get(skeleton)
+    fun act() {
+        skeletons.forEach { skeleton ->
+            val pos = positionMapper.get(skeleton)
 
-        val newPos = PositionComponent(pos.x + Random.nextInt(-1, 2), pos.y + Random.nextInt(-1, 2))
+            val newPos = PositionComponent(pos.x + Random.nextInt(-1, 2), pos.y + Random.nextInt(-1, 2))
 
-        if (walls.none { positionMapper.get(it) == newPos }) {
-            skeleton.add(newPos)
+            if (walls.none { positionMapper.get(it) == newPos }) {
+                skeleton.add(newPos)
+            }
         }
     }
 }
+
