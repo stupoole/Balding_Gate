@@ -8,26 +8,37 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.utils.Array
 import javafx.geometry.Pos
+import uk.co.poolefoundries.baldinggate.model.SkeletonComponent
+import uk.co.poolefoundries.baldinggate.model.Stats
 import kotlin.random.Random
 
 
-data class Roll(val die : List<Int>, val mod : Int) {
+data class Roll(val die: List<Int>, val mod: Int) {
     fun roll() = die.map { Random.nextInt(it) }.sum() + mod
 }
 
-data class StatsComponent(val vitality : Int, var hitpoints : Int, val attack : Roll) : Component
+data class StatsComponent(val stats: Stats) : Component
 
-fun createSkeleton(x : Int, y : Int): Entity {
-    val entity = Entity()
 
-    entity.add(StatsComponent(10, 10, Roll(listOf(4), 1)))
-    entity.add(PositionComponent(x, y))
-    entity.add(VisualComponent(TextureRenderable(Resources.skeleton())))
+//fun createSkeleton(x: Int, y: Int): Entity {
+//    val entity = Entity()
+//
+//    entity.add(StatsComponent())
+//    entity.add(PositionComponent(x, y))
+//    entity.add(VisualComponent(TextureRenderable(Resources.skeleton())))
+//
+//    return entity
+//}
 
-    return entity
-}
 
-class SkeletonSystem : IntervalIteratingSystem(Family.all(StatsComponent::class.java, PositionComponent::class.java).get(), 1f) {
+class SkeletonSystem :
+    IntervalIteratingSystem(
+        Family.all(
+            StatsComponent::class.java,
+            PositionComponent::class.java,
+            SkeletonComponent::class.java
+        ).get(), 1f
+    ) {
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
 
     private var walls = ImmutableArray(Array<Entity>())
@@ -42,7 +53,7 @@ class SkeletonSystem : IntervalIteratingSystem(Family.all(StatsComponent::class.
 
         val newPos = PositionComponent(pos.x + Random.nextInt(-1, 2), pos.y + Random.nextInt(-1, 2))
 
-        if(walls.none { positionMapper.get(it) == newPos }){
+        if (walls.none { positionMapper.get(it) == newPos }) {
             skeleton.add(newPos)
         }
     }

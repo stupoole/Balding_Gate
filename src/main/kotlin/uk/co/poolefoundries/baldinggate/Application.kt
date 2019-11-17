@@ -14,6 +14,9 @@ import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.loadLevelJson
 import uk.co.poolefoundries.baldinggate.model.toEntities
 
+
+
+// Main game application
 class Application : ApplicationAdapter() {
 
 
@@ -36,7 +39,7 @@ object Game {
     private val camera = OrthographicCamera()
     val viewport = ScreenViewport(camera)
 
-    fun init(){
+    fun init() {
         loadLevel("level").toEntities().forEach(engine::addEntity)
         engine.addSystem(RenderingSystem(camera))
         engine.addSystem(SkeletonSystem())
@@ -50,12 +53,13 @@ interface Renderable {
 }
 
 data class TextureRenderable(val texture: Texture) : Renderable {
-    override fun draw(batch: Batch, x : Float, y : Float) {
-        batch.draw(texture,x, y)
+    override fun draw(batch: Batch, x: Float, y: Float) {
+        batch.draw(texture, x, y)
     }
 }
 
-class RenderingSystem(private val camera : OrthographicCamera) : EntitySystem() {
+
+class RenderingSystem(private val camera: OrthographicCamera) : EntitySystem() {
     private val tileSize = 25f
 
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)

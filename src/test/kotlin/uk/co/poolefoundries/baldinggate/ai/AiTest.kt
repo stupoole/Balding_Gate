@@ -3,16 +3,17 @@ package uk.co.poolefoundries.baldinggate.ai
 import kotlin.test.assertEquals
 import kotlin.test.Test
 
-class AiTest{
+class AiTest {
     @Test
-    fun testing(){
+    fun testing() {
         val action = GoalAction()
         val goal = Goal(action, 1.0)
         val plan = getActionPlan(emptyMap(), listOf(action), goal)
-        assertEquals(1,plan?.actions?.size)
+        assertEquals(1, plan?.actions?.size)
     }
+
     @Test
-    fun fireTest(){
+    fun fireTest() {
         val actions = listOf(MakeFire, GetTinderbox, GetWood)
         val goal = Goal(MakeFire, 1.0)
         val plan = getActionPlan(emptyMap(), actions, goal)
@@ -22,8 +23,7 @@ class AiTest{
 }
 
 
-
-class GoalAction:Action{
+class GoalAction : Action {
     override val cost = 5.0
 
     override fun prerequisite(state: WorldState): Boolean {
@@ -36,11 +36,11 @@ class GoalAction:Action{
 
 }
 
-object MakeFire:Action{
+object MakeFire : Action {
     override val cost = 20.0
 
     override fun prerequisite(state: WorldState): Boolean {
-        return state.get("tinderbox", false) && state.get("wood",0) >= 3
+        return state.get("tinderbox", false) && state.get("wood", 0) >= 3
     }
 
     override fun update(state: WorldState): WorldState {
@@ -51,7 +51,7 @@ object MakeFire:Action{
 
 }
 
-object GetWood:Action{
+object GetWood : Action {
     override val cost = 10.0
 
     override fun prerequisite(state: WorldState) = true
@@ -64,7 +64,7 @@ object GetWood:Action{
 
 }
 
-object GetTinderbox:Action {
+object GetTinderbox : Action {
     override val cost = 30.0
 
     override fun prerequisite(state: WorldState) = true
