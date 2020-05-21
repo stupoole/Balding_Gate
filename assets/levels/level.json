@@ -387,7 +387,7 @@
       }
     },
     {
-      "tileType": "floor",
+      "tileType": "wall",
       "position": {
         "x": 5,
         "y": 5

@@ -41,7 +41,10 @@ interface Action {
 data class Branch(val actions: List<Action>, val state: WorldState, val cost: Double)
 
 fun List<Action>.applyValidActions(branch: Branch) =
-    this.filter { it.prerequisite(branch.state) }.map { it.apply(branch) }
+    this.getValidActions(branch.state).map { it.apply(branch) }
+
+fun List<Action>.getValidActions(worldState: WorldState) =
+    this.filter { it.prerequisite(worldState) }
 
 
 fun getActionPlan(state: WorldState, actions: List<Action>, primaryGoal: Goal): Branch? {

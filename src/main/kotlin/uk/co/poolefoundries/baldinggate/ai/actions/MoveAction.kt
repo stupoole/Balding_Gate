@@ -9,6 +9,7 @@ class MoveAction(private val positionKey: String, private val direction: Positio
     override val cost = 1.0
 
     override fun prerequisite(state: WorldState): Boolean {
+        // TODO: make the check that the destination is safe to move in to
         return state.hasPosition(positionKey)
     }
 
