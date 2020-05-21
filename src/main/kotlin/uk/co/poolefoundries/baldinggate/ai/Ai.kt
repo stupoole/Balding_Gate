@@ -33,6 +33,9 @@ interface Action {
         val newState = update(branch.state)
         return Branch(branch.actions + this, newState, branch.cost + cost)
     }
+
+    override fun toString(): String
+
 }
 
 data class Branch(val actions: List<Action>, val state: WorldState, val cost: Double)

@@ -26,7 +26,8 @@ object PlayerInputHandler : InputAdapter() {
             D -> PlayerSystem.moveRight()
         }
 
-
+        // TODO: (from Appliction.kt) Add a turn based entity system in order to make all updates to game at the end of a turn
+        // TODO: make this such that all systems that should act are acting here
         SkeletonSystem.act()
         return true
     }
@@ -38,15 +39,18 @@ object PlayerSystem : EntitySystem() {
 
     private var walls = ImmutableArray(Array<Entity>())
     private var players = ImmutableArray(Array<Entity>())
-
+    private var skeletons = ImmutableArray(Array<Entity>())
+    // TODO:
     private fun move(direction: PositionComponent) {
         players.forEach { player ->
             val pos = positionMapper.get(player)
 
             val newPos = PositionComponent(pos.x + direction.x, pos.y + direction.y)
 
-            if (walls.none { positionMapper.get(it) == newPos }) {
+            if (walls.none { positionMapper.get(it) == newPos} && skeletons.none { positionMapper.get(it) == newPos}) {
                 player.add(newPos)
+            } else {
+                println("something blocking movement")
             }
         }
     }
@@ -61,6 +65,14 @@ object PlayerSystem : EntitySystem() {
                 StatsComponent::class.java
             ).get()
         )
+        skeletons = engine.getEntitiesFor(
+            Family.all(
+                SkeletonComponent::class.java,
+                PositionComponent::class.java,
+                StatsComponent::class.java
+            ).get()
+        )
+        print("size walls = " +  walls.size().toString())
     }
 
 

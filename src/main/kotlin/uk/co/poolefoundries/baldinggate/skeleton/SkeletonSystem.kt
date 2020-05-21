@@ -42,21 +42,20 @@ object SkeletonSystem : EntitySystem() {
     }
 
     fun act() {
+        // TODO: somehow handle multiple players
         val playerPos:PositionComponent
         playerPos = if (players.size() == 1){
-            val player = players.get(0)
+            val player = players.first()
             positionMapper.get(player)
         } else {
             print("multiple players found. Assuming player at 5,5")
             PositionComponent(5,5)
         }
-
+        //TODO: stop player and skeleton from overlapping when player and skeleton move to same location maybe add a move validator
         skeletons.forEach { skeleton ->
             val pos = positionMapper.get(skeleton)
-            // TODO: Add way to get player position.
             val newPos = SkeletonAI.getNewPosition(pos, playerPos)
-
-            if (walls.none { positionMapper.get(it) == newPos }) {
+            if (walls.none { positionMapper.get(it) == newPos}||players.none { positionMapper.get(it) == newPos}) {
                 skeleton.add(newPos)
             }
         }
