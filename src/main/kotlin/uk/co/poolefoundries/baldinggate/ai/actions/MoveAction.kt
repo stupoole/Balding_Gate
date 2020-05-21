@@ -17,6 +17,11 @@ class MoveAction(private val positionKey: String, private val direction: Positio
         val newPos = PositionComponent(pos.x + direction.x, pos.y + direction.y)
         return state.withValue(positionKey, newPos)
     }
+
+    override fun toString(): String {
+        return "MoveAction"
+    }
+
 }
 
 fun (WorldState).hasPosition(key: String) = this.containsKey(key) && this.getValue(key) is PositionComponent
