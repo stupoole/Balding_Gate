@@ -72,7 +72,6 @@ object PlayerSystem : EntitySystem() {
                 StatsComponent::class.java
             ).get()
         )
-        print("size walls = " +  walls.size().toString())
     }
 
 
