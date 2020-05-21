@@ -1,6 +1,7 @@
 package uk.co.poolefoundries.baldinggate.ai.actions
 
 import uk.co.poolefoundries.baldinggate.PositionComponent
+import uk.co.poolefoundries.baldinggate.StatsComponent
 import uk.co.poolefoundries.baldinggate.ai.Action
 import uk.co.poolefoundries.baldinggate.ai.WorldState
 import uk.co.poolefoundries.baldinggate.ai.withValue
@@ -28,3 +29,7 @@ class MoveAction(private val positionKey: String, private val direction: Positio
 fun (WorldState).hasPosition(key: String) = this.containsKey(key) && this.getValue(key) is PositionComponent
 
 fun (WorldState).getPosition(key: String) = this.getValue(key) as PositionComponent
+
+fun (WorldState).hasStats(key: String) = this.containsKey(key) && this.getValue(key) is StatsComponent
+
+fun (WorldState).getStats(key: String) = this.getValue(key) as StatsComponent

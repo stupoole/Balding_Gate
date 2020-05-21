@@ -18,7 +18,7 @@ data class Level(
 
 data class Stats(
     val vitality: Int,
-    val hitPoints: Int,
+    var hitPoints: Int,
     val attack: Roll
 )
 

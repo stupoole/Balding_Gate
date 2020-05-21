@@ -21,6 +21,7 @@ data class Roll(val die: List<Int>, val mod: Int) {
 data class StatsComponent(val stats: Stats) : Component
 
 
+
 object SkeletonAI {
 
 }

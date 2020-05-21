@@ -310,14 +310,14 @@
       }
     },
     {
-      "tileType": "floor",
+      "tileType": "wall",
       "position": {
         "x": 4,
         "y": 4
       }
     },
     {
-      "tileType": "floor",
+      "tileType": "wall",
       "position": {
         "x": 4,
         "y": 5
@@ -380,7 +380,7 @@
       }
     },
     {
-      "tileType": "floor",
+      "tileType": "wall",
       "position": {
         "x": 5,
         "y": 4
@@ -746,6 +746,13 @@
         "x": 1,
         "y": 1
       }
+    },
+    {
+      "mobType": "skeleton",
+      "position": {
+        "x": 8,
+        "y": 8
+      }
     }
   ],
   "mobTypes": [
@@ -753,10 +760,10 @@
       "name": "player",
       "texture": "player.png",
       "stats": {
-        "vitality": 10,
-        "hitPoints": 10,
+        "vitality": 100,
+        "hitPoints": 100,
         "attack": {
-          "die": [4],
+          "die": [8],
           "mod": 1
         }
       },

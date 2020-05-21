@@ -4,9 +4,15 @@ import uk.co.poolefoundries.baldinggate.*
 import uk.co.poolefoundries.baldinggate.ai.*
 import uk.co.poolefoundries.baldinggate.ai.actions.MoveAction
 import uk.co.poolefoundries.baldinggate.ai.actions.getPosition
+import uk.co.poolefoundries.baldinggate.ai.actions.getStats
+import uk.co.poolefoundries.baldinggate.model.Stats
+import java.net.StandardSocketOptions
+import javax.swing.plaf.synth.SynthTextAreaUI
 
 val POSITION_KEY = "position"
-val PLAYER_POSITION_KEY = "player"
+val PLAYER_POSITION_KEY = "playerPos"
+val PLAYER_STATS_KEY = "playerStats"
+val STATS_KEY = "stats"
 
 val goal = Goal(AttackPlayer, 1.0)
 
@@ -41,8 +47,12 @@ object AttackPlayer : Action {
     }
 
     override fun update(state: WorldState): WorldState {
-        return state
         // TODO: implement a health/damage system
+        val playerStats = state.getStats(PLAYER_STATS_KEY)
+        val damage = state.getStats(STATS_KEY).stats.attack.roll()
+        val newHealth = playerStats.stats.hitPoints - damage
+        val newStats = StatsComponent(playerStats.stats.copy(hitPoints=newHealth))
+        return state.withValue(PLAYER_STATS_KEY, newStats)
     }
 
     override fun toString(): String {
@@ -61,17 +71,19 @@ object SkeletonAI {
         AttackPlayer
     )
 
-    fun getNewPosition(pos: PositionComponent, playerPos: PositionComponent): PositionComponent {
+    fun getNewState(pos: PositionComponent, playerPos: PositionComponent, stats:StatsComponent, playerStats: StatsComponent): WorldState {
         if (!actions.contains(goal.action)) {
             throw RuntimeException("Action ${goal.action} not found in list of available actions")
         }
 
-        val worldState: WorldState = mapOf(PLAYER_POSITION_KEY to playerPos, POSITION_KEY to pos)
+//        val worldState: WorldState = mapOf(PLAYER_POSITION_KEY to playerPos, POSITION_KEY to pos)
+        val worldState: WorldState = mapOf(PLAYER_POSITION_KEY to playerPos, POSITION_KEY to pos, STATS_KEY to stats, PLAYER_STATS_KEY to playerStats)
         val plan = getActionPlan(worldState, actions, goal)!!
-//        implement pathfinding
+//      TODO:  implement pathfinding
         val action = plan.actions.first()
+
         val newState = action.update(worldState)
 
-        return newState.getPosition(POSITION_KEY)
+        return newState
     }
 }

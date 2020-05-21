@@ -19,26 +19,7 @@ val DOWN = PositionComponent(0, -1)
 val LEFT = PositionComponent(-1, 0)
 val RIGHT = PositionComponent(1, 0)
 
-//object PlayerInputHandler : InputAdapter() {
-//
-//
-//    override fun keyDown(keycode: Int): Boolean {
-//        when (keycode) {
-//            W -> PlayerSystem.moveUp()
-//            A -> PlayerSystem.moveLeft()
-//            S -> PlayerSystem.moveDown()
-//            D -> PlayerSystem.moveRight()
-//        }
-//
-//        // TODO: (from Appliction.kt) Add a turn based entity system in order to make all updates to game at the end of a turn
-//        // TODO: make this such that all systems that should act are acting here
-//        SkeletonSystem.act()
-//        return true
-//    }
-//}
-
-object PlayerSystem : EntitySystem() {
-    private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
+object PlayerInputHandler : InputAdapter() {
     private val actions = listOf(
         MoveAction(POSITION_KEY, UP),
         MoveAction(POSITION_KEY, DOWN),
@@ -46,6 +27,30 @@ object PlayerSystem : EntitySystem() {
         MoveAction(POSITION_KEY, RIGHT),
         FuckAll
     )
+    private val validActions = actions
+    // todo get valid actions
+
+    override fun keyDown(keycode: Int): Boolean {
+        when (keycode) {
+            W -> PlayerSystem.moveUp()
+            A -> PlayerSystem.moveLeft()
+            S -> PlayerSystem.moveDown()
+            D -> PlayerSystem.moveRight()
+            1 -> validActions[0]
+            2 -> validActions[1]
+            3 -> validActions[2]
+        }
+
+        // TODO: (from Appliction.kt) Add a turn based entity system in order to make all updates to game at the end of a turn
+        // TODO: make this such that all systems that should act are acting here
+        SkeletonSystem.act()
+        return true
+    }
+}
+
+object PlayerSystem : EntitySystem() {
+    private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
+
     private var walls = ImmutableArray(Array<Entity>())
     private var players = ImmutableArray(Array<Entity>())
     private var skeletons = ImmutableArray(Array<Entity>())
@@ -59,7 +64,9 @@ object PlayerSystem : EntitySystem() {
 
             if (walls.none { positionMapper.get(it) == newPos } && skeletons.none { positionMapper.get(it) == newPos }) {
                 player.add(newPos)
-            } else {
+            } else if (skeletons.any { positionMapper.get(it) == newPos }){
+                // TODO Attack
+            } else{
                 println("something blocking movement")
             }
         }
