@@ -5,9 +5,10 @@ import uk.co.poolefoundries.baldinggate.StatsComponent
 import uk.co.poolefoundries.baldinggate.ai.Action
 import uk.co.poolefoundries.baldinggate.ai.WorldState
 import uk.co.poolefoundries.baldinggate.ai.withValue
+import uk.co.poolefoundries.baldinggate.model.Stats
 
 class MoveAction(private val positionKey: String, private val direction: PositionComponent) : Action {
-    override val cost = 1.0
+    override fun cost(state: WorldState) = 1.0
 
     override fun prerequisite(state: WorldState): Boolean {
         // TODO: make the check that the destination is safe to move in to
@@ -21,7 +22,7 @@ class MoveAction(private val positionKey: String, private val direction: Positio
     }
 
     override fun toString(): String {
-        return "MoveAction"
+        return "MoveAction$positionKey"
     }
 
 }
@@ -32,4 +33,5 @@ fun (WorldState).getPosition(key: String) = this.getValue(key) as PositionCompon
 
 fun (WorldState).hasStats(key: String) = this.containsKey(key) && this.getValue(key) is StatsComponent
 
-fun (WorldState).getStats(key: String) = this.getValue(key) as StatsComponent
+fun (WorldState).getStats(key: String) = this.getValue(key) as Stats
+

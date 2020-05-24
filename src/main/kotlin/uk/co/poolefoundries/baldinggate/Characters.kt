@@ -14,12 +14,6 @@ import uk.co.poolefoundries.baldinggate.model.Stats
 import kotlin.random.Random
 
 
-data class Roll(val die: List<Int>, val mod: Int) {
-    fun roll() = die.map { Random.nextInt(it) }.sum() + mod
-}
-
-data class StatsComponent(val stats: Stats) : Component
-
 
 
 object SkeletonAI {

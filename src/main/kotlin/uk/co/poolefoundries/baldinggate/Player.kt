@@ -1,18 +1,15 @@
 package uk.co.poolefoundries.baldinggate
 
 import com.badlogic.ashley.core.*
-import com.badlogic.ashley.systems.IntervalIteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.InputAdapter
-import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.utils.Array
 import uk.co.poolefoundries.baldinggate.ai.actions.MoveAction
 import uk.co.poolefoundries.baldinggate.model.PlayerComponent
 import uk.co.poolefoundries.baldinggate.model.SkeletonComponent
-import uk.co.poolefoundries.baldinggate.skeleton.POSITION_KEY
+import uk.co.poolefoundries.baldinggate.skeleton.SKELETON_POSITION_KEY
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
-import kotlin.random.Random
 
 val UP = PositionComponent(0, 1)
 val DOWN = PositionComponent(0, -1)
@@ -21,12 +18,13 @@ val RIGHT = PositionComponent(1, 0)
 
 object PlayerInputHandler : InputAdapter() {
     private val actions = listOf(
-        MoveAction(POSITION_KEY, UP),
-        MoveAction(POSITION_KEY, DOWN),
-        MoveAction(POSITION_KEY, LEFT),
-        MoveAction(POSITION_KEY, RIGHT),
+        MoveAction(SKELETON_POSITION_KEY, UP),
+        MoveAction(SKELETON_POSITION_KEY, DOWN),
+        MoveAction(SKELETON_POSITION_KEY, LEFT),
+        MoveAction(SKELETON_POSITION_KEY, RIGHT),
         FuckAll
     )
+
     private val validActions = actions
     // todo get valid actions
 
@@ -36,6 +34,7 @@ object PlayerInputHandler : InputAdapter() {
             A -> PlayerSystem.moveLeft()
             S -> PlayerSystem.moveDown()
             D -> PlayerSystem.moveRight()
+            SPACE -> PlayerSystem.FuckAll()
             1 -> validActions[0]
             2 -> validActions[1]
             3 -> validActions[2]
@@ -59,7 +58,7 @@ object PlayerSystem : EntitySystem() {
     private fun move(direction: PositionComponent) {
         players.forEach { player ->
             val pos = positionMapper.get(player)
-
+            // make a list of valid actions, display them and then, on button press,
             val newPos = PositionComponent(pos.x + direction.x, pos.y + direction.y)
 
             if (walls.none { positionMapper.get(it) == newPos } && skeletons.none { positionMapper.get(it) == newPos }) {
@@ -106,5 +105,9 @@ object PlayerSystem : EntitySystem() {
 
     fun moveRight() {
         move(RIGHT)
+    }
+
+    fun FuckAll(){
+
     }
 }
