@@ -26,7 +26,7 @@ val goal = Goal(Win, 1.0)
 
 object Win : Action {
     override fun cost(state: WorldState): Double {
-        return 1.0
+        return 0.0
     }
 
     override fun prerequisite(state: WorldState): Boolean {

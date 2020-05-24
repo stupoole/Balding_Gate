@@ -24,7 +24,7 @@ class AiTest {
 
 
 class GoalAction : Action {
-    override val cost = 5.0
+    override fun cost(state: WorldState) = 5.0
 
     override fun prerequisite(state: WorldState): Boolean {
         return true
@@ -34,10 +34,14 @@ class GoalAction : Action {
         return state
     }
 
+    override fun toString(): String {
+        return "GoalAction"
+    }
+
 }
 
 object MakeFire : Action {
-    override val cost = 20.0
+    override fun cost(state: WorldState) = 20.0
 
     override fun prerequisite(state: WorldState): Boolean {
         return state.get("tinderbox", false) && state.get("wood", 0) >= 3
@@ -49,10 +53,15 @@ object MakeFire : Action {
         return newState
     }
 
+
+    override fun toString(): String {
+        return "MakeFire"
+    }
+
 }
 
 object GetWood : Action {
-    override val cost = 10.0
+    override fun cost(state: WorldState) = 10.0
 
     override fun prerequisite(state: WorldState) = true
 
@@ -62,10 +71,13 @@ object GetWood : Action {
         return newState
     }
 
+    override fun toString(): String {
+        return "GetWood"
+    }
 }
 
 object GetTinderbox : Action {
-    override val cost = 30.0
+    override fun cost(state: WorldState) = 30.0
 
     override fun prerequisite(state: WorldState) = true
 
@@ -75,4 +87,7 @@ object GetTinderbox : Action {
         return newState
     }
 
+    override fun toString(): String {
+        return "GetTinderbox"
+    }
 }
