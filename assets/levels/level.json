@@ -736,8 +736,8 @@
     {
       "mobType": "player",
       "position": {
-        "x": 4,
-        "y": 4
+        "x": 1,
+        "y": 8
       }
     },
     {
@@ -760,8 +760,8 @@
       "name": "player",
       "texture": "player.png",
       "stats": {
-        "vitality": 100,
-        "hitPoints": 100,
+        "vitality": 25,
+        "hitPoints": 25,
         "attack": {
           "die": [8],
           "mod": 1

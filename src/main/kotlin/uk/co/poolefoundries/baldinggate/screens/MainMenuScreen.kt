@@ -22,7 +22,7 @@ import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
 
 class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
-    val stage = Stage(game.viewport, game.batch)
+    var stage = Stage(game.viewport, game.batch)
     val atlas = TextureAtlas(files.internal("UISkins/default/skin/uiskin.atlas"))
     val skin = Skin(files.internal("UISkins/default/skin/uiskin.json"), atlas)
 
@@ -76,7 +76,7 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     override fun dispose() {
         //todo dispose of the stage for sure. probabyl skin and atlas too
-        stage.dispose()
+//        stage.dispose()
         skin.dispose()
         atlas.dispose()
     }

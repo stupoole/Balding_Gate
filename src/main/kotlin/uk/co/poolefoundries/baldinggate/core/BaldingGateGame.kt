@@ -27,14 +27,12 @@ import java.nio.channels.spi.SelectorProvider
 
 class BaldingGateGame : Game() {
 
+    // TODO: Have Jon look at this because I'm sure it's wrong
     val batch: SpriteBatch
         get() = SpriteBatch()
-    val engine: Engine
-        get() = Engine()
-    val camera: OrthographicCamera
-        get() = OrthographicCamera()
-    val viewport: ScreenViewport
-        get() = ScreenViewport(camera)
+    var engine = Engine()
+    var camera= OrthographicCamera()
+    var viewport = ScreenViewport(camera)
 
 
     override fun create() {
@@ -55,5 +53,8 @@ class BaldingGateGame : Game() {
         //todo add disposes here for batch etc
     }
 
+    override fun render() {
+        super.render()
+    }
 }
 

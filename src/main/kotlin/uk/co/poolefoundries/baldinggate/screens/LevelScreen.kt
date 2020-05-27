@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import uk.co.poolefoundries.baldinggate.*
@@ -17,10 +18,11 @@ import uk.co.poolefoundries.baldinggate.model.toEntities
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
 
 
-class LevelScreen(val game: BaldingGateGame) : Screen {
+class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
-    val input: InputMultiplexer
-        get() = InputMultiplexer()
+    var stage = Stage(game.viewport, game.batch)
+    var input = InputMultiplexer()
+
 
     override fun hide() {
         Gdx.input.inputProcessor = null
@@ -29,23 +31,23 @@ class LevelScreen(val game: BaldingGateGame) : Screen {
     override fun show() {
 
         loadLevel("level").toEntities().forEach(game.engine::addEntity)
-        game.engine.addSystem(RenderingSystem(game.camera, game.batch))
+        game.engine.addSystem(RenderingSystem(stage))
         game.engine.addSystem(SkeletonSystem)
         game.engine.addSystem(PlayerSystem)
 
         input.addProcessor(PanHandler(game.camera))
         input.addProcessor(PlayerInputHandler)
         Gdx.input.inputProcessor = input
-//        game.viewport.apply()
-//        game.camera.update()
 
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         game.engine.update(delta)
+//        game.camera.update()
+
 
     }
 
@@ -59,6 +61,7 @@ class LevelScreen(val game: BaldingGateGame) : Screen {
 
     override fun resize(width: Int, height: Int) {
         game.viewport.update(width, height)
+        game.camera.update()
     }
 
     override fun dispose() {
@@ -66,7 +69,6 @@ class LevelScreen(val game: BaldingGateGame) : Screen {
     }
 
 }
-
 
 interface Renderable {
     fun draw(batch: Batch, x: Float, y: Float)
@@ -79,7 +81,7 @@ data class TextureRenderable(val texture: Texture) : Renderable {
 }
 
 
-class RenderingSystem(private val camera: OrthographicCamera, val batch: Batch) : EntitySystem() {
+class RenderingSystem(val stage: Stage) : EntitySystem() {
     private val tileSize = 25f
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
     private val visualComponentMapper = ComponentMapper.getFor(VisualComponent::class.java)
@@ -91,20 +93,20 @@ class RenderingSystem(private val camera: OrthographicCamera, val batch: Batch) 
     }
 
     override fun update(deltaTime: Float) {
-        camera.update()
-        batch.projectionMatrix = camera.combined
+        stage.camera.update()
+        stage.batch.projectionMatrix = stage.camera.combined
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        batch.begin()
+        stage.batch.begin()
         entities.forEach(::drawEntity)
-        batch.end()
+        stage.batch.end()
     }
 
     private fun drawEntity(entity: Entity) {
         val pos = positionMapper.get(entity)
         val visualComponent = visualComponentMapper.get(entity)
 
-        visualComponent.renderable.draw(batch, pos.x * tileSize, pos.y * tileSize)
+        visualComponent.renderable.draw(stage.batch, pos.x * tileSize, pos.y * tileSize)
     }
 }
