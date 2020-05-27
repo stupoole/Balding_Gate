@@ -2,25 +2,18 @@ package uk.co.poolefoundries.baldinggate.desktop
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import uk.co.poolefoundries.baldinggate.AppAdapter
+import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 
 object DesktopLauncher {
-    val appAdapter:AppAdapter
-        get() {
-            return AppAdapter()
-        }
-    val BaldingGateApplication: LwjglApplication
-        get() {
-            return LwjglApplication(appAdapter, LwjglApplicationConfiguration())
-        }
-
     @JvmStatic
     fun main(arg: Array<String>) {
-        BaldingGateApplication
+        LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
+    }
+    fun main(){
+        LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
     }
 
-    fun quit() {
-        BaldingGateApplication.exit()
-    }
 }
+
+
 

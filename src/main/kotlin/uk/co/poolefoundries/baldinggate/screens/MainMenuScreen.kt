@@ -4,6 +4,7 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Gdx.files
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -16,87 +17,69 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
 
-object MainMenuScreen : Screen {
+class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
-    val spriteBatch = SpriteBatch()
+    val stage = Stage(game.viewport, game.batch)
     val atlas = TextureAtlas(files.internal("UISkins/default/skin/uiskin.atlas"))
-    private val camera = OrthographicCamera()
-    private val viewport = ScreenViewport(camera)
-    val stage = Stage(viewport, spriteBatch)
     val skin = Skin(files.internal("UISkins/default/skin/uiskin.json"), atlas)
 
-
     override fun hide() {
-
+        Gdx.input.inputProcessor = null
     }
 
     override fun show() {
-
-        camera.position.set(Vector2(viewport.worldWidth / 2, viewport.worldHeight / 2), 0.0F)
-        viewport.apply()
-        camera.update()
         Gdx.input.inputProcessor = stage
 
         val table = Table()
         table.setFillParent(true)
-        table.top()
+        table.center()
 
         val playButton = TextButton("Play", skin)
-//        val optionsButton = TextButton("Options", skin)
+        val optionsButton = TextButton("Options", skin)
         val quitButton = TextButton("Quit", skin)
 
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                // TODO make this initiate the game screen
-                DesktopLauncher.appAdapter.showLevelScreen()
+                game.screen = LevelScreen(game)
+            }
+        })
+        optionsButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                // Options screen? maybe dynamic menus?
             }
         })
 
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                DesktopLauncher.quit()
+                //todo figure out how to quit
             }
         })
 
         table.add(playButton)
         table.row()
+        table.add(optionsButton)
+        table.row()
         table.add(quitButton)
-
         stage.addActor(table)
     }
 
 
     override fun render(delta: Float) {
-
-        camera.update()
-        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act()
+//        game.batch.begin()
+//        game.batch.end()
+        //todo: try with and without batch begin/end
         stage.draw()
-
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun resume() {
-
-    }
-
-    override fun resize(width: Int, height: Int) {
-
-        this.viewport.update(width, height)
-
     }
 
     override fun dispose() {
+        //todo dispose of the stage for sure. probabyl skin and atlas too
+        stage.dispose()
         skin.dispose()
         atlas.dispose()
-        
     }
+
 
 }

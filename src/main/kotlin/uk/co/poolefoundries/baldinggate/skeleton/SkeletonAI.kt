@@ -46,7 +46,6 @@ object Win : Action {
 
 }
 
-// TODO: add goal: win
 object MoveTowardsPlayer : Action {
     override fun cost(state: WorldState): Double {
         return state.getPosition(SKELETON_POSITION_KEY).distance(state.getPosition(PLAYER_POSITION_KEY))
