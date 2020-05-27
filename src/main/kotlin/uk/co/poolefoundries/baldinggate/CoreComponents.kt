@@ -2,6 +2,7 @@ package uk.co.poolefoundries.baldinggate
 
 import com.badlogic.ashley.core.Component
 import uk.co.poolefoundries.baldinggate.model.Stats
+import uk.co.poolefoundries.baldinggate.screens.Renderable
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 import kotlin.math.sqrt

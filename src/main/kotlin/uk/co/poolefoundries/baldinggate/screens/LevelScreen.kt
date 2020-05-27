@@ -1,57 +1,71 @@
-package uk.co.poolefoundries.baldinggate
+package uk.co.poolefoundries.baldinggate.screens
 
 import com.badlogic.ashley.core.*
 import com.badlogic.ashley.utils.ImmutableArray
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.*
+import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.model.loadLevel
-import uk.co.poolefoundries.baldinggate.model.loadLevelJson
 import uk.co.poolefoundries.baldinggate.model.toEntities
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
 
 
-// TODO: Add a turn based entity system in order to make all updates to game at the end of a turn
+class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
-// Main game application
-class Application : ApplicationAdapter() {
+    var stage = Stage(game.viewport, game.batch)
+    var input = InputMultiplexer()
 
 
-    override fun create() {
-        Game.init()
+    override fun hide() {
+        Gdx.input.inputProcessor = null
+    }
+
+    override fun show() {
+
+        loadLevel("level").toEntities().forEach(game.engine::addEntity)
+        game.engine.addSystem(RenderingSystem(stage))
+        game.engine.addSystem(SkeletonSystem)
+        game.engine.addSystem(PlayerSystem)
+
+        input.addProcessor(PanHandler(game.camera))
+        input.addProcessor(PlayerInputHandler)
+        Gdx.input.inputProcessor = input
+
+    }
+
+    override fun render(delta: Float) {
+        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        game.engine.update(delta)
+//        game.camera.update()
+
+
+    }
+
+    override fun pause() {
+
+    }
+
+    override fun resume() {
+
     }
 
     override fun resize(width: Int, height: Int) {
-        Game.viewport.update(width, height)
+        game.viewport.update(width, height)
+        game.camera.update()
     }
 
-    override fun render() {
-        val delta = Gdx.graphics.deltaTime
-        Game.engine.update(delta)
-    }
-}
+    override fun dispose() {
 
-object Game {
-    val engine = Engine()
-    private val camera = OrthographicCamera()
-    val viewport = ScreenViewport(camera)
-
-    fun init() {
-        loadLevel("level").toEntities().forEach(engine::addEntity)
-        engine.addSystem(RenderingSystem(camera))
-        engine.addSystem(SkeletonSystem)
-        engine.addSystem(PlayerSystem)
-
-        val input = InputMultiplexer()
-        input.addProcessor(PanHandler(camera))
-        input.addProcessor(PlayerInputHandler)
-        Gdx.input.inputProcessor = input
     }
 
 }
@@ -67,35 +81,32 @@ data class TextureRenderable(val texture: Texture) : Renderable {
 }
 
 
-class RenderingSystem(private val camera: OrthographicCamera) : EntitySystem() {
+class RenderingSystem(val stage: Stage) : EntitySystem() {
     private val tileSize = 25f
-
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
     private val visualComponentMapper = ComponentMapper.getFor(VisualComponent::class.java)
+    private var entities = ImmutableArray(Array<Entity>())
 
-    private var entities = ImmutableArray(com.badlogic.gdx.utils.Array<Entity>())
-
-    private val batch = SpriteBatch()
 
     override fun addedToEngine(engine: Engine) {
         entities = engine.getEntitiesFor(Family.all(PositionComponent::class.java, VisualComponent::class.java).get())
     }
 
     override fun update(deltaTime: Float) {
-        camera.update()
-        batch.projectionMatrix = camera.combined
+        stage.camera.update()
+        stage.batch.projectionMatrix = stage.camera.combined
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        batch.begin()
+        stage.batch.begin()
         entities.forEach(::drawEntity)
-        batch.end()
+        stage.batch.end()
     }
 
     private fun drawEntity(entity: Entity) {
         val pos = positionMapper.get(entity)
         val visualComponent = visualComponentMapper.get(entity)
 
-        visualComponent.renderable.draw(batch, pos.x * tileSize, pos.y * tileSize)
+        visualComponent.renderable.draw(stage.batch, pos.x * tileSize, pos.y * tileSize)
     }
 }

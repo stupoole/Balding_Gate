@@ -2,12 +2,18 @@ package uk.co.poolefoundries.baldinggate.desktop
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import uk.co.poolefoundries.baldinggate.Application
+import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 
 object DesktopLauncher {
     @JvmStatic
     fun main(arg: Array<String>) {
-        LwjglApplication(Application(), LwjglApplicationConfiguration())
+        LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
     }
+    fun main(){
+        LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
+    }
+
 }
+
+
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.badlogic.ashley.core.Entity
 import uk.co.poolefoundries.baldinggate.*
+import uk.co.poolefoundries.baldinggate.screens.TextureRenderable
 import java.io.File
 import java.lang.RuntimeException
 
