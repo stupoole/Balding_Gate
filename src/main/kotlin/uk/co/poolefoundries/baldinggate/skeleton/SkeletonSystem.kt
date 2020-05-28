@@ -55,7 +55,6 @@ object SkeletonSystem : EntitySystem() {
             val speed = stats.speed
 //            SkeletonAI.getNewState(players)
             for (action in 0 until stats.currentAP) {
-                println("action: $action")
                 playerPos = positionMapper.get(player)
                 playerStats = statsMapper.get(player).stats
                 val pos = positionMapper.get(skeleton)
@@ -67,7 +66,6 @@ object SkeletonSystem : EntitySystem() {
                             skeleton.add(pos + pos.direction(playerPos))
                         } else {
                             for (step in 0 until speed) {
-                                println("step: $step")
                                 val tempPos = skeleton.getComponent(PositionComponent::class.java)
                                 skeleton.add(tempPos + tempPos.direction(playerPos))
                             }
