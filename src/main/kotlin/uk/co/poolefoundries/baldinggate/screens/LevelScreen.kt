@@ -39,6 +39,8 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
         // TODO: maybe the entity list should be stored in the screen and passed to classes on creation instead.
         Gdx.input.inputProcessor = input
 
+        game.update()
+
     }
 
     override fun render(delta: Float) {

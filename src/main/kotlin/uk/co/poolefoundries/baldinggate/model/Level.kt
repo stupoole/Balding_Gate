@@ -1,14 +1,11 @@
 package uk.co.poolefoundries.baldinggate.model
 
-import com.badlogic.ashley.core.Component
+import com.badlogic.ashley.core.Entity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.badlogic.ashley.core.Entity
-import uk.co.poolefoundries.baldinggate.*
+import uk.co.poolefoundries.baldinggate.Resources
 import uk.co.poolefoundries.baldinggate.core.*
 import java.io.File
-import java.lang.RuntimeException
-
 
 
 val behaviourMap = mapOf("player" to PlayerComponent, "skeleton" to SkeletonComponent)
@@ -46,10 +43,9 @@ data class TileType(val name: String, val texture: String, val passable: Boolean
                     )
                 )
             )
-        if (passable){
+        if (passable) {
             entity.add(FloorComponent)
-        }
-        else {
+        } else {
             entity.add(WallComponent)
         }
         entity.add(ColorComponent())

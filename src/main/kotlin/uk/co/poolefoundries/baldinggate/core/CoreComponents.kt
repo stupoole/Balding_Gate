@@ -54,16 +54,14 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 
 object SkeletonComponent : Component
 object PlayerComponent : Component
+object WallComponent : Component
+object FloorComponent : Component
 
 data class StatsComponent(val stats: Stats) : Component
 
 data class VisualComponent(val renderable: Renderable) : Component
 
 data class ColorComponent(val color:Color = Color.WHITE) : Component
-
-object WallComponent : Component
-
-object FloorComponent : Component
 
 data class Roll(val die: List<Int>, val mod: Int, val typical: Int) {
     fun roll() = die.map { Random.nextInt(it) }.sum() + mod
@@ -80,7 +78,7 @@ data class Level(
 
 data class Stats(
     val vitality: Int,
-    val hitPoints: Int,
+    var hitPoints: Int,
     val speed: Int,
     val maxAP: Int,
     val currentAP: Int,

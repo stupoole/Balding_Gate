@@ -741,7 +741,7 @@
       }
     },
     {
-      "mobType": "skeleton",
+      "mobType": "player",
       "position": {
         "x": 7,
         "y": 8
