@@ -3,9 +3,10 @@ package uk.co.poolefoundries.baldinggate.skeleton
 import com.badlogic.ashley.core.*
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.utils.Array
-import uk.co.poolefoundries.baldinggate.*
-import uk.co.poolefoundries.baldinggate.ai.actions.getPosition
-import uk.co.poolefoundries.baldinggate.ai.actions.getStats
+import uk.co.poolefoundries.baldinggate.core.PositionComponent
+import uk.co.poolefoundries.baldinggate.core.StatsComponent
+import uk.co.poolefoundries.baldinggate.core.VisualComponent
+import uk.co.poolefoundries.baldinggate.core.WallComponent
 import uk.co.poolefoundries.baldinggate.model.PlayerComponent
 import uk.co.poolefoundries.baldinggate.model.SkeletonComponent
 import uk.co.poolefoundries.baldinggate.model.Stats
@@ -63,8 +64,14 @@ object SkeletonSystem : EntitySystem() {
                     skeleton.add(pos + pos.direction(playerPos))
                 }
                 is AttackPlayer -> {
-                    player.add(StatsComponent(playerStats.copy(hitPoints = playerStats.hitPoints - stats.attack.roll())))
-                    println("Hitpoints: "+statsMapper.get(player).stats.hitPoints)
+                    player.add(
+                        StatsComponent(
+                            playerStats.copy(
+                                hitPoints = playerStats.hitPoints - stats.attack.roll()
+                            )
+                        )
+                    )
+                    println("Hitpoints: " + statsMapper.get(player).stats.hitPoints)
                 }
                 is Win -> {
                     player.remove(VisualComponent::class.java)

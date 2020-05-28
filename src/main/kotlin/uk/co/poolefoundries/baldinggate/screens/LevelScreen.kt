@@ -4,15 +4,14 @@ import com.badlogic.ashley.core.*
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import uk.co.poolefoundries.baldinggate.*
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+import uk.co.poolefoundries.baldinggate.core.PositionComponent
+import uk.co.poolefoundries.baldinggate.core.VisualComponent
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
@@ -31,12 +30,12 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
     override fun show() {
 
         loadLevel("level").toEntities().forEach(game.engine::addEntity)
-        game.engine.addSystem(RenderingSystem(stage))
+        game.engine.addSystem(RenderingSystem(stage, game.tileSize))
         game.engine.addSystem(SkeletonSystem)
         game.engine.addSystem(PlayerSystem)
 
-        input.addProcessor(PanHandler(game.camera))
-        input.addProcessor(PlayerInputHandler)
+        input.addProcessor(PlayerInputHandler(game))
+        // TODO: Ask jon if maybe the entity list should be stored in the screen and passed to classes on creation instead.
         Gdx.input.inputProcessor = input
 
     }
@@ -81,8 +80,8 @@ data class TextureRenderable(val texture: Texture) : Renderable {
 }
 
 
-class RenderingSystem(val stage: Stage) : EntitySystem() {
-    private val tileSize = 25f
+class RenderingSystem(val stage: Stage, val tileSize: Float) : EntitySystem() {
+//    private val tileSize = 25f
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
     private val visualComponentMapper = ComponentMapper.getFor(VisualComponent::class.java)
     private var entities = ImmutableArray(Array<Entity>())

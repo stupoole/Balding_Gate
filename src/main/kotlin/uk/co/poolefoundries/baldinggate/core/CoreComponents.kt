@@ -1,4 +1,4 @@
-package uk.co.poolefoundries.baldinggate
+package uk.co.poolefoundries.baldinggate.core
 
 import com.badlogic.ashley.core.Component
 import uk.co.poolefoundries.baldinggate.model.Stats
@@ -26,9 +26,13 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
         }
     }
 
-    operator fun plus (other: PositionComponent): PositionComponent{
-        return PositionComponent(this.x + other.x, this.y + other.y)
+    operator fun plus (other: PositionComponent): PositionComponent {
+        return PositionComponent(
+            this.x + other.x,
+            this.y + other.y
+        )
     }
+
 }
 
 

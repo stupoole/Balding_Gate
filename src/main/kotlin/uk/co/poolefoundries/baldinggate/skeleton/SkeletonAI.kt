@@ -1,18 +1,15 @@
 package uk.co.poolefoundries.baldinggate.skeleton
 
-import uk.co.poolefoundries.baldinggate.*
 import uk.co.poolefoundries.baldinggate.ai.*
-import uk.co.poolefoundries.baldinggate.ai.actions.MoveAction
 import uk.co.poolefoundries.baldinggate.ai.actions.getPosition
 import uk.co.poolefoundries.baldinggate.ai.actions.getStats
-import uk.co.poolefoundries.baldinggate.model.PlayerComponent
+import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.model.Stats
 
 data class Player(
     val hitPoints: Int,
     val pos: PositionComponent
 )
-
 
 
 val SKELETON_POSITION_KEY = "position"
@@ -106,7 +103,7 @@ object SkeletonAI {
         playerPos: PositionComponent,
         stats: Stats,
         playerStats: Stats
-    ):  Branch{
+    ): Branch {
         if (!actions.contains(goal.action)) {
             throw RuntimeException("Action ${goal.action} not found in list of available actions")
         }

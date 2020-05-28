@@ -762,6 +762,7 @@
       "stats": {
         "vitality": 25,
         "hitPoints": 25,
+        "speed": 5,
         "attack": {
           "die": [8],
           "mod": 1
@@ -775,6 +776,7 @@
       "stats": {
         "vitality": 10,
         "hitPoints": 10,
+
         "attack": {
           "die": [4],
           "mod": 1

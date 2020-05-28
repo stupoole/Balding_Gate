@@ -33,6 +33,7 @@ class BaldingGateGame : Game() {
     var engine = Engine()
     var camera= OrthographicCamera()
     var viewport = ScreenViewport(camera)
+    val tileSize = 25F
 
 
     override fun create() {
