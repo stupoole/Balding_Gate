@@ -81,8 +81,8 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
                 } else {
                     val pos = positionMapper.get(selected)
                     val speed = statsMapper.get(selected).stats.speed
-                    val AP = statsMapper.get(selected).stats.currentAP
-                    greenTiles(pos, speed, AP)
+                    val actionPoints = statsMapper.get(selected).stats.currentAP
+                    greenTiles(pos, speed, actionPoints)
                 }
                 // TODO: if this successfully selects a player, should have a sprite change/shader
 
@@ -132,14 +132,14 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
         return true
     }
 
-    fun clearGreenTiles() {
+    private fun clearGreenTiles() {
         greenTiles.forEach {
             it.add(ColorComponent(Color.WHITE))
         }
         greenTiles.clear()
     }
 
-    fun greenTiles(pos: PositionComponent, speed: Int, AP: Int) {
+    private fun greenTiles(pos: PositionComponent, speed: Int, AP: Int) {
         greenTiles.clear()
         floors.forEach { tile ->
             if (positionMapper.get(tile).gridWiseDistance(pos) <= speed && AP > 0) {
@@ -152,7 +152,7 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
     }
 
     // TODO: move the end turn method somewhere more sensible.
-    fun endTurn() {
+    private fun endTurn() {
         SkeletonSystem.act()
         players.forEach { player ->
             val stats = statsMapper.get(player).stats
