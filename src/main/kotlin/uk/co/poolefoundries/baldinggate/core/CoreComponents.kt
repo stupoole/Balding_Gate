@@ -1,7 +1,10 @@
 package uk.co.poolefoundries.baldinggate.core
 
 import com.badlogic.ashley.core.Component
-import uk.co.poolefoundries.baldinggate.model.Stats
+import uk.co.poolefoundries.baldinggate.model.Mob
+import uk.co.poolefoundries.baldinggate.model.MobType
+import uk.co.poolefoundries.baldinggate.model.Tile
+import uk.co.poolefoundries.baldinggate.model.TileType
 import uk.co.poolefoundries.baldinggate.screens.Renderable
 import kotlin.math.absoluteValue
 import kotlin.math.sign
@@ -26,7 +29,7 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
         }
     }
 
-    operator fun plus (other: PositionComponent): PositionComponent {
+    operator fun plus(other: PositionComponent): PositionComponent {
         return PositionComponent(
             this.x + other.x,
             this.y + other.y
@@ -36,13 +39,36 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 }
 
 
+object SkeletonComponent : Component
+object PlayerComponent : Component
+
+data class StatsComponent(val stats: Stats) : Component
+
+data class VisualComponent(val renderable: Renderable) : Component
+
+object WallComponent : Component
+
 data class Roll(val die: List<Int>, val mod: Int, val typical: Int) {
     fun roll() = die.map { Random.nextInt(it) }.sum() + mod
     fun typical() = die.map { it / 2 }.sum() + mod
 }
 
-data class StatsComponent(val stats: Stats) : Component
+data class Level(
+    val name: String,
+    val tiles: List<Tile>,
+    val tileTypes: List<TileType>,
+    val mobs: List<Mob>,
+    val mobTypes: List<MobType>
+)
+
+data class Stats(
+    val vitality: Int,
+    val hitPoints: Int,
+    val speed: Int,
+    val maxAP: Int,
+    val currentAP: Int,
+    val attack: Roll
+)
 
 
-data class VisualComponent(val renderable: Renderable) : Component
-object WallComponent : Component
+

@@ -12,6 +12,7 @@ import uk.co.poolefoundries.baldinggate.*
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.VisualComponent
+import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem

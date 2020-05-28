@@ -737,14 +737,14 @@
       "mobType": "player",
       "position": {
         "x": 1,
-        "y": 8
+        "y": 1
       }
     },
     {
       "mobType": "skeleton",
       "position": {
-        "x": 1,
-        "y": 1
+        "x": 7,
+        "y": 8
       }
     },
     {
@@ -763,6 +763,8 @@
         "vitality": 25,
         "hitPoints": 25,
         "speed": 5,
+        "maxAP": 2,
+        "currentAP": 2,
         "attack": {
           "die": [8],
           "mod": 1
@@ -776,7 +778,9 @@
       "stats": {
         "vitality": 10,
         "hitPoints": 10,
-
+        "speed": 3,
+        "maxAP": 2,
+        "currentAP": 2,
         "attack": {
           "die": [4],
           "mod": 1

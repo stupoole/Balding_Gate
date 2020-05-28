@@ -10,23 +10,7 @@ import uk.co.poolefoundries.baldinggate.screens.TextureRenderable
 import java.io.File
 import java.lang.RuntimeException
 
-data class Level(
-    val name: String,
-    val tiles: List<Tile>,
-    val tileTypes: List<TileType>,
-    val mobs: List<Mob>,
-    val mobTypes: List<MobType>
-)
 
-data class Stats(
-    val vitality: Int,
-    val hitPoints: Int,
-    val speed: Int,
-    val attack: Roll
-)
-
-object SkeletonComponent : Component
-object PlayerComponent : Component
 
 val behaviourMap = mapOf("player" to PlayerComponent, "skeleton" to SkeletonComponent)
 

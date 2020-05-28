@@ -5,7 +5,8 @@ import uk.co.poolefoundries.baldinggate.core.StatsComponent
 import uk.co.poolefoundries.baldinggate.ai.Action
 import uk.co.poolefoundries.baldinggate.ai.WorldState
 import uk.co.poolefoundries.baldinggate.ai.withValue
-import uk.co.poolefoundries.baldinggate.model.Stats
+import uk.co.poolefoundries.baldinggate.core.Stats
+
 
 class MoveAction(private val positionKey: String, private val direction: PositionComponent) : Action {
     override fun cost(state: WorldState) = 1.0

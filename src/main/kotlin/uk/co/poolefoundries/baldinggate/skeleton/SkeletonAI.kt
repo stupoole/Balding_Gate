@@ -4,7 +4,8 @@ import uk.co.poolefoundries.baldinggate.ai.*
 import uk.co.poolefoundries.baldinggate.ai.actions.getPosition
 import uk.co.poolefoundries.baldinggate.ai.actions.getStats
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
-import uk.co.poolefoundries.baldinggate.model.Stats
+import uk.co.poolefoundries.baldinggate.core.Stats
+
 
 data class Player(
     val hitPoints: Int,
