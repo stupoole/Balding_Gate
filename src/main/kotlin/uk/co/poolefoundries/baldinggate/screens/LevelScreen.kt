@@ -3,15 +3,14 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.ashley.core.*
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.*
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
 import uk.co.poolefoundries.baldinggate.*
-import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
-import uk.co.poolefoundries.baldinggate.core.PositionComponent
-import uk.co.poolefoundries.baldinggate.core.VisualComponent
+import uk.co.poolefoundries.baldinggate.core.*
 import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
@@ -36,7 +35,8 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
         game.engine.addSystem(PlayerSystem)
 
         input.addProcessor(PlayerInputHandler(game))
-        // TODO: Ask jon if maybe the entity list should be stored in the screen and passed to classes on creation instead.
+
+        // TODO: maybe the entity list should be stored in the screen and passed to classes on creation instead.
         Gdx.input.inputProcessor = input
 
     }
@@ -46,7 +46,6 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         game.engine.update(delta)
-//        game.camera.update()
 
 
     }
@@ -70,43 +69,3 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
 }
 
-interface Renderable {
-    fun draw(batch: Batch, x: Float, y: Float)
-}
-
-data class TextureRenderable(val texture: Texture) : Renderable {
-    override fun draw(batch: Batch, x: Float, y: Float) {
-        batch.draw(texture, x, y)
-    }
-}
-
-
-class RenderingSystem(val stage: Stage, val tileSize: Float) : EntitySystem() {
-//    private val tileSize = 25f
-    private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
-    private val visualComponentMapper = ComponentMapper.getFor(VisualComponent::class.java)
-    private var entities = ImmutableArray(Array<Entity>())
-
-
-    override fun addedToEngine(engine: Engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent::class.java, VisualComponent::class.java).get())
-    }
-
-    override fun update(deltaTime: Float) {
-        stage.camera.update()
-        stage.batch.projectionMatrix = stage.camera.combined
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        stage.batch.begin()
-        entities.forEach(::drawEntity)
-        stage.batch.end()
-    }
-
-    private fun drawEntity(entity: Entity) {
-        val pos = positionMapper.get(entity)
-        val visualComponent = visualComponentMapper.get(entity)
-
-        visualComponent.renderable.draw(stage.batch, pos.x * tileSize, pos.y * tileSize)
-    }
-}

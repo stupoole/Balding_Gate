@@ -5,6 +5,8 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.utils.Array
 import uk.co.poolefoundries.baldinggate.PlayerSystem
 import uk.co.poolefoundries.baldinggate.core.*
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonSystem
@@ -13,17 +15,22 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
 
     private var lastX = 0f
     private var lastY = 0f
-    private val positionMapper =
-        ComponentMapper.getFor(PositionComponent::class.java)
-    private val statsMapper =
-        ComponentMapper.getFor(StatsComponent::class.java)
+    private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
+    private val statsMapper = ComponentMapper.getFor(StatsComponent::class.java)
+    private val colorMapper = ComponentMapper.getFor(ColorComponent::class.java)
+    private var floors = game.engine.getEntitiesFor(
+        Family.all(
+            FloorComponent::class.java,
+            PositionComponent::class.java
+        ).get()
+    )
+    private val walls = game.engine.getEntitiesFor(
+        Family.all(
+            WallComponent::class.java,
+            PositionComponent::class.java
+        ).get()
+    )
 
-    private val walls =
-        game.engine.getEntitiesFor(
-            Family.all(
-                WallComponent::class.java,
-                PositionComponent::class.java
-            ).get())
     private val players = game.engine.getEntitiesFor(
         Family.all(
             PlayerComponent::class.java,
@@ -39,6 +46,7 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
         ).get()
     )
     private var selected: Entity? = null
+    private val greenTiles = Array<Entity>()
     // todo get list of valid actions that aren't movement and display on UI
 
     override fun keyDown(keycode: Int): Boolean {
@@ -68,6 +76,14 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
                 lastX = x.toFloat()
                 lastY = y.toFloat()
                 selected = players.find { positionMapper.get(it) == tilePos }
+                if (selected == null) {
+                    clearGreenTiles()
+                } else {
+                    val pos = positionMapper.get(selected)
+                    val speed = statsMapper.get(selected).stats.speed
+                    val AP = statsMapper.get(selected).stats.currentAP
+                    greenTiles(pos, speed, AP)
+                }
                 // TODO: if this successfully selects a player, should have a sprite change/shader
 
 
@@ -80,23 +96,19 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
                     val player = selected!!
                     val stats = statsMapper.get(player).stats
                     val speed = player.getComponent(StatsComponent::class.java).stats.speed
-                    return if (stats.currentAP > 0) {
-                        if (player.getComponent(PositionComponent::class.java).distance(tilePos) <= speed) {
-                            player.add(tilePos)
-                        } else {
-                            // TODO: pathfinding
-                            for (step in 0..speed) {
-                                val playerpos = player.getComponent(PositionComponent::class.java)
-                                player.add(playerpos + playerpos.direction(tilePos))
-                            }
+                    var AP = stats.currentAP
+                    return if (AP > 0) {
+                        var playerPos = player.getComponent(PositionComponent::class.java)
+                        val distance = playerPos.gridWiseDistance(tilePos)
+                        // TODO: pathfinding
+                        for (step in 0 until minOf(speed, distance.toInt())) {
+                            player.add(playerPos + playerPos.direction(tilePos))
+                            playerPos = player.getComponent(PositionComponent::class.java)
                         }
-                        player.add(
-                            StatsComponent(
-                                stats.copy(
-                                    currentAP = stats.currentAP - 1
-                                )
-                            )
-                        )
+
+                        AP -= 1
+                        player.add(StatsComponent(stats.copy(currentAP = AP)))
+                        greenTiles(playerPos, speed, AP)
                         true
                     } else {
                         println("NO AP")
@@ -120,6 +132,24 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
         return true
     }
 
+    fun clearGreenTiles() {
+        greenTiles.forEach {
+            it.add(ColorComponent(Color.WHITE))
+        }
+        greenTiles.clear()
+    }
+
+    fun greenTiles(pos: PositionComponent, speed: Int, AP: Int) {
+        greenTiles.clear()
+        floors.forEach { tile ->
+            if (positionMapper.get(tile).gridWiseDistance(pos) <= speed && AP > 0) {
+                greenTiles.add(tile)
+                tile.add(ColorComponent(Color.GREEN))
+            } else {
+                tile.add(ColorComponent(Color.WHITE))
+            }
+        }
+    }
 
     // TODO: move the end turn method somewhere more sensible.
     fun endTurn() {
@@ -132,6 +162,9 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
             val stats = statsMapper.get(skeleton).stats
             skeleton.add(StatsComponent(stats.copy(currentAP = stats.maxAP)))
         }
+        clearGreenTiles()
+        selected = null
+
     }
 
 }

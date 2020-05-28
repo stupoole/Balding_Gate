@@ -6,7 +6,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.badlogic.ashley.core.Entity
 import uk.co.poolefoundries.baldinggate.*
 import uk.co.poolefoundries.baldinggate.core.*
-import uk.co.poolefoundries.baldinggate.screens.TextureRenderable
 import java.io.File
 import java.lang.RuntimeException
 
@@ -20,7 +19,7 @@ data class Mob(val mobType: String, val position: Position)
 
 data class MobType(val name: String, val texture: String, val stats: Stats, val behaviour: String) {
     fun toEntity(): Entity {
-        return Entity()
+        val entity = Entity()
             .add(
                 VisualComponent(
                     TextureRenderable(
@@ -30,6 +29,8 @@ data class MobType(val name: String, val texture: String, val stats: Stats, val 
                     )
                 )
             )
+        entity.add(ColorComponent())
+        return entity
     }
 }
 
@@ -45,11 +46,13 @@ data class TileType(val name: String, val texture: String, val passable: Boolean
                     )
                 )
             )
-
-        if (!passable) {
+        if (passable){
+            entity.add(FloorComponent)
+        }
+        else {
             entity.add(WallComponent)
         }
-
+        entity.add(ColorComponent())
         return entity
     }
 }

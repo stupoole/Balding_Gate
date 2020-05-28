@@ -17,27 +17,26 @@ object PlayerSystem : EntitySystem() {
     private var players = ImmutableArray(Array<Entity>())
     private var skeletons = ImmutableArray(Array<Entity>())
 
-    // todo replace the wasd controls with text input options
     // cycle through players to ask what to do by printing all possible actions
-    private fun move(direction: PositionComponent) {
-        players.forEach { player ->
-            val pos = positionMapper.get(player)
-            // make a list of valid actions, display them and then, on button press,
-            val newPos = PositionComponent(
-                pos.x + direction.x,
-                pos.y + direction.y
-            )
-
-            if (walls.none { positionMapper.get(it) == newPos } && skeletons.none { positionMapper.get(it) == newPos }) {
-                player.add(newPos)
-            } else if (skeletons.any { positionMapper.get(it) == newPos }) {
-                // TODO Attack
-            } else {
-                println("something blocking movement")
-            }
-        }
-
-    }
+//    private fun move(direction: PositionComponent) {
+//        players.forEach { player ->
+//            val pos = positionMapper.get(player)
+//            // make a list of valid actions, display them and then, on button press,
+//            val newPos = PositionComponent(
+//                pos.x + direction.x,
+//                pos.y + direction.y
+//            )
+//
+//            if (walls.none { positionMapper.get(it) == newPos } && skeletons.none { positionMapper.get(it) == newPos }) {
+//                player.add(newPos)
+//            } else if (skeletons.any { positionMapper.get(it) == newPos }) {
+//                // TODO Attack
+//            } else {
+//                println("something blocking movement")
+//            }
+//        }
+//
+//    }
 
 
     override fun addedToEngine(engine: Engine) {
