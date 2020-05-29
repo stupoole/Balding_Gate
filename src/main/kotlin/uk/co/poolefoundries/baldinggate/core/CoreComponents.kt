@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
+import javafx.geometry.Pos
 import uk.co.poolefoundries.baldinggate.model.Mob
 import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
@@ -48,8 +49,12 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
             this.y + other.y
         )
     }
+    operator fun times(scalar:Float):PositionComponent{
+        return PositionComponent((this.x.toFloat() * scalar).toInt(),(this.y.toFloat() * scalar).toInt())
+    }
 
 }
+
 
 
 object SkeletonComponent : Component

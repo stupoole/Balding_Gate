@@ -734,16 +734,16 @@
 
   "mobs": [
     {
-      "mobType": "player",
+      "mobType": "tank",
       "position": {
         "x": 1,
         "y": 1
       }
     },
     {
-      "mobType": "player",
+      "mobType": "ranger",
       "position": {
-        "x": 7,
+        "x": 1,
         "y": 8
       }
     },
@@ -753,20 +753,43 @@
         "x": 8,
         "y": 8
       }
+    },
+    {
+      "mobType": "skeleton",
+      "position": {
+        "x": 8,
+        "y": 1
+      }
     }
   ],
   "mobTypes": [
     {
-      "name": "player",
+      "name": "tank",
+      "texture": "player.png",
+      "stats": {
+        "vitality": 50,
+        "hitPoints": 50,
+        "speed": 4,
+        "maxAP": 1,
+        "currentAP": 1,
+        "attack": {
+          "die": [8],
+          "mod": 2
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "ranger",
       "texture": "player.png",
       "stats": {
         "vitality": 25,
         "hitPoints": 25,
         "speed": 5,
-        "maxAP": 1,
-        "currentAP": 1,
+        "maxAP": 2,
+        "currentAP": 2,
         "attack": {
-          "die": [8],
+          "die": [6],
           "mod": 1
         }
       },
@@ -779,8 +802,8 @@
         "vitality": 10,
         "hitPoints": 10,
         "speed": 3,
-        "maxAP": 1,
-        "currentAP": 1,
+        "maxAP": 2,
+        "currentAP": 2,
         "attack": {
           "die": [4],
           "mod": 1
