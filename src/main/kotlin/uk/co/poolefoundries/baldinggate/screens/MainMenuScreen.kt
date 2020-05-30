@@ -4,14 +4,19 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Gdx.files
 import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+import uk.co.poolefoundries.baldinggate.core.TextureRenderable
 
 class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
@@ -29,10 +34,9 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         val table = Table()
         table.setFillParent(true)
         table.center()
-
-        val playButton = TextButton("Play", skin)
-        val optionsButton = TextButton("Options", skin)
-        val quitButton = TextButton("Quit", skin)
+        val playButton = ImageButton(TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenuButtons_0.png")))))
+        val optionsButton = ImageButton(TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenuButtons_1.png")))))
+        val quitButton = ImageButton(TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenuButtons_2.png")))))
 
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
