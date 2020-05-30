@@ -32,7 +32,7 @@ object EndTurn : Action {
     }
 
     override fun prerequisitesMet(state: WorldState) : Boolean {
-        // TODO: This is a bit naff but reduces the exlosion of branches. Will have to implement a huristic AI at some
+        // TODO: This is a bit naff but reduces the explosion of branches. Will have to implement a heuristic AI at some
         // point so it doesn't explore every single possibility
         return state.getEnemyIds().none { state.getMobInfo(it).stats.currentAP > 0 }
     }
@@ -62,7 +62,6 @@ interface TargetedAction : Action {
     fun (WorldState).distToTarget() = selfInfo().pos.gridWiseDistance(targetInfo().pos)
 }
 
-// TODO: take in a parameter of the player to move towards as well as the skeleton doing the moving
 class MoveTowards(override val selfId : String, override val targetId : String) : TargetedAction {
     override fun cost(state: WorldState): Double {
         return 1.0
@@ -83,13 +82,12 @@ class MoveTowards(override val selfId : String, override val targetId : String) 
         return "MoveTowards"
     }
 
-    // TODO: This is pretty crude buit should work as a POC until we have pathfinding
+    // TODO: This is pretty crude but should work as a POC until we have pathfinding
     fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
         return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
     }
 }
 
-// TODO: make this take in the player to attack and the skeleton doing the attacking as a parameter
 class Attack(override val selfId : String, override val targetId : String) : TargetedAction {
     override fun cost(state: WorldState): Double {
         return 1.0
