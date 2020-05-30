@@ -59,18 +59,18 @@ class SkeletonAITest {
 
 
         val pos = moveAction.getNewPos(enemies.first(), players.first())
-        assertEquals(15, playerPos.gridWiseDistance(pos))
+        assertEquals(15, playerPos.manhattanDistance(pos))
         assertTrue(moveAction.prerequisitesMet(state))
 
         // Move once
         state = moveAction.update(state)
-        assertEquals(15, playerPos.gridWiseDistance(info().pos))
+        assertEquals(15, playerPos.manhattanDistance(info().pos))
         assertEquals(1, info().stats.currentAP)
         assertTrue(moveAction.prerequisitesMet(state))
 
         // Move second time (now have 0 AP)
         state = moveAction.update(state)
-        assertEquals(10, playerPos.gridWiseDistance(info().pos))
+        assertEquals(10, playerPos.manhattanDistance(info().pos))
         assertEquals(0, info().stats.currentAP)
         assertFalse(moveAction.prerequisitesMet(state))
 
@@ -93,7 +93,7 @@ class SkeletonAITest {
 
         val moveAction = actions.filterIsInstance<MoveTowards>().first()
         val attackAction = actions.filterIsInstance<Attack>().first()
-        val endTurn = actions.filterIsInstance<EndTurn>().first()
+//        val endTurn = actions.filterIsInstance<EndTurn>().first()
 
         assertFalse(attackAction.prerequisitesMet(state))
         state = moveAction.update(state)
