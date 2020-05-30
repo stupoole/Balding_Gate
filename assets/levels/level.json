@@ -702,41 +702,33 @@
       }
     }
   ],
-
-
-
-
   "tileTypes": [
     {
       "name": "wall",
-      "texture": "wall.png",
+      "texture": "obstacles/wall.png",
       "passable": false
     },
     {
       "name": "floor",
-      "texture": "floor.png",
+      "texture": "floors/floor.png",
       "passable": true
     },
     {
       "name": "lava",
-      "texture": "lava.png",
+      "texture": "obstacles/lava.png",
       "passable": false
     },
     {
       "name": "door-vert",
-      "texture": "door-vertical.png",
+      "texture": "interactables/door-vertical.png",
       "passable": true
     },
     {
       "name": "door-horiz",
-      "texture": "door-horizontal.png",
+      "texture": "interactables/door-horizontal.png",
       "passable": true
     }
   ],
-
-
-
-
   "mobs": [
     {
       "mobType": "tank",
@@ -770,7 +762,7 @@
   "mobTypes": [
     {
       "name": "tank",
-      "texture": "player.png",
+      "texture": "characters/player.png",
       "stats": {
         "vitality": 50,
         "hitPoints": 50,
@@ -778,7 +770,9 @@
         "maxAP": 1,
         "currentAP": 1,
         "attack": {
-          "die": [8],
+          "die": [
+            8
+          ],
           "mod": 2
         }
       },
@@ -786,7 +780,7 @@
     },
     {
       "name": "ranger",
-      "texture": "player.png",
+      "texture": "characters/player.png",
       "stats": {
         "vitality": 25,
         "hitPoints": 25,
@@ -794,7 +788,9 @@
         "maxAP": 2,
         "currentAP": 2,
         "attack": {
-          "die": [6],
+          "die": [
+            6
+          ],
           "mod": 1
         }
       },
@@ -802,7 +798,7 @@
     },
     {
       "name": "skeleton",
-      "texture": "skeleton.png",
+      "texture": "mobs/skeleton.png",
       "stats": {
         "vitality": 10,
         "hitPoints": 10,
@@ -810,7 +806,9 @@
         "maxAP": 2,
         "currentAP": 2,
         "attack": {
-          "die": [4],
+          "die": [
+            4
+          ],
           "mod": 1
         }
       },

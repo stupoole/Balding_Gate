@@ -1,27 +1,19 @@
 package uk.co.poolefoundries.baldinggate.skeleton
 
 import uk.co.poolefoundries.baldinggate.ai.*
-import uk.co.poolefoundries.baldinggate.ai.actions.getPosition
-import uk.co.poolefoundries.baldinggate.ai.actions.getStats
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.Stats
 
-const val SKELETON_POSITION_KEY = "position"
-const val PLAYER_POSITION_KEY = "playerPos"
-const val PLAYER_STATS_KEY = "playerStats"
-const val SKELETON_STATS_KEY = "stats"
 
-val goal = Goal(Win, 1.0)
-
+data class MobInfo(val id : String, val pos: PositionComponent, val stats : Stats)
 
 object Win : Action {
     override fun cost(state: WorldState): Double {
         return 0.0
     }
 
-    override fun prerequisite(state: WorldState): Boolean {
-        // TODO: consider that there are more players now
-        return state.getStats(PLAYER_STATS_KEY).hitPoints <= 0
+    override fun prerequisitesMet(state: WorldState): Boolean {
+        return state.getPlayerIds().none { state.getMobInfo(it).stats.hitPoints > 0 }
     }
 
     override fun update(state: WorldState): WorldState {
@@ -34,48 +26,82 @@ object Win : Action {
 
 }
 
-// TODO: take in a parameter of the player to move towards as well as the skeleton doing the moving
-object MoveTowardsPlayer : Action {
+object EndTurn : Action {
     override fun cost(state: WorldState): Double {
-        return state.getPosition(SKELETON_POSITION_KEY).euclideanDistance(state.getPosition(PLAYER_POSITION_KEY))
+        return 10.0
     }
 
-    override fun prerequisite(state: WorldState): Boolean {
-        return state.getPosition(SKELETON_POSITION_KEY).euclideanDistance(state.getPosition(PLAYER_POSITION_KEY)) > 1.0
+    override fun prerequisitesMet(state: WorldState) : Boolean {
+        // TODO: This is a bit naff but reduces the explosion of branches. Will have to implement a heuristic AI at some
+        // point so it doesn't explore every single possibility
+        return state.getEnemyIds().none { state.getMobInfo(it).stats.currentAP > 0 }
     }
 
     override fun update(state: WorldState): WorldState {
-
-        return state.withValue(SKELETON_POSITION_KEY, state.getValue(PLAYER_POSITION_KEY))
+        var newState = state
+        state.getEnemyIds().forEach {
+            val info = state.getMobInfo(it)
+            newState = newState.setMobInfo(info.copy(stats = info.stats.restoreAp()))
+        }
+        return newState
     }
 
     override fun toString(): String {
-        return "MoveTowardsPlayer"
+        return "EndTurn"
     }
+
 }
 
-// TODO: make this take in the player to attack and the skeleton doing the attacking as a parameter
-object AttackPlayer : Action {
+interface TargetedAction : Action {
+    val selfId : String
+    val targetId : String
+
+    fun (WorldState).selfInfo() = getMobInfo(selfId)
+    fun (WorldState).targetInfo() = getMobInfo(targetId)
+
+    fun (WorldState).distToTarget() = selfInfo().pos.gridWiseDistance(targetInfo().pos)
+}
+
+class MoveTowards(override val selfId : String, override val targetId : String) : TargetedAction {
     override fun cost(state: WorldState): Double {
-        return state.getStats(PLAYER_STATS_KEY).attack.typical().toDouble()
+        return 1.0
     }
 
-
-    override fun prerequisite(state: WorldState): Boolean {
-        val pos = state.getPosition(SKELETON_POSITION_KEY)
-        val playerPos = state.getPosition(PLAYER_POSITION_KEY)
-        return pos.euclideanDistance(playerPos) <= 1.0
+    override fun prerequisitesMet(state: WorldState): Boolean {
+        return state.distToTarget() > 1 && state.selfInfo().stats.currentAP >= 1
     }
 
     override fun update(state: WorldState): WorldState {
-        // TODO: simplify
-        val playerStats = state.getStats(PLAYER_STATS_KEY)
-        val damage = state.getStats(SKELETON_STATS_KEY).attack.typical()
-        val newHealth = playerStats.hitPoints - damage
-        val newStats = playerStats.copy(hitPoints = newHealth)
-//        println(newHealth)
-        // TODO replace with setstats
-        return state.withValue(PLAYER_STATS_KEY, newStats)
+        val targetInfo = state.targetInfo()
+        val selfInfo = state.selfInfo()
+
+        return state.setMobInfo(selfInfo.copy(pos = getNewPos(selfInfo, targetInfo), stats = selfInfo.stats.useAp(1)))
+    }
+
+    override fun toString(): String {
+        return "MoveTowards"
+    }
+
+    // TODO: This is pretty crude but should work as a POC until we have pathfinding
+    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
+        return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
+    }
+}
+
+class Attack(override val selfId : String, override val targetId : String) : TargetedAction {
+    override fun cost(state: WorldState): Double {
+        return 1.0
+    }
+
+    override fun prerequisitesMet(state: WorldState): Boolean {
+        return state.distToTarget() == 1 && state.selfInfo().stats.currentAP >= 1
+    }
+
+    override fun update(state: WorldState): WorldState {
+        val stats = state.targetInfo().stats.applyDamage(state.selfInfo().stats.attack.typical())
+        return state
+            .setMobInfo(state.targetInfo().copy(stats = stats))
+            .setMobInfo(state.selfInfo().copy(stats = state.selfInfo().stats.useAp(1)))
     }
 
     override fun toString(): String {
@@ -85,29 +111,25 @@ object AttackPlayer : Action {
 
 object SkeletonAI {
 
-    private val actions = listOf(
-        MoveTowardsPlayer, //TODO: create one of these for each alive player/skeleton
-        AttackPlayer, //TODO: create one of these for each alive player/skeleton
-        Win
-    )
+    fun getPlan(players : Collection<MobInfo>, enemies: Collection<MobInfo>): Branch {
+        val goal = Goal(Win, 1.0)
+        return getActionPlan(worldState(players, enemies), actions(players, enemies, goal), goal)!!
+    }
 
-    fun getPlan(
-        pos: PositionComponent,
-        playerPos: PositionComponent,
-        stats: Stats,
-        playerStats: Stats
-    ): Branch {
-        if (!actions.contains(goal.action)) {
-            throw RuntimeException("Action ${goal.action} not found in list of available actions")
-        }
+    fun worldState(players : Collection<MobInfo>, enemies: Collection<MobInfo>) : WorldState {
+        return mutableMapOf<String, Any>()
+            .setPlayerIds(players.map { it.id })
+            .setEnemyIds(enemies.map { it.id })
+            .setMobInfo(players.union(enemies))
+    }
 
-        val worldState: WorldState = mapOf(
-            PLAYER_POSITION_KEY to playerPos,
-            SKELETON_POSITION_KEY to pos,
-            SKELETON_STATS_KEY to stats,
-            PLAYER_STATS_KEY to playerStats
-        )
+    fun actions(players : Collection<MobInfo>, enemies: Collection<MobInfo>, goal: Goal) : List<Action> {
+        val attackPlayerActions = players.flatMap { player -> enemies.map { enemy -> Attack(enemy.id, player.id) } }
+        val moveTowardsPlayerActions = players.flatMap { player -> enemies.map { enemy -> MoveTowards(enemy.id, player.id) } }
 
-        return getActionPlan(worldState, actions, goal)!!
+        return listOf(goal.action, EndTurn)
+            .union(attackPlayerActions)
+            .union(moveTowardsPlayerActions)
+            .toList()
     }
 }

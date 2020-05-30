@@ -4,13 +4,16 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Gdx.files
 import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 
 class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
@@ -30,20 +33,34 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         table.setFillParent(true)
         table.center()
 
-        val playButton = TextButton("Play", skin)
-        val optionsButton = TextButton("Options", skin)
-        val quitButton = TextButton("Quit", skin)
-
+        val playButton = ImageButton(
+            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_0.png")))),
+            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_1.png")))),
+            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_2.png"))))
+        )
+        val levelsButton =
+            ImageButton(
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_0.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_1.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_2.png"))))
+            )
+        val quitButton =
+            ImageButton(
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_0.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_1.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_2.png"))))
+            )
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = LevelScreen(game)
             }
         })
-        optionsButton.addListener(object : ClickListener() {
+        levelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                // Options screen? maybe dynamic menus?
+                // TODO: level selec screen
             }
         })
+        //TODO: Options
 
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -53,7 +70,7 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
         table.add(playButton)
         table.row()
-        table.add(optionsButton)
+        table.add(levelsButton)
         table.row()
         table.add(quitButton)
         stage.addActor(table)
