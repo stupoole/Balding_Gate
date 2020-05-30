@@ -709,27 +709,27 @@
   "tileTypes": [
     {
       "name": "wall",
-      "texture": "wall.png",
+      "texture": "obstacles/wall.png",
       "passable": false
     },
     {
       "name": "floor",
-      "texture": "floor.png",
+      "texture": "floors/floor.png",
       "passable": true
     },
     {
       "name": "lava",
-      "texture": "lava.png",
+      "texture": "obstacles/lava.png",
       "passable": false
     },
     {
       "name": "door-vert",
-      "texture": "door-vertical.png",
+      "texture": "interactables/door-vertical.png",
       "passable": true
     },
     {
       "name": "door-horiz",
-      "texture": "door-horizontal.png",
+      "texture": "interactables/door-horizontal.png",
       "passable": true
     }
   ],
@@ -770,7 +770,7 @@
   "mobTypes": [
     {
       "name": "tank",
-      "texture": "player.png",
+      "texture": "characters/player.png",
       "stats": {
         "vitality": 50,
         "hitPoints": 50,
@@ -786,7 +786,7 @@
     },
     {
       "name": "ranger",
-      "texture": "player.png",
+      "texture": "characters/player.png",
       "stats": {
         "vitality": 25,
         "hitPoints": 25,
@@ -802,7 +802,7 @@
     },
     {
       "name": "skeleton",
-      "texture": "skeleton.png",
+      "texture": "mobs/skeleton.png",
       "stats": {
         "vitality": 10,
         "hitPoints": 10,
