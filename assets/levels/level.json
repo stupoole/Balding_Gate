@@ -702,10 +702,6 @@
       }
     }
   ],
-
-
-
-
   "tileTypes": [
     {
       "name": "wall",
@@ -733,10 +729,6 @@
       "passable": true
     }
   ],
-
-
-
-
   "mobs": [
     {
       "mobType": "tank",
@@ -778,7 +770,9 @@
         "maxAP": 1,
         "currentAP": 1,
         "attack": {
-          "die": [8],
+          "die": [
+            8
+          ],
           "mod": 2
         }
       },
@@ -794,7 +788,9 @@
         "maxAP": 2,
         "currentAP": 2,
         "attack": {
-          "die": [6],
+          "die": [
+            6
+          ],
           "mod": 1
         }
       },
@@ -810,7 +806,9 @@
         "maxAP": 2,
         "currentAP": 2,
         "attack": {
-          "die": [4],
+          "die": [
+            4
+          ],
           "mod": 1
         }
       },
