@@ -12,8 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import javafx.geometry.Pos
-import sun.net.www.http.PosterOutputStream
+import uk.co.poolefoundries.baldinggate.pathfinding.AstarNode
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
 import uk.co.poolefoundries.baldinggate.skeleton.*
 import java.util.*
