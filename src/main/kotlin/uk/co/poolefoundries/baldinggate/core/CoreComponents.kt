@@ -20,13 +20,13 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 
 data class PositionComponent(val x: Int, val y: Int) : Component {
-    fun distance(other: PositionComponent): Double {
+    fun euclideanDistance(other: PositionComponent): Double {
         val xDiff = this.x - other.x
         val yDiff = this.y - other.y
         return sqrt((xDiff * xDiff + yDiff * yDiff).toDouble())
     }
 
-    fun gridWiseDistance(other: PositionComponent):Int {
+    fun manhattanDistance(other: PositionComponent):Int {
         val xDiff = this.x - other.x
         val yDiff = this.y - other.y
         return xDiff.absoluteValue + yDiff.absoluteValue
@@ -49,8 +49,8 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
             this.y + other.y
         )
     }
-    operator fun times(scalar:Float):PositionComponent{
-        return PositionComponent((this.x.toFloat() * scalar).toInt(),(this.y.toFloat() * scalar).toInt())
+    operator fun times(scalar:Double):PositionComponent{
+        return PositionComponent((this.x.toDouble() * scalar).toInt(),(this.y.toDouble() * scalar).toInt())
     }
 
 }

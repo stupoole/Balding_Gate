@@ -46,11 +46,11 @@ object Win : Action {
 
 object MoveTowardsPlayer : Action {
     override fun cost(state: WorldState): Double {
-        return state.getPosition(SKELETON_POSITION_KEY).distance(state.getPosition(PLAYER_POSITION_KEY))
+        return state.getPosition(SKELETON_POSITION_KEY).euclideanDistance(state.getPosition(PLAYER_POSITION_KEY))
     }
 
     override fun prerequisite(state: WorldState): Boolean {
-        return state.getPosition(SKELETON_POSITION_KEY).distance(state.getPosition(PLAYER_POSITION_KEY)) > 1.0
+        return state.getPosition(SKELETON_POSITION_KEY).euclideanDistance(state.getPosition(PLAYER_POSITION_KEY)) > 1.0
     }
 
     override fun update(state: WorldState): WorldState {
@@ -72,7 +72,7 @@ object AttackPlayer : Action {
     override fun prerequisite(state: WorldState): Boolean {
         val pos = state.getPosition(SKELETON_POSITION_KEY)
         val playerPos = state.getPosition(PLAYER_POSITION_KEY)
-        return pos.distance(playerPos) <= 1.0
+        return pos.euclideanDistance(playerPos) <= 1.0
     }
 
     override fun update(state: WorldState): WorldState {

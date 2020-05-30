@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.pathfinding.AstarNode
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
 import uk.co.poolefoundries.baldinggate.skeleton.AttackPlayer
 import uk.co.poolefoundries.baldinggate.skeleton.MoveTowardsPlayer
@@ -79,6 +80,7 @@ class BaldingGateGame : Game() {
     var camera = OrthographicCamera()
     var viewport = ScreenViewport(camera)
     val tileSize = 25F
+    var levelMap = listOf<List<AstarNode>>()
 
     var walls = ImmutableArray(Array<Entity>())
     var floors = ImmutableArray(Array<Entity>())
@@ -92,8 +94,8 @@ class BaldingGateGame : Game() {
     var isAnimating = false
     private val animationDuration = 0.1F
 
-    private val greenTiles = Array<Entity>()
-    private val redTiles = Array<Entity>()
+    private val greenTiles = mutableListOf<Entity>()
+    private val redTiles = mutableListOf<Entity>()
     private var selectedEntity = SelectedEntity(null, null, 0, 0)
     private val panSpeed = 100F
 
@@ -226,7 +228,7 @@ class BaldingGateGame : Game() {
         pendingAnimations.forEachIndexed { index, animation ->
             val entity = animation.entity
             val progress = animation.progress + (delta / animationDuration)
-            val start = animation.positions.first()
+//            val start = animation.positions.first()
             val end = animation.positions[1]
 //            val direction = start.direction(end)
 
@@ -241,7 +243,7 @@ class BaldingGateGame : Game() {
             if (animation.positions.size < 2) {
                 // todo set colors
                 pendingAnimations.removeIndex(index)
-                selectedEntity?.entity?.let { selectMob(it) }
+                selectedEntity.entity?.let { selectMob(it) }
                 if (selectedEntity.actionPoints <= 0) {
                     clearGreenTiles()
                 } else {
@@ -282,7 +284,7 @@ class BaldingGateGame : Game() {
     }
 
     private fun playerMove(target: PositionComponent) {
-        val distance = selectedEntity.position!!.gridWiseDistance(target)
+        val distance = selectedEntity.position!!.manhattanDistance(target)
         var tempPos = selectedEntity.position!!
         val positions = Array<PositionComponent>()
         positions.add(tempPos)
@@ -303,7 +305,7 @@ class BaldingGateGame : Game() {
     fun setGreenTiles(center: PositionComponent, range: Int) {
         clearColoredTiles()
         floors.forEach { tile ->
-            if (positionMapper.get(tile).gridWiseDistance(center) <= range) {
+            if (positionMapper.get(tile).manhattanDistance(center) <= range) {
                 greenTiles.add(tile)
                 tile.add(ColorComponent(Color.GREEN))
             } else {
@@ -315,7 +317,7 @@ class BaldingGateGame : Game() {
     fun setRedTiles(center: PositionComponent, range: Int) {
         clearColoredTiles()
         floors.forEach { tile ->
-            if (positionMapper.get(tile).gridWiseDistance(center) <= range) {
+            if (positionMapper.get(tile).manhattanDistance(center) <= range) {
                 redTiles.add(tile)
                 tile.add(ColorComponent(Color.RED))
             } else {
@@ -367,10 +369,10 @@ class BaldingGateGame : Game() {
                 when (actionPlan.actions.first()) {
                     is MoveTowardsPlayer -> {
                         //TODO add collision detection
-                        val distance = pos.gridWiseDistance(playerPos)
+                        val distance = pos.manhattanDistance(playerPos)
                         var tempPos = pos
                         movePositions.add(tempPos)
-                        for (step in 0 until minOf(speed, pos.gridWiseDistance(playerPos)-1)) {
+                        for (step in 0 until minOf(speed, distance-1)) { // -1 to avoid standing on top of player
                             tempPos += tempPos.direction(playerPos)
                             movePositions.add(tempPos)
                         }
