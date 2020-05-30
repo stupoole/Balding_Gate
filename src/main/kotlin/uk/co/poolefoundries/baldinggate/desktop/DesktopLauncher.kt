@@ -9,11 +9,5 @@ object DesktopLauncher {
     fun main(arg: Array<String>) {
         LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
     }
-    fun main(){
-        LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
-    }
-
 }
-
-
 

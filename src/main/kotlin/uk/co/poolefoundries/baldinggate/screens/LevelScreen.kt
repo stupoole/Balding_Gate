@@ -3,13 +3,12 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import uk.co.poolefoundries.baldinggate.*
 import uk.co.poolefoundries.baldinggate.core.*
 import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
 
-
+// LevelScreen represents the gamplay screen of the game.
 class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     var stage = Stage(game.viewport, game.batch)
@@ -22,11 +21,13 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     override fun show() {
 
+        // TODO: Parameterise the level to load (so we could have a level select menu)
         loadLevel("level").toEntities().forEach(game.engine::addEntity)
+
+        // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
         game.engine.addSystem(RenderingSystem(stage, game.tileSize))
         input.addProcessor(PlayerInputHandler(game))
 
-        // TODO: maybe the entity list should be stored in the screen and passed to classes on creation instead.
         Gdx.input.inputProcessor = input
 
         game.update()
