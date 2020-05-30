@@ -9,8 +9,11 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import javafx.geometry.Pos
+import sun.net.www.http.PosterOutputStream
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
 import uk.co.poolefoundries.baldinggate.skeleton.*
 import java.util.*
@@ -57,12 +60,6 @@ data class Direction(val x: Int, val y: Int) {
 }
 
 data class Animation(val entity: Entity, var positions: Array<PositionComponent>, var progress: Float = 0F)
-
-val PAN_UP = Direction(0, 1)
-val PAN_DOWN = Direction(0, -1)
-val PAN_LEFT = Direction(-1, 0)
-val PAN_RIGHT = Direction(1, 0)
-val PAN_NONE = Direction(0, 0)
 
 // TODO: this class should basically be empty
 class BaldingGateGame : Game() {
@@ -141,10 +138,8 @@ class BaldingGateGame : Game() {
 
     // TODO move this to the input handler and multi-plex it
     fun leftClick(x: Int, y: Int) {
-        val tilePos = PositionComponent(
-            ((x.toFloat() + camera.position.x - viewport.worldWidth / 2) / tileSize).toInt(),
-            (((camera.position.y + viewport.worldHeight / 2) - y.toFloat()) / tileSize).toInt()
-        )
+        val gamePos = camera.unproject(Vector3(x.toFloat(),y.toFloat(),0F))
+        val tilePos = PositionComponent((gamePos.x/tileSize).toInt(), (gamePos.y/tileSize).toInt())
         selectedEntity.entity?.add(ColorComponent(Color.WHITE))
         val clickedMobs = mobs.filter { positionMapper.get(it) == tilePos }
         when (clickedMobs.size) {
@@ -162,14 +157,11 @@ class BaldingGateGame : Game() {
         }
     }
 
-
     fun rightClick(x: Int, y: Int) {
         // TODO implement attack instead of just always move. Should probably make methods to handle moving, attacking
         //  and other things which are called by this method
-        val tilePos = PositionComponent(
-            ((x.toFloat() + camera.position.x - viewport.worldWidth / 2) / tileSize).toInt(),
-            (((camera.position.y + viewport.worldHeight / 2) - y.toFloat()) / tileSize).toInt()
-        )
+        val gamePos = camera.unproject(Vector3(x.toFloat(),y.toFloat(),0F))
+        val tilePos = PositionComponent((gamePos.x/tileSize).toInt(), (gamePos.y/tileSize).toInt())
         if ( selectedEntity.anyNull()){return}
         if (
             positionMapper.get(selectedEntity.entity) != tilePos &&
@@ -188,12 +180,6 @@ class BaldingGateGame : Game() {
         val current = players.indexOf(selectedEntity.entity)
         val next = (current + 1) % players.size()
         selectMob(players[next])
-    }
-
-    fun pauseMenu() {
-        // TODO implement pause menu
-        // PAN_NONE assigned here so that if a keyup is missed, camera can be stopped with esc
-        cameraMoveDirection = PAN_NONE
     }
 
     fun endTurn() {
@@ -271,7 +257,7 @@ class BaldingGateGame : Game() {
     }
 
     private fun playerMove(target: PositionComponent) {
-        val distance = selectedEntity.position!!.gridWiseDistance(target)
+        val distance = selectedEntity.position!!.manhattanDistance(target)
         var tempPos = selectedEntity.position!!
         val positions = Array<PositionComponent>()
         positions.add(tempPos)
@@ -292,7 +278,7 @@ class BaldingGateGame : Game() {
     private fun setGreenTiles(center: PositionComponent, range: Int) {
         clearColoredTiles()
         floors.forEach { tile ->
-            if (positionMapper.get(tile).gridWiseDistance(center) <= range) {
+            if (positionMapper.get(tile).manhattanDistance(center) <= range) {
                 greenTiles.add(tile)
                 tile.add(ColorComponent(Color.GREEN))
             } else {
@@ -304,7 +290,7 @@ class BaldingGateGame : Game() {
     private fun setRedTiles(center: PositionComponent, range: Int) {
         clearColoredTiles()
         floors.forEach { tile ->
-            if (positionMapper.get(tile).gridWiseDistance(center) <= range) {
+            if (positionMapper.get(tile).manhattanDistance(center) <= range) {
                 redTiles.add(tile)
                 tile.add(ColorComponent(Color.RED))
             } else {

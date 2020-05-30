@@ -59,7 +59,7 @@ interface TargetedAction : Action {
     fun (WorldState).selfInfo() = getMobInfo(selfId)
     fun (WorldState).targetInfo() = getMobInfo(targetId)
 
-    fun (WorldState).distToTarget() = selfInfo().pos.gridWiseDistance(targetInfo().pos)
+    fun (WorldState).distToTarget() = selfInfo().pos.manhattanDistance(targetInfo().pos)
 }
 
 class MoveTowards(override val selfId : String, override val targetId : String) : TargetedAction {

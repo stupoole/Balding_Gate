@@ -1,9 +1,13 @@
 package uk.co.poolefoundries.baldinggate.screens
 
-import com.badlogic.gdx.*
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import uk.co.poolefoundries.baldinggate.core.*
+import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+
+import uk.co.poolefoundries.baldinggate.core.RenderingSystem
 import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
@@ -40,9 +44,7 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         game.engine.update(delta)
-        if (game.cameraMoveDirection != PAN_NONE){
-            game.cameraMove(delta)
-        }
+
         if (!game.pendingAnimations.isEmpty) {
             game.animationStep(delta)
         }
@@ -51,7 +53,7 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
     }
 
     override fun pause() {
-        game.cameraMoveDirection = PAN_NONE
+
     }
 
     override fun resume() {

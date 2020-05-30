@@ -19,7 +19,11 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 
 data class PositionComponent(val x: Int, val y: Int) : Component {
-    fun gridWiseDistance(other: PositionComponent):Int {
+
+    // TODO: crowfliesDistance
+
+
+    fun manhattanDistance(other: PositionComponent):Int {
         val xDiff = this.x - other.x
         val yDiff = this.y - other.y
         return xDiff.absoluteValue + yDiff.absoluteValue
