@@ -14,6 +14,14 @@ data class Position(val x: Int, val y: Int)
 data class Tile(val tileType: String, val position: Position)
 data class Mob(val mobType: String, val position: Position)
 
+data class Level(
+    val name: String,
+    val tiles: List<Tile>,
+    val tileTypes: List<TileType>,
+    val mobs: List<Mob>,
+    val mobTypes: List<MobType>
+)
+
 data class MobType(val name: String, val texture: String, val stats: Stats, val behaviour: String) {
     fun toEntity(): Entity {
         val entity = Entity()
@@ -48,6 +56,7 @@ data class TileType(val name: String, val texture: String, val passable: Boolean
         } else {
             entity.add(WallComponent)
         }
+        entity.add(TileComponent)
         entity.add(ColorComponent())
         return entity
     }

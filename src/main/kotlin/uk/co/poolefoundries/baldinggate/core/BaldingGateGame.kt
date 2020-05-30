@@ -9,6 +9,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.GridPoint2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import uk.co.poolefoundries.baldinggate.pathfinding.AstarNode
@@ -17,6 +18,7 @@ import uk.co.poolefoundries.baldinggate.skeleton.AttackPlayer
 import uk.co.poolefoundries.baldinggate.skeleton.MoveTowardsPlayer
 import uk.co.poolefoundries.baldinggate.skeleton.SkeletonAI
 import uk.co.poolefoundries.baldinggate.skeleton.Win
+
 
 data class SelectedEntity(
     var entity: Entity? = null,
@@ -70,7 +72,7 @@ val PAN_NONE = Direction(0, 0)
 // TODO: this class should basically be empty
 class BaldingGateGame : Game() {
 
-    lateinit var batch : SpriteBatch
+    lateinit var batch: SpriteBatch
     var engine = Engine()
     var camera = OrthographicCamera()
     var viewport = ScreenViewport(camera)
@@ -79,6 +81,7 @@ class BaldingGateGame : Game() {
 
     private var walls = ImmutableArray(Array<Entity>())
     private var floors = ImmutableArray(Array<Entity>())
+    private var tiles = ImmutableArray(Array<Entity>())
     private var players = ImmutableArray(Array<Entity>())
     private var enemies = ImmutableArray(Array<Entity>())
     private var mobs = ImmutableArray(Array<Entity>())
@@ -141,6 +144,8 @@ class BaldingGateGame : Game() {
             ).get()
         )
         mobs = engine.getEntitiesFor(Family.all(PositionComponent::class.java, StatsComponent::class.java).get())
+        tiles = engine.getEntitiesFor(Family.all(PositionComponent::class.java, TileComponent::class.java).get())
+
     }
 
     // TODO move this to the input handler and multi-plex it
@@ -174,7 +179,9 @@ class BaldingGateGame : Game() {
             ((x.toFloat() + camera.position.x - viewport.worldWidth / 2) / tileSize).toInt(),
             (((camera.position.y + viewport.worldHeight / 2) - y.toFloat()) / tileSize).toInt()
         )
-        if ( selectedEntity.anyNull()){return}
+        if (selectedEntity.anyNull()) {
+            return
+        }
         if (
             positionMapper.get(selectedEntity.entity) != tilePos &&
             players.contains(selectedEntity.entity) &&
@@ -244,7 +251,6 @@ class BaldingGateGame : Game() {
         }
 
 
-
     }
 
     private fun selectMob(mob: Entity) {
@@ -273,6 +279,24 @@ class BaldingGateGame : Game() {
             clearColoredTiles()
         }
     }
+
+//    private fun getAStarGraph(){
+//        val astarGraph =
+//            mutableListOf<MutableList<AstarNode>>()
+//        for (i in 0 until getMapWidth()) {
+//            astarGraph.add(mutableListOf<AstarNode>())
+//        }
+//        for (i in 0 until getMapWidth()) {
+//            for (j in 0 until getMapHeight()) {
+//                val node = AstarNode()
+//                node.passingCost = getDungeonTile(GridPoint2(i, j)).getPassingCost()
+//                node.x = i
+//                node.y = j
+//                astarGraph[i].add(node)
+//            }
+//        }
+//        return astarGraph
+//    }
 
     private fun playerMove(target: PositionComponent) {
         val distance = selectedEntity.position!!.manhattanDistance(target)
@@ -362,7 +386,7 @@ class BaldingGateGame : Game() {
                         //TODO move
                         var tempPos = pos
                         movePositions.add(tempPos)
-                        for (step in 0 until minOf(speed, distance-1)) { // -1 to avoid standing on top of player
+                        for (step in 0 until minOf(speed, distance - 1)) { // -1 to avoid standing on top of player
                             tempPos += tempPos.direction(playerPos)
                             movePositions.add(tempPos)
                         }
@@ -388,7 +412,8 @@ class BaldingGateGame : Game() {
                 stats = statsMapper.get(enemy).stats
             }
             if (movePositions.size > 2) {
-            pendingAnimations.add(Animation(enemy, movePositions))}
+                pendingAnimations.add(Animation(enemy, movePositions))
+            }
         }
     }
 }

@@ -59,6 +59,7 @@ object SkeletonComponent : Component
 object PlayerComponent : Component
 object WallComponent : Component
 object FloorComponent : Component
+object TileComponent : Component
 
 data class StatsComponent(val stats: Stats) : Component
 
@@ -71,13 +72,7 @@ data class Roll(val die: List<Int>, val mod: Int, val typical: Int) {
     fun typical() = die.map { it / 2 }.sum() + mod
 }
 
-data class Level(
-    val name: String,
-    val tiles: List<Tile>,
-    val tileTypes: List<TileType>,
-    val mobs: List<Mob>,
-    val mobTypes: List<MobType>
-)
+
 
 data class Stats(
     val vitality: Int,
