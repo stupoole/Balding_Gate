@@ -6,28 +6,9 @@ import uk.co.poolefoundries.baldinggate.ai.WorldState
 import uk.co.poolefoundries.baldinggate.ai.actions.getStats
 import uk.co.poolefoundries.baldinggate.skeleton.AttackPlayer
 
-val SKELETON_STATS_KEY = "skellystats"
+const val SKELETON_STATS_KEY = "skellystats"
 
 val goal = Goal(Win, 1.0)
-
-object FuckAll : Action {
-    override fun cost(state: WorldState): Double {
-        return 1.0
-    }
-
-
-    override fun prerequisite(state: WorldState): Boolean {
-        return true
-    }
-
-    override fun update(state: WorldState): WorldState {
-        return state
-    }
-
-    override fun toString(): String {
-        return "FuckAll"
-    }
-}
 
 object Win : Action {
     override fun cost(state: WorldState): Double {
