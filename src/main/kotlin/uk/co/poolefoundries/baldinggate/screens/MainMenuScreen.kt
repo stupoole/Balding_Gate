@@ -34,21 +34,21 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         table.center()
 
         val playButton = ImageButton(
-            TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_PlayButton_0.png")))),
-            TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_PlayButton_1.png")))),
-            TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_PlayButton_2.png"))))
+            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_0.png")))),
+            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_1.png")))),
+            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_2.png"))))
         )
         val levelsButton =
             ImageButton(
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_LevelsButton_0.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_LevelsButton_1.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_LevelsButton_2.png"))))
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_0.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_1.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_2.png"))))
             )
         val quitButton =
             ImageButton(
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_QuitButton_0.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_QuitButton_1.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("MainMenu_QuitButton_2.png"))))
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_0.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_1.png")))),
+                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_2.png"))))
             )
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
