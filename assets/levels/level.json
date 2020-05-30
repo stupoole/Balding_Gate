@@ -310,14 +310,14 @@
       }
     },
     {
-      "tileType": "wall",
+      "tileType": "lava",
       "position": {
         "x": 4,
         "y": 4
       }
     },
     {
-      "tileType": "wall",
+      "tileType": "lava",
       "position": {
         "x": 4,
         "y": 5
@@ -380,14 +380,14 @@
       }
     },
     {
-      "tileType": "wall",
+      "tileType": "lava",
       "position": {
         "x": 5,
         "y": 4
       }
     },
     {
-      "tileType": "wall",
+      "tileType": "lava",
       "position": {
         "x": 5,
         "y": 5
@@ -716,6 +716,11 @@
       "name": "floor",
       "texture": "floor.png",
       "passable": true
+    },
+    {
+      "name": "lava",
+      "texture": "lava.png",
+      "passable": false
     },
     {
       "name": "door-vert",
