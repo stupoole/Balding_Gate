@@ -6,18 +6,10 @@ import uk.co.poolefoundries.baldinggate.ai.actions.getStats
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.Stats
 
-
-data class Player(
-    val hitPoints: Int,
-    val pos: PositionComponent
-)
-
-
-val SKELETON_POSITION_KEY = "position"
-val PLAYER_POSITION_KEY = "playerPos"
-val PLAYER_STATS_KEY = "playerStats"
-val SKELETON_STATS_KEY = "stats"
-val PLAYERS_KEY = "players"
+const val SKELETON_POSITION_KEY = "position"
+const val PLAYER_POSITION_KEY = "playerPos"
+const val PLAYER_STATS_KEY = "playerStats"
+const val SKELETON_STATS_KEY = "stats"
 
 val goal = Goal(Win, 1.0)
 
@@ -28,9 +20,7 @@ object Win : Action {
     }
 
     override fun prerequisite(state: WorldState): Boolean {
-        // TODO think about fixing the typecast
-//        val playerslist = state.get(PLAYERS_KEY) as List<Player>
-//        return playerslist.all { it.hitPoints <= 0 }
+        // TODO: consider that there are more players now
         return state.getStats(PLAYER_STATS_KEY).hitPoints <= 0
     }
 
@@ -44,6 +34,7 @@ object Win : Action {
 
 }
 
+// TODO: take in a parameter of the player to move towards as well as the skeleton doing the moving
 object MoveTowardsPlayer : Action {
     override fun cost(state: WorldState): Double {
         return state.getPosition(SKELETON_POSITION_KEY).euclideanDistance(state.getPosition(PLAYER_POSITION_KEY))
@@ -63,6 +54,7 @@ object MoveTowardsPlayer : Action {
     }
 }
 
+// TODO: make this take in the player to attack and the skeleton doing the attacking as a parameter
 object AttackPlayer : Action {
     override fun cost(state: WorldState): Double {
         return state.getStats(PLAYER_STATS_KEY).attack.typical().toDouble()
@@ -94,8 +86,8 @@ object AttackPlayer : Action {
 object SkeletonAI {
 
     private val actions = listOf(
-        MoveTowardsPlayer,
-        AttackPlayer,
+        MoveTowardsPlayer, //TODO: create one of these for each alive player/skeleton
+        AttackPlayer, //TODO: create one of these for each alive player/skeleton
         Win
     )
 
@@ -109,7 +101,6 @@ object SkeletonAI {
             throw RuntimeException("Action ${goal.action} not found in list of available actions")
         }
 
-//        val worldState: WorldState = mapOf(PLAYER_POSITION_KEY to playerPos, POSITION_KEY to pos)
         val worldState: WorldState = mapOf(
             PLAYER_POSITION_KEY to playerPos,
             SKELETON_POSITION_KEY to pos,

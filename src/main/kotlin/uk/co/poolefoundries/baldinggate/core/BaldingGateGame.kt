@@ -35,10 +35,6 @@ data class SelectedEntity(
     fun anyNull(): Boolean {
         return this.entity == null || this.position == null
     }
-
-    fun noNull(): Boolean {
-        return this.entity != null && this.position != null
-    }
 }
 
 data class Direction(val x: Int, val y: Int) {
@@ -71,25 +67,27 @@ val PAN_LEFT = Direction(-1, 0)
 val PAN_RIGHT = Direction(1, 0)
 val PAN_NONE = Direction(0, 0)
 
+// TODO: this class should basically be empty
 class BaldingGateGame : Game() {
 
-    lateinit var batch: SpriteBatch
+    lateinit var batch : SpriteBatch
     var engine = Engine()
     var camera = OrthographicCamera()
     var viewport = ScreenViewport(camera)
     val tileSize = 25F
     var levelMap = listOf<List<AstarNode>>()
 
-    var walls = ImmutableArray(Array<Entity>())
-    var floors = ImmutableArray(Array<Entity>())
-    var players = ImmutableArray(Array<Entity>())
-    var enemies = ImmutableArray(Array<Entity>())
-    var mobs = ImmutableArray(Array<Entity>())
-    val colorMapper = ComponentMapper.getFor(ColorComponent::class.java)
+    private var walls = ImmutableArray(Array<Entity>())
+    private var floors = ImmutableArray(Array<Entity>())
+    private var players = ImmutableArray(Array<Entity>())
+    private var enemies = ImmutableArray(Array<Entity>())
+    private var mobs = ImmutableArray(Array<Entity>())
+
+    // TODO: move camera movement logic out of the game class
     var cameraMoveDirection = Direction(0, 0)
 
+    // TODO: move the pending animations to an animation/render component on the entity being animated
     var pendingAnimations = Array<Animation>()
-    var isAnimating = false
     private val animationDuration = 0.1F
 
     private val greenTiles = mutableListOf<Entity>()
@@ -118,12 +116,9 @@ class BaldingGateGame : Game() {
     }
 
     override fun dispose() {
-        //todo add disposes here for batch etc
+        batch.dispose()
     }
 
-    //    override fun render() {
-//        super.render()
-//    }
     fun cameraMove(delta: Float) {
         camera.translate(cameraMoveDirection.x * delta * panSpeed, cameraMoveDirection.y * delta * panSpeed)
     }
@@ -148,7 +143,7 @@ class BaldingGateGame : Game() {
         mobs = engine.getEntitiesFor(Family.all(PositionComponent::class.java, StatsComponent::class.java).get())
     }
 
-
+    // TODO move this to the input handler and multi-plex it
     fun leftClick(x: Int, y: Int) {
         val tilePos = PositionComponent(
             ((x.toFloat() + camera.position.x - viewport.worldWidth / 2) / tileSize).toInt(),
@@ -226,9 +221,7 @@ class BaldingGateGame : Game() {
         pendingAnimations.forEachIndexed { index, animation ->
             val entity = animation.entity
             val progress = animation.progress + (delta / animationDuration)
-//            val start = animation.positions.first()
             val end = animation.positions[1]
-//            val direction = start.direction(end)
 
             if (progress > 1) {
                 entity.add(end)
@@ -300,7 +293,7 @@ class BaldingGateGame : Game() {
         )
     }
 
-    fun setGreenTiles(center: PositionComponent, range: Int) {
+    private fun setGreenTiles(center: PositionComponent, range: Int) {
         clearColoredTiles()
         floors.forEach { tile ->
             if (positionMapper.get(tile).manhattanDistance(center) <= range) {
@@ -312,7 +305,7 @@ class BaldingGateGame : Game() {
         }
     }
 
-    fun setRedTiles(center: PositionComponent, range: Int) {
+    private fun setRedTiles(center: PositionComponent, range: Int) {
         clearColoredTiles()
         floors.forEach { tile ->
             if (positionMapper.get(tile).manhattanDistance(center) <= range) {
@@ -325,33 +318,31 @@ class BaldingGateGame : Game() {
     }
 
 
-    fun clearGreenTiles() {
+    private fun clearGreenTiles() {
         greenTiles.forEach {
             it.add(ColorComponent(Color.WHITE))
         }
         greenTiles.clear()
     }
 
-    fun clearRedTiles() {
+    private fun clearRedTiles() {
         redTiles.forEach {
             it.add(ColorComponent(Color.WHITE))
         }
         redTiles.clear()
     }
 
-    fun clearColoredTiles() {
+    private fun clearColoredTiles() {
         clearGreenTiles()
         clearRedTiles()
-//        mobs.forEach { mob -> mob.add(ColorComponent(Color.WHITE)) }
     }
 
-    fun enemyActions() {
+    private fun enemyActions() {
         // TODO: somehow handle multiple players
         enemies.forEach { enemy ->
             var playerPos: PositionComponent
             var playerStats: Stats
-            val player: Entity
-            player = players.first()
+            val player: Entity = players.first()
             // TODO: convert players in to a simplified representation of a player?
             // TODO replace this action points system to do one action per skeleton each, render then do the next?
             var stats = statsMapper.get(enemy).stats
@@ -368,6 +359,7 @@ class BaldingGateGame : Game() {
                     is MoveTowardsPlayer -> {
                         //TODO add collision detection
                         val distance = pos.manhattanDistance(playerPos)
+                        //TODO move
                         var tempPos = pos
                         movePositions.add(tempPos)
                         for (step in 0 until minOf(speed, distance-1)) { // -1 to avoid standing on top of player
@@ -399,8 +391,5 @@ class BaldingGateGame : Game() {
             pendingAnimations.add(Animation(enemy, movePositions))}
         }
     }
-
-
-
 }
 

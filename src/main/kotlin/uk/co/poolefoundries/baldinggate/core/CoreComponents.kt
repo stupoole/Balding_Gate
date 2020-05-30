@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
-import javafx.geometry.Pos
 import uk.co.poolefoundries.baldinggate.model.Mob
 import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
@@ -35,7 +34,6 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
     fun direction(other: PositionComponent): PositionComponent {
         val xDiff = other.x - this.x
         val yDiff = other.y - this.y
-        // Moves hori
         return if (xDiff.absoluteValue >= yDiff.absoluteValue) {
             PositionComponent(xDiff.sign, 0)
         } else {
