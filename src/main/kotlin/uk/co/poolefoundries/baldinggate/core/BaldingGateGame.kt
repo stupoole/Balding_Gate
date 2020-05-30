@@ -12,10 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
-import uk.co.poolefoundries.baldinggate.skeleton.AttackPlayer
-import uk.co.poolefoundries.baldinggate.skeleton.MoveTowardsPlayer
-import uk.co.poolefoundries.baldinggate.skeleton.SkeletonAI
-import uk.co.poolefoundries.baldinggate.skeleton.Win
+import uk.co.poolefoundries.baldinggate.skeleton.*
+import java.util.*
 
 data class SelectedEntity(
     var entity: Entity? = null,
@@ -335,56 +333,53 @@ class BaldingGateGame : Game() {
         clearRedTiles()
     }
 
+    fun (Map<String, Entity>).toMobInfo() : Collection<MobInfo> {
+        return this.map{ it.value.toMobInfo(it.key) }
+    }
+
+    fun (Entity).toMobInfo(id: String) : MobInfo {
+        val stats = getComponent(StatsComponent::class.java).stats
+        val pos = getComponent(PositionComponent::class.java)
+        return MobInfo(id, pos.copy(), stats.copy())
+    }
+
     private fun enemyActions() {
-        // TODO: somehow handle multiple players
-        enemies.forEach { enemy ->
-            var playerPos: PositionComponent
-            var playerStats: Stats
-            val player: Entity = players.first()
-            // TODO: convert players in to a simplified representation of a player?
-            // TODO replace this action points system to do one action per skeleton each, render then do the next?
-            var stats = statsMapper.get(enemy).stats
-            val speed = stats.speed
-            var pos = positionMapper.get(enemy)
-            val movePositions = Array<PositionComponent>()
+        // TODO: Add an ID component so we can identify entities by a UUID
+        val playerIds = players.associateBy { UUID.randomUUID().toString() }
+        val enemyIds = enemies.associateBy { UUID.randomUUID().toString() }
 
-            for (action in 0 until stats.currentAP) {
-                playerPos = positionMapper.get(player)
-                playerStats = statsMapper.get(player).stats
+        val actions = SkeletonAI.getPlan(playerIds.toMobInfo(), enemyIds.toMobInfo())
 
-                val actionPlan = SkeletonAI.getPlan(pos, playerPos, stats, playerStats)
-                when (actionPlan.actions.first()) {
-                    is MoveTowardsPlayer -> {
-                        //TODO move
-                        var tempPos = pos
-                        movePositions.add(tempPos)
-                        for (step in 0 until minOf(speed, pos.gridWiseDistance(playerPos)-1)) {
-                            tempPos += tempPos.direction(playerPos)
-                            movePositions.add(tempPos)
-                        }
-                        pos = tempPos
+        actions.actions.forEach {
+            when(it) {
+                is MoveTowards -> {
+                    // TODO: Add animations
+                    val enemy = enemyIds.getValue(it.selfId).toMobInfo(it.selfId)
+                    val target = playerIds.getValue(it.targetId).toMobInfo(it.targetId)
 
-                    }
-                    is AttackPlayer -> {
-                        player.add(
-                            StatsComponent(
-                                statsMapper.get(player).stats.copy(
-                                    hitPoints = playerStats.hitPoints - stats.attack.roll()
-                                )
-                            )
-                        )
-                        println("Hitpoints: " + statsMapper.get(player).stats.hitPoints)
-                    }
-                    is Win -> {
-                        player.remove(VisualComponent::class.java)
-                        println("HAHAHAHAHA YOU DIED!")
-                    }
+                    val newPos = it.getNewPos(enemy, target)
+
+                    enemyIds.getValue(it.selfId).add(newPos)
+
                 }
-                enemy.add(StatsComponent(stats.copy(currentAP = stats.currentAP - 1)))
-                stats = statsMapper.get(enemy).stats
+                is Attack -> {
+                    val enemy = enemyIds.getValue(it.selfId).toMobInfo(it.selfId)
+                    val target = playerIds.getValue(it.targetId).toMobInfo(it.targetId)
+
+                    val damage = enemy.stats.attack.roll()
+                    val newStats = target.stats.applyDamage(damage)
+                    playerIds.getValue(it.targetId).add(StatsComponent(newStats))
+
+                    println("Big oooof you just took $damage damage, ${newStats.hitPoints} hp left")
+                }
+                is Win -> {
+                    println("You is dead!!!")
+                    return
+                }
+                is EndTurn -> {
+                    return
+                }
             }
-            if (movePositions.size > 2) {
-            pendingAnimations.add(Animation(enemy, movePositions))}
         }
     }
 }

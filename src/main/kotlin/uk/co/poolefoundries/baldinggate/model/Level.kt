@@ -16,18 +16,14 @@ data class Mob(val mobType: String, val position: Position)
 
 data class MobType(val name: String, val texture: String, val stats: Stats, val behaviour: String) {
     fun toEntity(): Entity {
-        val entity = Entity()
-            .add(
-                VisualComponent(
-                    TextureRenderable(
-                        Resources.get(
-                            texture
-                        )
-                    )
-                )
+        val textureRunnable = TextureRenderable(
+            Resources.get(
+                texture
             )
-        entity.add(ColorComponent())
-        return entity
+        )
+
+        val entity = Entity()
+        return entity.add(VisualComponent(MobRenderable(entity, textureRunnable))).add(ColorComponent())
     }
 }
 
