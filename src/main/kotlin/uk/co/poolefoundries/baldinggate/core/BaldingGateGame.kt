@@ -72,9 +72,7 @@ val PAN_NONE = Direction(0, 0)
 
 class BaldingGateGame : Game() {
 
-    // TODO: Have Jon look at this
-    val batch: SpriteBatch
-        get() = SpriteBatch()
+    lateinit var batch: SpriteBatch
     var engine = Engine()
     var camera = OrthographicCamera()
     var viewport = ScreenViewport(camera)
@@ -103,7 +101,7 @@ class BaldingGateGame : Game() {
 
 
     override fun create() {
-        batch
+        batch = SpriteBatch()
         engine
         camera
         viewport
