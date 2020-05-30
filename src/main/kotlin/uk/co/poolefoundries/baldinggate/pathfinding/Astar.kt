@@ -2,6 +2,8 @@ package uk.co.poolefoundries.baldinggate.pathfinding
 
 class Astar(val heuristic: AStarHeuristic) {
 
+    // TODO remove any passing costs
+
     fun getPath(graph: List<List<AstarNode>>, startNode: AstarNode, endNode: AstarNode):MutableList<AstarNode>? {
         val openSet = mutableListOf<AstarNode>()
         val closedSet = mutableListOf<AstarNode>()
@@ -18,7 +20,8 @@ class Astar(val heuristic: AStarHeuristic) {
                 if (closedSet.contains(neighbor)) {
                     continue
                 }
-                val tentativeGScore: Double = workingNode.gScore + neighbor.passingCost
+//                val tentativeGScore: Double = workingNode.gScore + neighbor.passingCost
+                val tentativeGScore: Double = workingNode.gScore + 1
                 if (!openSet.contains(neighbor) || neighbor.gScore > tentativeGScore) {
                     neighbor.prevNode = workingNode
                     neighbor.gScore = tentativeGScore
