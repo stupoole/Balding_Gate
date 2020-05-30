@@ -19,12 +19,6 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 
 data class PositionComponent(val x: Int, val y: Int) : Component {
-    fun distance(other: PositionComponent): Double {
-        val xDiff = this.x - other.x
-        val yDiff = this.y - other.y
-        return sqrt((xDiff * xDiff + yDiff * yDiff).toDouble())
-    }
-
     fun gridWiseDistance(other: PositionComponent):Int {
         val xDiff = this.x - other.x
         val yDiff = this.y - other.y
@@ -39,6 +33,22 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
         } else {
             PositionComponent(0, yDiff.sign)
         }
+    }
+
+    fun moveTowards(target : PositionComponent, speed: Int) : PositionComponent {
+        var distanceTravelled = 0
+        var pos = this
+        while (distanceTravelled <= speed) {
+            val next = pos + pos.direction(target)
+            distanceTravelled++
+
+            if (next == target) {
+                return pos
+            }
+            pos = next
+        }
+
+        return pos
     }
 
     operator fun plus(other: PositionComponent): PositionComponent {
@@ -66,7 +76,7 @@ data class VisualComponent(val renderable: Renderable) : Component
 
 data class ColorComponent(val color:Color = Color.WHITE) : Component
 
-data class Roll(val die: List<Int>, val mod: Int, val typical: Int) {
+data class Roll(val die: List<Int>, val mod: Int) {
     fun roll() = die.map { Random.nextInt(it) }.sum() + mod
     fun typical() = die.map { it / 2 }.sum() + mod
 }
@@ -81,12 +91,16 @@ data class Level(
 
 data class Stats(
     val vitality: Int,
-    var hitPoints: Int,
+    val hitPoints: Int,
     val speed: Int,
     val maxAP: Int,
     val currentAP: Int,
     val attack: Roll
-)
+) {
+    fun useAp(ap : Int) = copy(currentAP = currentAP-ap)
+    fun restoreAp() = copy(currentAP = maxAP)
+    fun applyDamage(damage: Int) = copy(hitPoints = hitPoints - damage)
+}
 
 interface Renderable {
     fun draw(batch: Batch, x: Float, y: Float)
@@ -98,6 +112,13 @@ data class TextureRenderable(val texture: Texture) : Renderable {
     }
 }
 
+data class MobRenderable(val entity: Entity, val renderable: Renderable) : Renderable {
+    override fun draw(batch: Batch, x: Float, y: Float) {
+        if (entity.getComponent(StatsComponent::class.java).stats.hitPoints > 0) {
+            renderable.draw(batch, x, y)
+        }
+    }
+}
 
 class RenderingSystem(val stage: Stage, val tileSize: Float) : EntitySystem() {
     //    private val tileSize = 25f
