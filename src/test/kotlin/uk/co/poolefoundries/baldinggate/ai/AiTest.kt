@@ -26,7 +26,7 @@ class AiTest {
 class GoalAction : Action {
     override fun cost(state: WorldState) = 5.0
 
-    override fun prerequisite(state: WorldState): Boolean {
+    override fun prerequisitesMet(state: WorldState): Boolean {
         return true
     }
 
@@ -43,7 +43,7 @@ class GoalAction : Action {
 object MakeFire : Action {
     override fun cost(state: WorldState) = 20.0
 
-    override fun prerequisite(state: WorldState): Boolean {
+    override fun prerequisitesMet(state: WorldState): Boolean {
         return state.get("tinderbox", false) && state.get("wood", 0) >= 3
     }
 
@@ -63,7 +63,7 @@ object MakeFire : Action {
 object GetWood : Action {
     override fun cost(state: WorldState) = 10.0
 
-    override fun prerequisite(state: WorldState) = true
+    override fun prerequisitesMet(state: WorldState) = true
 
     override fun update(state: WorldState): WorldState {
         val newState = state.toMutableMap()
@@ -79,7 +79,7 @@ object GetWood : Action {
 object GetTinderbox : Action {
     override fun cost(state: WorldState) = 30.0
 
-    override fun prerequisite(state: WorldState) = true
+    override fun prerequisitesMet(state: WorldState) = true
 
     override fun update(state: WorldState): WorldState {
         val newState = state.toMutableMap()
