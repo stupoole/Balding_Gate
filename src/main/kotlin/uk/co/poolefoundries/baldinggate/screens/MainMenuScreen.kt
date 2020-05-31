@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
@@ -19,8 +20,8 @@ import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     var stage = Stage(game.viewport, game.batch)
-    val atlas = TextureAtlas(files.internal("UISkins/default/skin/uiskin.atlas"))
-    val skin = Skin(files.internal("UISkins/default/skin/uiskin.json"), atlas)
+    val atlas = TextureAtlas(files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
+    val skin = Skin(files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
 
     override fun hide() {
         Gdx.input.inputProcessor = null
@@ -33,23 +34,27 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         table.setFillParent(true)
         table.center()
 
-        val playButton = ImageButton(
-            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_0.png")))),
-            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_1.png")))),
-            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_2.png"))))
-        )
-        val levelsButton =
-            ImageButton(
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_0.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_1.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_2.png"))))
-            )
-        val quitButton =
-            ImageButton(
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_0.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_1.png")))),
-                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_2.png"))))
-            )
+//        val playButton = ImageButton(
+//            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_0.png")))),
+//            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_1.png")))),
+//            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_2.png"))))
+//        )
+//        val levelsButton =
+//            ImageButton(
+//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_0.png")))),
+//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_1.png")))),
+//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_2.png"))))
+//            )
+//        val quitButton =
+//            ImageButton(
+//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_0.png")))),
+//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_1.png")))),
+//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_2.png"))))
+//            )
+        val playButton = TextButton("play", skin)
+        val levelsButton = TextButton("levels", skin)
+        val optionsButton = TextButton("options", skin)
+        val quitButton = TextButton("quit", skin)
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = LevelScreen(game)
@@ -71,6 +76,8 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         table.add(playButton)
         table.row()
         table.add(levelsButton)
+        table.row()
+        table.add(optionsButton)
         table.row()
         table.add(quitButton)
         stage.addActor(table)
