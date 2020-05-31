@@ -18,6 +18,8 @@ import kotlin.math.sign
 import kotlin.math.sqrt
 import kotlin.random.Random
 
+data class IdComponent(val id : String) : Component
+
 data class PositionComponent(val x: Int, val y: Int) : Component {
 
     fun euclideanDistance(other: PositionComponent): Double {
@@ -72,7 +74,7 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 
 
 
-object SkeletonComponent : Component
+object EnemyComponent : Component
 object PlayerComponent : Component
 object WallComponent : Component
 object FloorComponent : Component

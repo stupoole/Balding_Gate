@@ -12,11 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.entirysystems.enemy.EnemyTurnSystem
 import uk.co.poolefoundries.baldinggate.pathfinding.AstarNode
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
-import uk.co.poolefoundries.baldinggate.skeleton.*
-import java.util.*
-
 
 data class SelectedEntity(
     var entity: Entity? = null,
@@ -61,7 +59,7 @@ data class Direction(val x: Int, val y: Int) {
 
 data class Animation(val entity: Entity, var positions: Array<PositionComponent>, var progress: Float = 0F)
 
-// TODO: this class should basically be empty
+// TODO: this class should basically be empty and just delegate to systems/input handlers
 class BaldingGateGame : Game() {
 
     lateinit var batch: SpriteBatch
@@ -71,15 +69,13 @@ class BaldingGateGame : Game() {
     val tileSize = 25F
     var levelMap = listOf<List<AstarNode>>()
 
+    // TODO: These should all be moved to their respective systems
     private var walls = ImmutableArray(Array<Entity>())
     private var floors = ImmutableArray(Array<Entity>())
     private var tiles = ImmutableArray(Array<Entity>())
     private var players = ImmutableArray(Array<Entity>())
     private var enemies = ImmutableArray(Array<Entity>())
     private var mobs = ImmutableArray(Array<Entity>())
-
-    // TODO: move camera movement logic out of the game class
-    var cameraMoveDirection = Direction(0, 0)
 
     // TODO: move the pending animations to an animation/render component on the entity being animated
     var pendingAnimations = Array<Animation>()
@@ -88,7 +84,6 @@ class BaldingGateGame : Game() {
     private val greenTiles = mutableListOf<Entity>()
     private val redTiles = mutableListOf<Entity>()
     private var selectedEntity = SelectedEntity(null, null, 0, 0)
-    private val panSpeed = 100F
 
     private val positionMapper: ComponentMapper<PositionComponent> =
         ComponentMapper.getFor(PositionComponent::class.java)
@@ -97,9 +92,6 @@ class BaldingGateGame : Game() {
 
     override fun create() {
         batch = SpriteBatch()
-        engine
-        camera
-        viewport
         setScreen(MainMenuScreen(this))
         viewport.apply()
         camera.update()
@@ -114,27 +106,11 @@ class BaldingGateGame : Game() {
         batch.dispose()
     }
 
-    fun cameraMove(delta: Float) {
-        camera.translate(cameraMoveDirection.x * delta * panSpeed, cameraMoveDirection.y * delta * panSpeed)
-    }
-
     fun update() {
         walls = engine.getEntitiesFor(Family.all(WallComponent::class.java, PositionComponent::class.java).get())
         floors = engine.getEntitiesFor(Family.all(FloorComponent::class.java, PositionComponent::class.java).get())
-        players = engine.getEntitiesFor(
-            Family.all(
-                PlayerComponent::class.java,
-                PositionComponent::class.java,
-                StatsComponent::class.java
-            ).get()
-        )
-        enemies = engine.getEntitiesFor(
-            Family.all(
-                SkeletonComponent::class.java,
-                PositionComponent::class.java,
-                StatsComponent::class.java
-            ).get()
-        )
+        players = engine.getEntitiesFor(Family.all(PlayerComponent::class.java).get())
+        enemies = engine.getEntitiesFor(Family.all(EnemyComponent::class.java).get())
         mobs = engine.getEntitiesFor(Family.all(PositionComponent::class.java, StatsComponent::class.java).get())
         tiles = engine.getEntitiesFor(Family.all(PositionComponent::class.java, TileComponent::class.java).get())
 
@@ -189,14 +165,10 @@ class BaldingGateGame : Game() {
     }
 
     fun endTurn() {
-        enemyActions()
+        engine.getSystem(EnemyTurnSystem::class.java).takeTurn()
         players.forEach { player ->
             val stats = statsMapper.get(player).stats
             player.add(StatsComponent(stats.copy(currentAP = stats.maxAP)))
-        }
-        enemies.forEach { enemy ->
-            val stats = statsMapper.get(enemy).stats
-            enemy.add(StatsComponent(stats.copy(currentAP = stats.maxAP)))
         }
         clearGreenTiles()
         clearRedTiles()
@@ -342,54 +314,6 @@ class BaldingGateGame : Game() {
         clearRedTiles()
     }
 
-    fun (Map<String, Entity>).toMobInfo() : Collection<MobInfo> {
-        return this.map{ it.value.toMobInfo(it.key) }
-    }
 
-    fun (Entity).toMobInfo(id: String) : MobInfo {
-        val stats = getComponent(StatsComponent::class.java).stats
-        val pos = getComponent(PositionComponent::class.java)
-        return MobInfo(id, pos.copy(), stats.copy())
-    }
-
-    private fun enemyActions() {
-        // TODO: Add an ID component so we can identify entities by a UUID
-        val playerIds = players.associateBy { UUID.randomUUID().toString() }
-        val enemyIds = enemies.associateBy { UUID.randomUUID().toString() }
-
-        val actions = SkeletonAI.getPlan(playerIds.toMobInfo(), enemyIds.toMobInfo())
-
-        actions.actions.forEach {
-            when(it) {
-                is MoveTowards -> {
-                    // TODO: Add animations
-                    val enemy = enemyIds.getValue(it.selfId).toMobInfo(it.selfId)
-                    val target = playerIds.getValue(it.targetId).toMobInfo(it.targetId)
-
-                    val newPos = it.getNewPos(enemy, target)
-
-                    enemyIds.getValue(it.selfId).add(newPos)
-
-                }
-                is Attack -> {
-                    val enemy = enemyIds.getValue(it.selfId).toMobInfo(it.selfId)
-                    val target = playerIds.getValue(it.targetId).toMobInfo(it.targetId)
-
-                    val damage = enemy.stats.attack.roll()
-                    val newStats = target.stats.applyDamage(damage)
-                    playerIds.getValue(it.targetId).add(StatsComponent(newStats))
-
-                    println("Big oooof you just took $damage damage, ${newStats.hitPoints} hp left")
-                }
-                is Win -> {
-                    println("You is dead!!!")
-                    return
-                }
-                is EndTurn -> {
-                    return
-                }
-            }
-        }
-    }
 }
 

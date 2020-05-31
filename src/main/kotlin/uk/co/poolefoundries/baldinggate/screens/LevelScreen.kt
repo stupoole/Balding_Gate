@@ -1,16 +1,22 @@
 package uk.co.poolefoundries.baldinggate.screens
 
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+import uk.co.poolefoundries.baldinggate.core.PositionComponent
 
 import uk.co.poolefoundries.baldinggate.core.RenderingSystem
+import uk.co.poolefoundries.baldinggate.core.StatsComponent
+import uk.co.poolefoundries.baldinggate.entirysystems.enemy.EnemyTurnSystem
 import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
+import uk.co.poolefoundries.baldinggate.skeleton.*
+import java.util.*
 
 // LevelScreen represents the gamplay screen of the game.
 class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
@@ -33,9 +39,7 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
         // OMG entity systems can handle the game state stuff ffs
 
         game.engine.addSystem(RenderingSystem(stage, game.tileSize))
-//        game.engine.addSystem(playerSystem)
-//        game.engine.addSystem(enemySystem)
-//        game.engine.addSystem(selectionSystem)
+        game.engine.addSystem(EnemyTurnSystem)
         input.addProcessor(PlayerInputHandler(game))
 
         Gdx.input.inputProcessor = input
@@ -74,7 +78,6 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
     override fun dispose() {
 
     }
-
 }
 
 

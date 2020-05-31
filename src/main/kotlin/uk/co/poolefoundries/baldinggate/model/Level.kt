@@ -6,9 +6,10 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import uk.co.poolefoundries.baldinggate.Resources
 import uk.co.poolefoundries.baldinggate.core.*
 import java.io.File
+import java.util.*
 
 
-val behaviourMap = mapOf("player" to PlayerComponent, "skeleton" to SkeletonComponent)
+val behaviourMap = mapOf("player" to PlayerComponent, "skeleton" to EnemyComponent)
 
 data class Position(val x: Int, val y: Int)
 data class Tile(val tileType: String, val position: Position)
@@ -79,6 +80,7 @@ fun Level.toEntities() = this.tiles.map {
     type.toEntity()
         .add(PositionComponent(it.position.x, it.position.y))
         .add(StatsComponent(type.stats))
+        .add(IdComponent(UUID.randomUUID().toString()))
         .add(behaviourMap.getValue(type.behaviour))
 
 }
