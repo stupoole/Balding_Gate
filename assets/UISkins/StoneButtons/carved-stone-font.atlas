@@ -1,0 +1,398 @@
+
+carved-stone-font.png
+size: 2048,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+A
+  rotate: false
+  xy: 346, 2
+  size: 36, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+B
+  rotate: false
+  xy: 754, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+C
+  rotate: false
+  xy: 1248, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+COMMA
+  rotate: false
+  xy: 1714, 2
+  size: 10, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+D
+  rotate: false
+  xy: 992, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+DOT
+  rotate: false
+  xy: 1760, 2
+  size: 8, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+E
+  rotate: false
+  xy: 1652, 2
+  size: 22, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+F
+  rotate: false
+  xy: 1676, 2
+  size: 22, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+G
+  rotate: false
+  xy: 384, 2
+  size: 36, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+H
+  rotate: false
+  xy: 1024, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+I
+  rotate: false
+  xy: 1726, 2
+  size: 10, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+J
+  rotate: false
+  xy: 1488, 2
+  size: 26, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+K
+  rotate: false
+  xy: 1278, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+L
+  rotate: false
+  xy: 1516, 2
+  size: 26, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+M
+  rotate: false
+  xy: 2, 2
+  size: 44, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+N
+  rotate: false
+  xy: 788, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+O
+  rotate: false
+  xy: 574, 2
+  size: 34, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+P
+  rotate: false
+  xy: 1056, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+Q
+  rotate: false
+  xy: 610, 2
+  size: 34, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+R
+  rotate: false
+  xy: 1088, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+S
+  rotate: false
+  xy: 1308, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+T
+  rotate: false
+  xy: 1120, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+U
+  rotate: false
+  xy: 1544, 2
+  size: 26, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+V
+  rotate: false
+  xy: 422, 2
+  size: 36, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+W
+  rotate: false
+  xy: 48, 2
+  size: 44, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+X
+  rotate: false
+  xy: 186, 2
+  size: 38, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+Y
+  rotate: false
+  xy: 226, 2
+  size: 38, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+Z
+  rotate: false
+  xy: 822, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+a
+  rotate: false
+  xy: 460, 2
+  size: 36, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+b
+  rotate: false
+  xy: 1338, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+c
+  rotate: false
+  xy: 856, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+comma
+  rotate: false
+  xy: 1738, 2
+  size: 10, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+d
+  rotate: false
+  xy: 1152, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+dot
+  rotate: false
+  xy: 1750, 2
+  size: 8, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+e
+  rotate: false
+  xy: 1600, 2
+  size: 24, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+f
+  rotate: false
+  xy: 1626, 2
+  size: 24, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+g
+  rotate: false
+  xy: 498, 2
+  size: 36, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+h
+  rotate: false
+  xy: 646, 2
+  size: 34, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+i
+  rotate: false
+  xy: 1700, 2
+  size: 12, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+j
+  rotate: false
+  xy: 1368, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+k
+  rotate: false
+  xy: 1398, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+l
+  rotate: false
+  xy: 1572, 2
+  size: 26, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+m
+  rotate: false
+  xy: 94, 2
+  size: 44, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+n
+  rotate: false
+  xy: 890, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+o
+  rotate: false
+  xy: 682, 2
+  size: 34, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+p
+  rotate: false
+  xy: 1184, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+q
+  rotate: false
+  xy: 718, 2
+  size: 34, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+r
+  rotate: false
+  xy: 1216, 2
+  size: 30, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+s
+  rotate: false
+  xy: 1428, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+t
+  rotate: false
+  xy: 924, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+u
+  rotate: false
+  xy: 1458, 2
+  size: 28, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+v
+  rotate: false
+  xy: 536, 2
+  size: 36, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+w
+  rotate: false
+  xy: 140, 2
+  size: 44, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+x
+  rotate: false
+  xy: 266, 2
+  size: 38, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+y
+  rotate: false
+  xy: 306, 2
+  size: 38, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+z
+  rotate: false
+  xy: 958, 2
+  size: 32, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1

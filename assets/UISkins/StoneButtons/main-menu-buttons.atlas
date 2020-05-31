@@ -1,0 +1,47 @@
+
+main-menu-buttons.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonHover
+  rotate: false
+  xy: 134, 2
+  size: 64, 64
+  split: 24, 18, 22, 20
+  pad: 24, 18, 22, 20
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+buttonOff
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  split: 24, 22, 22, 22
+  pad: 24, 22, 22, 22
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+buttonOn
+  rotate: false
+  xy: 200, 2
+  size: 64, 64
+  split: 24, 22, 21, 25
+  pad: 24, 22, 21, 25
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+check-off
+  rotate: false
+  xy: 266, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+check-on
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
