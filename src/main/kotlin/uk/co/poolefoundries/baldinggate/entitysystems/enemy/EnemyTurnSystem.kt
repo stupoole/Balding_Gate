@@ -1,4 +1,4 @@
-package uk.co.poolefoundries.baldinggate.entirysystems.enemy
+package uk.co.poolefoundries.baldinggate.entitysystems.enemy
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
@@ -24,8 +24,10 @@ object EnemyTurnSystem : EntitySystem() {
 
     fun takeTurn() {
         // TODO: Add an ID component so we can identify entities by a UUID
-        val playerIds = players().associateBy { it.getComponent(IdComponent::class.java).id }
-        val enemyIds = enemies().associateBy { it.getComponent(IdComponent::class.java).id }
+        val playerIds = players()
+            .associateBy { it.getComponent(IdComponent::class.java).id }
+        val enemyIds = enemies()
+            .associateBy { it.getComponent(IdComponent::class.java).id }
 
         val actions = SkeletonAI.getPlan(
             playerIds.map { it.value.toMobInfo() },

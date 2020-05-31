@@ -11,7 +11,7 @@ import uk.co.poolefoundries.baldinggate.core.PositionComponent
 
 import uk.co.poolefoundries.baldinggate.core.RenderingSystem
 import uk.co.poolefoundries.baldinggate.core.StatsComponent
-import uk.co.poolefoundries.baldinggate.entirysystems.enemy.EnemyTurnSystem
+import uk.co.poolefoundries.baldinggate.entitysystems.enemy.EnemyTurnSystem
 import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities

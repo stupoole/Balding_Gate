@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import uk.co.poolefoundries.baldinggate.entirysystems.enemy.EnemyTurnSystem
+import uk.co.poolefoundries.baldinggate.entitysystems.enemy.EnemyTurnSystem
 import uk.co.poolefoundries.baldinggate.pathfinding.AstarNode
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
 
