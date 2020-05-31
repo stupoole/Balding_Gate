@@ -29,7 +29,13 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
         loadLevel("level").toEntities().forEach(game.engine::addEntity)
 
         // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
+
+        // OMG entity systems can handle the game state stuff ffs
+
         game.engine.addSystem(RenderingSystem(stage, game.tileSize))
+//        game.engine.addSystem(playerSystem)
+//        game.engine.addSystem(enemySystem)
+//        game.engine.addSystem(selectionSystem)
         input.addProcessor(PlayerInputHandler(game))
 
         Gdx.input.inputProcessor = input

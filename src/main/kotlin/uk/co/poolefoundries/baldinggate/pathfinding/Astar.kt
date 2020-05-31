@@ -3,6 +3,9 @@ package uk.co.poolefoundries.baldinggate.pathfinding
 class Astar(val heuristic: AStarHeuristic) {
 
     // TODO remove any passing costs
+    // TODO create a graph somehow
+    //
+
 
     fun getPath(graph: List<List<AstarNode>>, startNode: AstarNode, endNode: AstarNode):MutableList<AstarNode>? {
         val openSet = mutableListOf<AstarNode>()
