@@ -3,7 +3,9 @@ package uk.co.poolefoundries.baldinggate.input
 import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.ScreenAdapter
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+import uk.co.poolefoundries.baldinggate.screens.PauseMenuScreen
 
 
 class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
@@ -18,6 +20,7 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
             // TODO replace player movement with camera movement
             Keys.ENTER -> game.endTurn()
             Keys.TAB -> game.nextPlayer()
+            Keys.ESCAPE -> game.screen = PauseMenuScreen(game, game.screen as ScreenAdapter)
 
         }
         return true

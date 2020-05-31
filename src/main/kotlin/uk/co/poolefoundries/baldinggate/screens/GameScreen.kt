@@ -19,28 +19,26 @@ import uk.co.poolefoundries.baldinggate.skeleton.*
 import java.util.*
 
 // LevelScreen represents the gamplay screen of the game.
-class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
+class GameScreen(val game: BaldingGateGame, levelName:String) : ScreenAdapter() {
 
     var stage = Stage(game.viewport, game.batch)
     var input = InputMultiplexer()
 
+    init {
+        loadLevel(levelName).toEntities().forEach(game.engine::addEntity)
+
+        // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
+        game.engine.addSystem(RenderingSystem(stage, game.tileSize))
+        game.engine.addSystem(EnemyTurnSystem)
+        input.addProcessor(PlayerInputHandler(game))
+    }
 
     override fun hide() {
         Gdx.input.inputProcessor = null
     }
 
     override fun show() {
-
-        // TODO: Parameterise the level to load (so we could have a level select menu)
-        loadLevel("level").toEntities().forEach(game.engine::addEntity)
-
-        // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
-        game.engine.addSystem(RenderingSystem(stage, game.tileSize))
-        game.engine.addSystem(EnemyTurnSystem)
-        input.addProcessor(PlayerInputHandler(game))
-
         Gdx.input.inputProcessor = input
-
         game.update()
 
     }
@@ -59,21 +57,13 @@ class LevelScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     }
 
-    override fun pause() {
-
-    }
-
-    override fun resume() {
-
-    }
-
     override fun resize(width: Int, height: Int) {
         game.viewport.update(width, height)
         game.camera.update()
     }
 
     override fun dispose() {
-
+        stage.dispose()
     }
 }
 
