@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
 
 class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
@@ -65,11 +66,16 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
                 // TODO: level selec screen
             }
         })
-        //TODO: Options
+        optionsButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                // TODO: level selec screen
+            }
+        })
 
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 //todo figure out how to quit
+                DesktopLauncher.application.exit()
             }
         })
 
