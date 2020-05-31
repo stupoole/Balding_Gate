@@ -7,18 +7,21 @@
     black: { a: 1, b: 0, g: 0, r: 0 },
   }
   com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-    default: { down: buttonOn, up: buttonOff },
-    toggle: { down: buttonOn, checked: buttonOff, up: buttonOff}
+    default: { down: button-on, up: button-off },
+    toggle: { down: button-on, checked: button-off, up: button-off}
   },
   com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-    default: { down: buttonOn, up: buttonOff, font: default-font, fontColor: white },
-    toggle: { down: buttonOn, up: check-off, checked: check-on, font: default-font, fontColor: white, downFontColor: white }
+    default: { down: button-on, up: button-off, font: default-font, fontColor: white },
+    toggle: { down: button-on, up: check-off, checked: check-on, font: default-font, fontColor: white, downFontColor: white }
   },
   com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     default: { font: default-font, fontColor: white }
   },
   com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
     default: { checkboxOn: check-on, checkboxOff: check-off, font: default-font, fontColor: white }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+    default: { vScroll: vert-scroll-bar, hScrollKnob: horz-scroll, background: blank, hScroll: horz-scroll-bar, vScrollKnob: vert-scroll }
   },
 
 }
