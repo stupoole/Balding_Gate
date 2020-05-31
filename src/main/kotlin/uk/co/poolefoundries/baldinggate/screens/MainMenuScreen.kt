@@ -4,71 +4,46 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Gdx.files
 import com.badlogic.gdx.ScreenAdapter
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
 
 class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     var stage = Stage(game.viewport, game.batch)
-    val atlas = TextureAtlas(files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
-    val skin = Skin(files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
+    private val atlas = TextureAtlas(files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
+    private val skin = Skin(files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
 
-    override fun hide() {
-        Gdx.input.inputProcessor = null
-    }
-
-    override fun show() {
-        Gdx.input.inputProcessor = stage
+    init {
 
         val table = Table()
         table.setFillParent(true)
         table.center()
 
-//        val playButton = ImageButton(
-//            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_0.png")))),
-//            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_1.png")))),
-//            TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_PlayButton_2.png"))))
-//        )
-//        val levelsButton =
-//            ImageButton(
-//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_0.png")))),
-//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_1.png")))),
-//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_LevelsButton_2.png"))))
-//            )
-//        val quitButton =
-//            ImageButton(
-//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_0.png")))),
-//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_1.png")))),
-//                TextureRegionDrawable(TextureRegion(Texture(files.internal("buttons/MainMenu_QuitButton_2.png"))))
-//            )
         val playButton = TextButton("play", skin)
         val levelsButton = TextButton("levels", skin)
         val optionsButton = TextButton("options", skin)
         val quitButton = TextButton("quit", skin)
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = LevelScreen(game)
+                game.screen = GameScreen(game, "level")
             }
         })
         levelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                // TODO: level selec screen
+                game.screen = LevelSelectScreen(game, this@MainMenuScreen)
             }
         })
         optionsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                // TODO: level selec screen
+                game.screen = OptionsScreen(game, this@MainMenuScreen)
             }
         })
 
@@ -78,28 +53,34 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
                 DesktopLauncher.application.exit()
             }
         })
-
-        table.add(playButton)
+//        table.padBottom()
+        table.add(playButton).padBottom(10F)
         table.row()
-        table.add(levelsButton)
+        table.add(levelsButton).padBottom(10F)
         table.row()
-        table.add(optionsButton)
+        table.add(optionsButton).padBottom(10F)
         table.row()
-        table.add(quitButton)
+        table.add(quitButton).padBottom(10F)
         stage.addActor(table)
     }
 
+    override fun hide() {
+        Gdx.input.inputProcessor = null
+    }
+
+    override fun show() {
+        Gdx.input.inputProcessor = stage
+        stage.draw()
+    }
 
     override fun render(delta: Float) {
-//        game.batch.begin()
-//        game.batch.end()
-        //todo: try with and without batch begin/end
+        Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         stage.draw()
     }
 
     override fun dispose() {
-        //todo dispose of the stage for sure. probabyl skin and atlas too
-//        stage.dispose()
+        stage.dispose()
         skin.dispose()
         atlas.dispose()
     }
