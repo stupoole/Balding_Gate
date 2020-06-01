@@ -20,8 +20,8 @@ paddingY=2
 pot=true
 mof=false
 rotation=false
-stripWhitespaceX=true
-stripWhitespaceY=true
+stripWhitespaceX=false
+stripWhitespaceY=false
 wrapX=ClampToEdge
 wrapY=ClampToEdge
 premultiplyAlpha=false
@@ -32,7 +32,7 @@ limitMemory=true
 useIndexes=true
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:../Pyxel Files/menuelements/MainMenuButtons_0.png,type:Input,regionName:button-off,ninepatch:{splits:[25,21,27,28],pads:[25,21,27,28]}},{path:../Pyxel Files/menuelements/MainMenuButtons_1.png,type:Input,regionName:button-on,ninepatch:{splits:[25,25,27,24],pads:[25,25,27,24]}},{path:../Pyxel Files/menuelements/MainMenuButtons_2.png,type:Input,regionName:button-hover,ninepatch:{splits:[29,24,29,29],pads:[29,24,29,29]}},{path:../Pyxel Files/menuelements/MainMenuButtons_3.png,type:Input,regionName:check-off},{path:../Pyxel Files/menuelements/MainMenuButtons_4.png,type:Input,regionName:check-on},{path:../Pyxel Files/menuelements/scroll_0.png,type:Input,regionName:vert-scroll-bar,ninepatch:{splits:[6,7,27,20],pads:[6,7,27,20]}},{path:../Pyxel Files/menuelements/scroll_1.png,type:Input,regionName:vert-scroll,ninepatch:{splits:[6,8,7,6],pads:[6,8,8,10]}},{path:../Pyxel Files/menuelements/scroll_2.png,type:Input,regionName:horz-scroll-bar,ninepatch:{splits:[23,20,7,32],pads:[23,20,7,32]}},{path:../Pyxel Files/menuelements/scroll_3.png,type:Input,regionName:horz-scroll,ninepatch:{splits:[11,11,5,31],pads:[11,11,5,31]}}]
+inputFiles=[{path:../Pyxel Files/menuelements/vert-scroll_0.png,type:Input,regionName:vert-scroll-bar,ninepatch:{splits:[8,10,23,22],pads:[8,10,23,22]}},{path:../Pyxel Files/menuelements/vert-scroll_1.png,type:Input,regionName:vert-scroll,ninepatch:{splits:[4,6,12,12],pads:[4,6,12,12]}},{path:../Pyxel Files/menuelements/horz-scroll_0.png,type:Input,regionName:horz-scroll-bar,ninepatch:{splits:[24,21,8,10],pads:[24,21,8,10]}},{path:../Pyxel Files/menuelements/horz-scroll_1.png,type:Input,regionName:horz-scroll,ninepatch:{splits:[12,12,4,5],pads:[12,12,4,5]}},{path:../Pyxel Files/menuelements/MainMenuButtons_0.png,type:Input,regionName:button-off,ninepatch:{splits:[25,22,28,26],pads:[25,22,28,26]}},{path:../Pyxel Files/menuelements/MainMenuButtons_1.png,type:Input,regionName:button-on,ninepatch:{splits:[27,25,28,27],pads:[27,25,28,27]}},{path:../Pyxel Files/menuelements/MainMenuButtons_2.png,type:Input,regionName:button-hover,ninepatch:{splits:[28,22,26,27],pads:[28,22,26,27]}},{path:../Pyxel Files/menuelements/MainMenuButtons_3.png,type:Input,regionName:check-off},{path:../Pyxel Files/menuelements/MainMenuButtons_4.png,type:Input,regionName:check-on}]
 
 
 ---
