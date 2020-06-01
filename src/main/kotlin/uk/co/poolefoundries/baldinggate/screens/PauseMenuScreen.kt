@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -25,14 +26,18 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
 
     init {
         val table = Table()
+        table.center().center()
         table.setFillParent(true)
-        table.center()
-
+        val scrollTable = Table()
+        scrollTable.setFillParent(false)
+        val scrollPane = ScrollPane(scrollTable, skin)
+        scrollPane.fadeScrollBars=false
 
         val resumeButton = TextButton("resume", skin)
         val levelsButton = TextButton("levels", skin)
         val optionsButton = TextButton("options", skin)
         val quitButton = TextButton("quit", skin)
+
         resumeButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen
@@ -40,7 +45,7 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
         })
         levelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                // TODO: level selec screen
+                game.screen = LevelSelectScreen(game,this@PauseMenuScreen)
             }
         })
         optionsButton.addListener(object : ClickListener() {
@@ -48,7 +53,6 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
                 game.screen = OptionsScreen(game, this@PauseMenuScreen)
             }
         })
-
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 //todo figure out how to quit
@@ -56,14 +60,18 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
             }
         })
 
-        table.add(resumeButton)
-        table.row()
-        table.add(levelsButton)
-        table.row()
-        table.add(optionsButton)
-        table.row()
-        table.add(quitButton)
+        scrollTable.add(resumeButton).padBottom(4F).expand()
+        scrollTable.row()
+        scrollTable.add(levelsButton).padBottom(4F).expand()
+        scrollTable.row()
+        scrollTable.add(optionsButton).padBottom(4F).expand()
+        scrollTable.row()
+        scrollTable.add(quitButton).padBottom(4F).expand()
+
+        table.add(scrollPane).fill().expand()
+
         stage.addActor(table)
+        stage.scrollFocus = scrollPane
     }
 
     override fun hide() {
@@ -78,6 +86,7 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(0F,0F,0F,1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
+        stage.act()
         stage.draw()
     }
 

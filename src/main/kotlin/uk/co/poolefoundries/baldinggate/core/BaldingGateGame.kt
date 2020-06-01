@@ -96,7 +96,7 @@ class BaldingGateGame : Game() {
     }
 
     override fun resize(width: Int, height: Int) {
-        viewport.update(width, height)
+        viewport.update(width, height,true)
     }
 
     override fun dispose() {

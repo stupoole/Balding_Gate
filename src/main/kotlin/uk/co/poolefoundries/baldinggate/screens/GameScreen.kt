@@ -57,10 +57,6 @@ class GameScreen(val game: BaldingGateGame, levelName:String) : ScreenAdapter() 
 
     }
 
-    override fun resize(width: Int, height: Int) {
-        game.viewport.update(width, height)
-        game.camera.update()
-    }
 
     override fun dispose() {
         stage.dispose()

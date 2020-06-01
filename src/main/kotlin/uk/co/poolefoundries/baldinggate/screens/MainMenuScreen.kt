@@ -6,11 +6,10 @@ import com.badlogic.gdx.Gdx.files
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
@@ -22,15 +21,18 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
     private val skin = Skin(files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
 
     init {
-
         val table = Table()
+        val scrollTable = Table()
+        scrollTable.setFillParent(false)
+        val scrollPane = ScrollPane(scrollTable, skin)
+        scrollPane.fadeScrollBars=false
         table.setFillParent(true)
-        table.center()
-
+        table.center().center()
         val playButton = TextButton("play", skin)
         val levelsButton = TextButton("levels", skin)
         val optionsButton = TextButton("options", skin)
         val quitButton = TextButton("quit", skin)
+
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = GameScreen(game, "level")
@@ -46,22 +48,25 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
                 game.screen = OptionsScreen(game, this@MainMenuScreen)
             }
         })
-
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 //todo figure out how to quit
                 DesktopLauncher.application.exit()
             }
         })
-//        table.padBottom()
-        table.add(playButton).padBottom(10F)
-        table.row()
-        table.add(levelsButton).padBottom(10F)
-        table.row()
-        table.add(optionsButton).padBottom(10F)
-        table.row()
-        table.add(quitButton).padBottom(10F)
+
+        scrollTable.add(playButton).padBottom(4F).expand()
+        scrollTable.row()
+        scrollTable.add(levelsButton).padBottom(4F).expand()
+        scrollTable.row()
+        scrollTable.add(optionsButton).padBottom(4F).expand()
+        scrollTable.row()
+        scrollTable.add(quitButton).padBottom(4F).expand()
+
+        table.add(scrollPane).fill().expand()
+
         stage.addActor(table)
+        stage.scrollFocus = scrollPane
     }
 
     override fun hide() {
@@ -70,12 +75,13 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
 
     override fun show() {
         Gdx.input.inputProcessor = stage
-        stage.draw()
+//        stage.draw()
     }
 
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
+        stage.act()
         stage.draw()
     }
 
@@ -84,6 +90,7 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         skin.dispose()
         atlas.dispose()
     }
+
 
 
 }
