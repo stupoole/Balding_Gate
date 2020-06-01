@@ -37,7 +37,7 @@ inputFiles=[{path:../Pyxel Files/menuelements/vert-scroll_0.png,type:Input,regio
 
 ---
 
-name=carved-stone-font
+name=old-carved-stone-font
 filename=
 output=.
 
@@ -72,6 +72,84 @@ useIndexes=true
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
 inputFiles=[{path:../Pyxel Files/font/CarvedStoneFont_00.png,type:Input,regionName:a},{path:../Pyxel Files/font/CarvedStoneFont_55.png,type:Input,regionName:DOT},{path:../Pyxel Files/font/CarvedStoneFont_01.png,type:Input,regionName:b},{path:../Pyxel Files/font/CarvedStoneFont_02.png,type:Input,regionName:c},{path:../Pyxel Files/font/CarvedStoneFont_03.png,type:Input,regionName:d},{path:../Pyxel Files/font/CarvedStoneFont_04.png,type:Input,regionName:e},{path:../Pyxel Files/font/CarvedStoneFont_05.png,type:Input,regionName:f},{path:../Pyxel Files/font/CarvedStoneFont_06.png,type:Input,regionName:g},{path:../Pyxel Files/font/CarvedStoneFont_07.png,type:Input,regionName:h},{path:../Pyxel Files/font/CarvedStoneFont_08.png,type:Input,regionName:i},{path:../Pyxel Files/font/CarvedStoneFont_09.png,type:Input,regionName:j},{path:../Pyxel Files/font/CarvedStoneFont_10.png,type:Input,regionName:k},{path:../Pyxel Files/font/CarvedStoneFont_11.png,type:Input,regionName:l},{path:../Pyxel Files/font/CarvedStoneFont_12.png,type:Input,regionName:m},{path:../Pyxel Files/font/CarvedStoneFont_13.png,type:Input,regionName:n},{path:../Pyxel Files/font/CarvedStoneFont_14.png,type:Input,regionName:o},{path:../Pyxel Files/font/CarvedStoneFont_15.png,type:Input,regionName:p},{path:../Pyxel Files/font/CarvedStoneFont_16.png,type:Input,regionName:q},{path:../Pyxel Files/font/CarvedStoneFont_17.png,type:Input,regionName:r},{path:../Pyxel Files/font/CarvedStoneFont_18.png,type:Input,regionName:s},{path:../Pyxel Files/font/CarvedStoneFont_19.png,type:Input,regionName:t},{path:../Pyxel Files/font/CarvedStoneFont_20.png,type:Input,regionName:u},{path:../Pyxel Files/font/CarvedStoneFont_21.png,type:Input,regionName:v},{path:../Pyxel Files/font/CarvedStoneFont_22.png,type:Input,regionName:w},{path:../Pyxel Files/font/CarvedStoneFont_23.png,type:Input,regionName:x},{path:../Pyxel Files/font/CarvedStoneFont_24.png,type:Input,regionName:y},{path:../Pyxel Files/font/CarvedStoneFont_25.png,type:Input,regionName:z},{path:../Pyxel Files/font/CarvedStoneFont_26.png,type:Input,regionName:comma},{path:../Pyxel Files/font/CarvedStoneFont_27.png,type:Input,regionName:dot},{path:../Pyxel Files/font/CarvedStoneFont_28.png,type:Input,regionName:A},{path:../Pyxel Files/font/CarvedStoneFont_29.png,type:Input,regionName:B},{path:../Pyxel Files/font/CarvedStoneFont_30.png,type:Input,regionName:C},{path:../Pyxel Files/font/CarvedStoneFont_31.png,type:Input,regionName:D},{path:../Pyxel Files/font/CarvedStoneFont_32.png,type:Input,regionName:E},{path:../Pyxel Files/font/CarvedStoneFont_33.png,type:Input,regionName:F},{path:../Pyxel Files/font/CarvedStoneFont_34.png,type:Input,regionName:G},{path:../Pyxel Files/font/CarvedStoneFont_35.png,type:Input,regionName:H},{path:../Pyxel Files/font/CarvedStoneFont_36.png,type:Input,regionName:I},{path:../Pyxel Files/font/CarvedStoneFont_37.png,type:Input,regionName:J},{path:../Pyxel Files/font/CarvedStoneFont_38.png,type:Input,regionName:K},{path:../Pyxel Files/font/CarvedStoneFont_39.png,type:Input,regionName:L},{path:../Pyxel Files/font/CarvedStoneFont_40.png,type:Input,regionName:M},{path:../Pyxel Files/font/CarvedStoneFont_41.png,type:Input,regionName:N},{path:../Pyxel Files/font/CarvedStoneFont_42.png,type:Input,regionName:O},{path:../Pyxel Files/font/CarvedStoneFont_43.png,type:Input,regionName:P},{path:../Pyxel Files/font/CarvedStoneFont_44.png,type:Input,regionName:Q},{path:../Pyxel Files/font/CarvedStoneFont_45.png,type:Input,regionName:R},{path:../Pyxel Files/font/CarvedStoneFont_46.png,type:Input,regionName:S},{path:../Pyxel Files/font/CarvedStoneFont_47.png,type:Input,regionName:T},{path:../Pyxel Files/font/CarvedStoneFont_48.png,type:Input,regionName:U},{path:../Pyxel Files/font/CarvedStoneFont_49.png,type:Input,regionName:V},{path:../Pyxel Files/font/CarvedStoneFont_50.png,type:Input,regionName:W},{path:../Pyxel Files/font/CarvedStoneFont_51.png,type:Input,regionName:X},{path:../Pyxel Files/font/CarvedStoneFont_52.png,type:Input,regionName:Y},{path:../Pyxel Files/font/CarvedStoneFont_53.png,type:Input,regionName:Z},{path:../Pyxel Files/font/CarvedStoneFont_54.png,type:Input,regionName:COMMA}]
+
+
+---
+
+name=embossed-stone-font
+filename=
+output=.
+
+alias=true
+alphaThreshold=0
+debug=false
+duplicatePadding=false
+edgePadding=true
+fast=false
+filterMag=Nearest
+filterMin=Nearest
+ignoreBlankImages=true
+maxHeight=2048
+maxWidth=2048
+minHeight=16
+minWidth=16
+paddingX=2
+paddingY=2
+pot=true
+mof=false
+rotation=false
+stripWhitespaceX=true
+stripWhitespaceY=false
+wrapX=ClampToEdge
+wrapY=ClampToEdge
+premultiplyAlpha=false
+grid=false
+square=false
+bleed=true
+limitMemory=true
+useIndexes=true
+
+scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
+inputFiles=[{path:../Pyxel Files/font/embossed-stone-font_00.png,type:Input,regionName:A},{path:../Pyxel Files/font/embossed-stone-font_01.png,type:Input,regionName:B},{path:../Pyxel Files/font/embossed-stone-font_02.png,type:Input,regionName:C},{path:../Pyxel Files/font/embossed-stone-font_03.png,type:Input,regionName:D},{path:../Pyxel Files/font/embossed-stone-font_04.png,type:Input,regionName:E},{path:../Pyxel Files/font/embossed-stone-font_05.png,type:Input,regionName:F},{path:../Pyxel Files/font/embossed-stone-font_06.png,type:Input,regionName:G},{path:../Pyxel Files/font/embossed-stone-font_07.png,type:Input,regionName:H},{path:../Pyxel Files/font/embossed-stone-font_08.png,type:Input,regionName:I},{path:../Pyxel Files/font/embossed-stone-font_09.png,type:Input,regionName:J},{path:../Pyxel Files/font/embossed-stone-font_10.png,type:Input,regionName:K},{path:../Pyxel Files/font/embossed-stone-font_11.png,type:Input,regionName:L},{path:../Pyxel Files/font/embossed-stone-font_12.png,type:Input,regionName:M},{path:../Pyxel Files/font/embossed-stone-font_13.png,type:Input,regionName:N},{path:../Pyxel Files/font/embossed-stone-font_14.png,type:Input,regionName:O},{path:../Pyxel Files/font/embossed-stone-font_15.png,type:Input,regionName:P},{path:../Pyxel Files/font/embossed-stone-font_16.png,type:Input,regionName:Q},{path:../Pyxel Files/font/embossed-stone-font_17.png,type:Input,regionName:R},{path:../Pyxel Files/font/embossed-stone-font_18.png,type:Input,regionName:S},{path:../Pyxel Files/font/embossed-stone-font_19.png,type:Input,regionName:T},{path:../Pyxel Files/font/embossed-stone-font_20.png,type:Input,regionName:U},{path:../Pyxel Files/font/embossed-stone-font_21.png,type:Input,regionName:V},{path:../Pyxel Files/font/embossed-stone-font_22.png,type:Input,regionName:W},{path:../Pyxel Files/font/embossed-stone-font_23.png,type:Input,regionName:X},{path:../Pyxel Files/font/embossed-stone-font_24.png,type:Input,regionName:Y},{path:../Pyxel Files/font/embossed-stone-font_25.png,type:Input,regionName:Z},{path:../Pyxel Files/font/embossed-stone-font_26.png,type:Input,regionName:","},{path:../Pyxel Files/font/embossed-stone-font_27.png,type:Input,regionName:.},{path:../Pyxel Files/font/embossed-stone-font_28.png,type:Input,regionName:0},{path:../Pyxel Files/font/embossed-stone-font_29.png,type:Input,regionName:2},{path:../Pyxel Files/font/embossed-stone-font_30.png,type:Input,regionName:1},{path:../Pyxel Files/font/embossed-stone-font_31.png,type:Input,regionName:3},{path:../Pyxel Files/font/embossed-stone-font_32.png,type:Input,regionName:4},{path:../Pyxel Files/font/embossed-stone-font_33.png,type:Input,regionName:5},{path:../Pyxel Files/font/embossed-stone-font_34.png,type:Input,regionName:6},{path:../Pyxel Files/font/embossed-stone-font_35.png,type:Input,regionName:7},{path:../Pyxel Files/font/embossed-stone-font_36.png,type:Input,regionName:8},{path:../Pyxel Files/font/embossed-stone-font_37.png,type:Input,regionName:9}]
+
+
+---
+
+name=carved-stone-font
+filename=
+output=.
+
+alias=true
+alphaThreshold=0
+debug=false
+duplicatePadding=false
+edgePadding=true
+fast=false
+filterMag=Nearest
+filterMin=Nearest
+ignoreBlankImages=true
+maxHeight=2048
+maxWidth=2048
+minHeight=16
+minWidth=16
+paddingX=2
+paddingY=2
+pot=true
+mof=false
+rotation=false
+stripWhitespaceX=true
+stripWhitespaceY=false
+wrapX=ClampToEdge
+wrapY=ClampToEdge
+premultiplyAlpha=false
+grid=false
+square=false
+bleed=true
+limitMemory=true
+useIndexes=true
+
+scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
+inputFiles=[{path:../Pyxel Files/font/carved-stone-font_00.png,type:Input,regionName:A},{path:../Pyxel Files/font/carved-stone-font_01.png,type:Input,regionName:B},{path:../Pyxel Files/font/carved-stone-font_02.png,type:Input,regionName:C},{path:../Pyxel Files/font/carved-stone-font_03.png,type:Input,regionName:D},{path:../Pyxel Files/font/carved-stone-font_04.png,type:Input,regionName:E},{path:../Pyxel Files/font/carved-stone-font_05.png,type:Input,regionName:F},{path:../Pyxel Files/font/carved-stone-font_06.png,type:Input,regionName:G},{path:../Pyxel Files/font/carved-stone-font_07.png,type:Input,regionName:H},{path:../Pyxel Files/font/carved-stone-font_08.png,type:Input,regionName:I},{path:../Pyxel Files/font/carved-stone-font_09.png,type:Input,regionName:J},{path:../Pyxel Files/font/carved-stone-font_10.png,type:Input,regionName:K},{path:../Pyxel Files/font/carved-stone-font_11.png,type:Input,regionName:L},{path:../Pyxel Files/font/carved-stone-font_12.png,type:Input,regionName:M},{path:../Pyxel Files/font/carved-stone-font_13.png,type:Input,regionName:N},{path:../Pyxel Files/font/carved-stone-font_14.png,type:Input,regionName:O},{path:../Pyxel Files/font/carved-stone-font_15.png,type:Input,regionName:P},{path:../Pyxel Files/font/carved-stone-font_16.png,type:Input,regionName:Q},{path:../Pyxel Files/font/carved-stone-font_17.png,type:Input,regionName:R},{path:../Pyxel Files/font/carved-stone-font_18.png,type:Input,regionName:S},{path:../Pyxel Files/font/carved-stone-font_19.png,type:Input,regionName:T},{path:../Pyxel Files/font/carved-stone-font_20.png,type:Input,regionName:U},{path:../Pyxel Files/font/carved-stone-font_21.png,type:Input,regionName:V},{path:../Pyxel Files/font/carved-stone-font_22.png,type:Input,regionName:W},{path:../Pyxel Files/font/carved-stone-font_23.png,type:Input,regionName:X},{path:../Pyxel Files/font/carved-stone-font_24.png,type:Input,regionName:Y},{path:../Pyxel Files/font/carved-stone-font_25.png,type:Input,regionName:Z},{path:../Pyxel Files/font/carved-stone-font_26.png,type:Input,regionName:","},{path:../Pyxel Files/font/carved-stone-font_27.png,type:Input,regionName:.},{path:../Pyxel Files/font/carved-stone-font_28.png,type:Input,regionName:0},{path:../Pyxel Files/font/carved-stone-font_29.png,type:Input,regionName:1},{path:../Pyxel Files/font/carved-stone-font_30.png,type:Input,regionName:2},{path:../Pyxel Files/font/carved-stone-font_31.png,type:Input,regionName:3},{path:../Pyxel Files/font/carved-stone-font_32.png,type:Input,regionName:4},{path:../Pyxel Files/font/carved-stone-font_33.png,type:Input,regionName:5},{path:../Pyxel Files/font/carved-stone-font_34.png,type:Input,regionName:6},{path:../Pyxel Files/font/carved-stone-font_35.png,type:Input,regionName:7},{path:../Pyxel Files/font/carved-stone-font_36.png,type:Input,regionName:8},{path:../Pyxel Files/font/carved-stone-font_37.png,type:Input,regionName:9}]
 
 
 -PROJ-
