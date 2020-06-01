@@ -50,7 +50,6 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         })
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                //todo figure out how to quit
                 DesktopLauncher.application.exit()
             }
         })

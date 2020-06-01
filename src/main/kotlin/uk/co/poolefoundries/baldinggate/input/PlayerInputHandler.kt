@@ -17,7 +17,6 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
 
     override fun keyDown(keycode: Int): Boolean {
         when (keycode) {
-            // TODO replace player movement with camera movement
             Keys.ENTER -> game.endTurn()
             Keys.TAB -> game.nextPlayer()
             Keys.ESCAPE -> game.screen = PauseMenuScreen(game, game.screen as ScreenAdapter)

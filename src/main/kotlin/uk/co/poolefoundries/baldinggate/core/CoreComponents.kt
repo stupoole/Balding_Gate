@@ -22,8 +22,11 @@ data class IdComponent(val id : String) : Component
 
 data class PositionComponent(val x: Int, val y: Int) : Component {
 
-    // TODO: crowfliesDistance
-
+    fun crowFliesDistance(other: PositionComponent):Float{
+        val xDiff = this.x - other.x
+        val yDiff = this.y - other.y
+        return sqrt((xDiff*xDiff).toFloat() + (yDiff*yDiff).toFloat())
+    }
 
     fun manhattanDistance(other: PositionComponent):Int {
         val xDiff = this.x - other.x

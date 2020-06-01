@@ -34,7 +34,6 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen:ScreenAdapter)
         val backButton = TextButton("BACK???", skin)
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                //todo figure out how to quit
                 game.screen=previousScreen
             }
         })
