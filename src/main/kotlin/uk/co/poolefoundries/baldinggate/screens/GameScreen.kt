@@ -11,6 +11,7 @@ import uk.co.poolefoundries.baldinggate.core.PositionComponent
 
 import uk.co.poolefoundries.baldinggate.core.RenderingSystem
 import uk.co.poolefoundries.baldinggate.core.StatsComponent
+import uk.co.poolefoundries.baldinggate.entitysystems.AnimationSystem
 import uk.co.poolefoundries.baldinggate.entitysystems.enemy.EnemyTurnSystem
 import uk.co.poolefoundries.baldinggate.input.PlayerInputHandler
 import uk.co.poolefoundries.baldinggate.model.loadLevel
@@ -30,6 +31,7 @@ class GameScreen(val game: BaldingGateGame, levelName:String) : ScreenAdapter() 
         // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
         game.engine.addSystem(RenderingSystem(stage, game.tileSize))
         game.engine.addSystem(EnemyTurnSystem)
+        game.engine.addSystem(AnimationSystem)
         input.addProcessor(PlayerInputHandler(game))
     }
 
