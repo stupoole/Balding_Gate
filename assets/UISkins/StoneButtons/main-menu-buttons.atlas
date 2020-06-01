@@ -8,8 +8,8 @@ button-hover
   rotate: false
   xy: 200, 24
   size: 64, 64
-  split: 29, 24, 29, 29
-  pad: 29, 24, 29, 29
+  split: 28, 22, 26, 27
+  pad: 28, 22, 26, 27
   orig: 64, 64
   offset: 0, 0
   index: -1
@@ -17,8 +17,8 @@ button-off
   rotate: false
   xy: 68, 24
   size: 64, 64
-  split: 25, 21, 27, 28
-  pad: 25, 21, 27, 28
+  split: 25, 22, 28, 26
+  pad: 25, 22, 28, 26
   orig: 64, 64
   offset: 0, 0
   index: -1
@@ -26,8 +26,8 @@ button-on
   rotate: false
   xy: 134, 24
   size: 64, 64
-  split: 25, 25, 27, 24
-  pad: 25, 25, 27, 24
+  split: 27, 25, 28, 27
+  pad: 27, 25, 28, 27
   orig: 64, 64
   offset: 0, 0
   index: -1
@@ -49,37 +49,37 @@ horz-scroll
   rotate: false
   xy: 2, 2
   size: 48, 20
-  split: 11, 11, 5, 31
-  pad: 11, 11, 5, 31
-  orig: 48, 48
-  offset: 0, 26
+  split: 12, 12, 4, 5
+  pad: 12, 12, 4, 5
+  orig: 48, 20
+  offset: 0, 0
   index: -1
 horz-scroll-bar
   rotate: false
   xy: 332, 68
   size: 48, 20
-  split: 23, 20, 7, 32
-  pad: 23, 20, 7, 32
-  orig: 48, 48
-  offset: 0, 26
+  split: 24, 21, 8, 10
+  pad: 24, 21, 8, 10
+  orig: 48, 20
+  offset: 0, 0
   index: -1
 vert-scroll
   rotate: false
   xy: 332, 18
   size: 20, 48
-  split: 6, 8, 7, 6
-  pad: 6, 8, 8, 10
-  orig: 48, 48
-  offset: 4, 0
+  split: 4, 6, 12, 12
+  pad: 4, 6, 12, 12
+  orig: 20, 48
+  offset: 0, 0
   index: -1
 vert-scroll-bar
   rotate: false
   xy: 354, 18
   size: 20, 48
-  split: 6, 7, 27, 20
-  pad: 6, 7, 27, 20
-  orig: 48, 48
-  offset: 2, 0
+  split: 8, 10, 23, 22
+  pad: 8, 10, 23, 22
+  orig: 20, 48
+  offset: 0, 0
   index: -1
 blank
     rotate:false

@@ -23,6 +23,8 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
     var stage = Stage(game.viewport, game.batch)
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
+//    private val atlas = TextureAtlas(Gdx.files.internal("UISkins/default/skin/uiskin.atlas"))
+//    private val skin = Skin(Gdx.files.internal("UISkins/default/skin/uiskin.json"), atlas)
 
     init {
         val table = Table()
