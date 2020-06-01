@@ -20,7 +20,6 @@ class PlayerInputHandler(val game: BaldingGateGame) : InputAdapter() {
             Keys.ENTER -> game.endTurn()
             Keys.TAB -> game.nextPlayer()
             Keys.ESCAPE -> game.screen = PauseMenuScreen(game, game.screen as ScreenAdapter)
-
         }
         return true
     }

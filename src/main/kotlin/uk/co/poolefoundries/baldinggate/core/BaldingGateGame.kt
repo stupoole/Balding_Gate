@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.entitysystems.AnimationSystem
 import uk.co.poolefoundries.baldinggate.entitysystems.enemy.EnemyTurnSystem
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
 
@@ -56,7 +57,6 @@ data class Direction(val x: Int, val y: Int) {
     }
 }
 
-data class Animation(val entity: Entity, var positions: Array<PositionComponent>, var progress: Float = 0F)
 
 // TODO: this class should basically be empty and just delegate to systems/input handlers
 class BaldingGateGame : Game() {
@@ -75,8 +75,6 @@ class BaldingGateGame : Game() {
     private var mobs = ImmutableArray(Array<Entity>())
 
     // TODO: move the pending animations to an animation/render component on the entity being animated
-    var pendingAnimations = Array<Animation>()
-    private val animationDuration = 0.1F
 
     private val greenTiles = Array<Entity>()
     private val redTiles = Array<Entity>()
@@ -170,36 +168,6 @@ class BaldingGateGame : Game() {
 
     }
 
-    fun animationStep(delta: Float) {
-        pendingAnimations.forEachIndexed { index, animation ->
-            val entity = animation.entity
-            val progress = animation.progress + (delta / animationDuration)
-            val end = animation.positions[1]
-
-            if (progress > 1) {
-                entity.add(end)
-                animation.positions.removeIndex(0)
-                pendingAnimations[index].positions = animation.positions
-                pendingAnimations[index].progress = 0F
-            } else {
-                pendingAnimations[index].progress = progress
-            }
-            if (animation.positions.size < 2) {
-                // todo set colors
-                pendingAnimations.removeIndex(index)
-                selectedEntity.entity?.let { selectMob(it) }
-                if (selectedEntity.actionPoints <= 0) {
-                    clearGreenTiles()
-                } else {
-                    selectedEntity.entity?.let { selectMob(it) }
-                }
-            }
-        }
-
-
-
-    }
-
     private fun selectMob(mob: Entity) {
         selectedEntity = SelectedEntity(
             mob,
@@ -230,14 +198,14 @@ class BaldingGateGame : Game() {
     private fun playerMove(target: PositionComponent) {
         val distance = selectedEntity.position!!.manhattanDistance(target)
         var tempPos = selectedEntity.position!!
-        val positions = Array<PositionComponent>()
+        val positions = mutableListOf<PositionComponent>()
         positions.add(tempPos)
         // TODO: pathfinding
         for (step in 0 until minOf(selectedEntity.speed, distance)) {
             tempPos += tempPos.direction(target)
             positions.add(tempPos)
         }
-        pendingAnimations.add(selectedEntity.entity?.let { Animation(it, positions) })
+        selectedEntity.entity?.let { engine.getSystem(AnimationSystem::class.java).addAnimation(it, positions) }
         selectedEntity.actionPoints -= 1
         selectedEntity.entity!!.add(
             StatsComponent(

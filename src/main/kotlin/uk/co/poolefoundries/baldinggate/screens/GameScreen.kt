@@ -49,12 +49,8 @@ class GameScreen(val game: BaldingGateGame, levelName:String) : ScreenAdapter() 
 
         Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
         game.engine.update(delta)
 
-        if (!game.pendingAnimations.isEmpty) {
-            game.animationStep(delta)
-        }
 
 
     }

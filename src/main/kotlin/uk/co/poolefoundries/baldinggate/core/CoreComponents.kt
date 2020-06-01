@@ -14,6 +14,7 @@ import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
 import uk.co.poolefoundries.baldinggate.model.TileType
 import kotlin.math.absoluteValue
+import kotlin.math.round
 import kotlin.math.sign
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -72,6 +73,19 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 
 }
 
+data class AnimationComponent(val entity: Entity, var positions: List<PositionComponent> = listOf<PositionComponent>(), var progress: Float = 0F, var isFinished: Boolean = false) : Component {
+    val animationDuration = 0.1F
+
+    fun animationStep(delta: Float) {
+        this.progress += delta / animationDuration
+        val positionIndex = round(this.progress).toInt()
+        entity.add(positions[positionIndex])
+        if (positionIndex >= this.positions.size-1){
+            this.isFinished  = true
+        }
+    }
+
+}
 
 
 object EnemyComponent : Component
