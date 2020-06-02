@@ -79,9 +79,11 @@ data class AnimationComponent(val entity: Entity, var positions: List<PositionCo
     fun animationStep(delta: Float) {
         this.progress += delta / animationDuration
         val positionIndex = round(this.progress).toInt()
-        entity.add(positions[positionIndex])
         if (positionIndex >= this.positions.size-1){
-            this.isFinished  = true
+            this.isFinished = true
+            entity.add(positions.last())
+        }else{
+            entity.add(positions[positionIndex])
         }
     }
 
