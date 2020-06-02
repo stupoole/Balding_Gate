@@ -22,7 +22,7 @@ object PathfinderSystem : EntitySystem() {
     private fun (AstarNode).toPosition() = PositionComponent(x, y)
     private val pathfinder = Astar(manhattanHeuristic())
 
-    private fun getValidTiles(): List<PositionComponent> {
+    private fun getEmptyTiles(): List<PositionComponent> {
         val playerPositions = players().map { it.toPosition() }
         val enemyPositions = enemies().map { it.toPosition() }
         return floors().filter { !(playerPositions.contains(it.toPosition()) || enemyPositions.contains(it.toPosition())) }
@@ -39,19 +39,23 @@ object PathfinderSystem : EntitySystem() {
         val graph = mutableListOf<AstarNode>()
         tiles.sortedBy { it.x }.forEachIndexed { index, tile ->
             val node =
-                AstarNode(tile.x, tile.y, startToNowCosts[index].toDouble(), nowToEndCosts[index].toDouble())
+                AstarNode(tile.x, tile.y, 1.0, startToNowCosts[index].toDouble(), nowToEndCosts[index].toDouble())
             graph.add(node)
         }
         return graph
     }
 
     fun findPath(start: PositionComponent, end: PositionComponent): List<PositionComponent> {
-        val tiles = getValidTiles()
+        val tiles = getEmptyTiles()
         val graph = constructGraph(tiles, start, end)
-        val startNode = AstarNode(start.x, start.y, 0.0, start.manhattanDistance(end).toDouble())
-        val endNode = AstarNode(end.x, end.y, start.manhattanDistance(end).toDouble(), 0.0)
-
-        return pathfinder.getPath(graph, startNode, endNode).map { it.toPosition() }
+        val startNode = AstarNode(start.x, start.y, 0.0, 0.0, start.manhattanDistance(end).toDouble())
+        val endNode = AstarNode(end.x, end.y, 100.0, start.manhattanDistance(end).toDouble(), 0.0)
+        graph.add(startNode)
+        // add target position to graph even if there's an enemy on it
+        if (graph.none { it == endNode }){
+            graph.add(endNode)
+        }
+        return pathfinder.getPath(graph, startNode, endNode).map { it.toPosition() }.reversed()
     }
 
 }

@@ -46,6 +46,7 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
             button.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     game.screen = GameScreen(game, name)
+                    // If going from pause menu to level select to level this does not work.
                 }
             })
             scrollTable.add(button).padBottom(4F).expand()

@@ -83,11 +83,21 @@ class MoveTowards(override val selfId: String, override val targetId: String) : 
         return "MoveTowards"
     }
 
-    // TODO: This is pretty crude but should work as a POC until we have path finding
-    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo): PositionComponent {
+//    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo): PositionComponent {
+//        val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
+//        val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
+//        if (path.isEmpty()){return selfInfo.pos}
+//        return path.subList(0, minOf(selfInfo.stats.speed, distance) + 1).last()
+//    }
+
+    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
+        return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
+    }
+
+    fun getNewPath(selfInfo: MobInfo, targetInfo: MobInfo): List<PositionComponent> {
         val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
-        return PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos).reversed()
-            .subList(0, minOf(selfInfo.stats.speed, distance) + 1).last()
+        return PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
+            .subList(0, minOf(selfInfo.stats.speed + 1, distance) )
     }
 }
 

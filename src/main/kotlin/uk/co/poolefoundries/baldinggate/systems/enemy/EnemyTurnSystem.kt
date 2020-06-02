@@ -18,6 +18,11 @@ object EnemyTurnSystem : EntitySystem() {
         return MobInfo(id.id, pos.copy(), stats.copy())
     }
 
+    private fun (Entity).addMoveAnimation(path:List<PositionComponent>){
+        val visualComponent = getComponent(VisualComponent::class.java)
+        visualComponent.addAnimation(MoveAnimation(path))
+    }
+
     private fun players() = engine.getEntitiesFor(playerFamily).toList()
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
 
@@ -41,10 +46,9 @@ object EnemyTurnSystem : EntitySystem() {
                     val enemy = enemyIds.getValue(it.selfId).toMobInfo()
                     val target = playerIds.getValue(it.targetId).toMobInfo()
 
-                    val newPos = it.getNewPos(enemy, target)
-
-                    enemyIds.getValue(it.selfId).add(newPos)
-
+                    val path = it.getNewPath(enemy, target)
+                    enemyIds.getValue(it.selfId).addMoveAnimation(path)
+                    enemyIds.getValue(it.selfId).add(path.last())
                 }
                 is Attack -> {
                     val enemy = enemyIds.getValue(it.selfId).toMobInfo()

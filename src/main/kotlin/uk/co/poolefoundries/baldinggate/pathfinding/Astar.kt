@@ -23,7 +23,7 @@ class Astar(val heuristic: AStarHeuristic) {
                 if (closedSet.contains(neighbor)) {
                     continue
                 }
-                val tentativeGScore: Double = workingNode.startToNowCost + 1
+                val tentativeGScore: Double = workingNode.startToNowCost + neighbor.passingCost
                 if (!openSet.contains(neighbor) || neighbor.startToNowCost > tentativeGScore) {
                     neighbor.prevNode = workingNode
                     neighbor.startToNowCost = tentativeGScore

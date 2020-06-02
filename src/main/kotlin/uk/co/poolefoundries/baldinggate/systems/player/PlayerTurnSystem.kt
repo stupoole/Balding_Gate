@@ -35,14 +35,14 @@ object PlayerTurnSystem : EntitySystem() {
 
             val startPos = entity.toPosition()
             val distance = startPos.manhattanDistance(target)
-            val path = PathfinderSystem.findPath(startPos, target).reversed()
+            val path = PathfinderSystem.findPath(startPos, target)
             if (path.isEmpty()) {
                 return false
             }
-            val positions = path.subList(0, minOf(entity.toStats().speed, distance)+1)
+            val positions = path.subList(0, minOf(entity.toStats().speed, distance) + 1)
             entity.getComponent(VisualComponent::class.java).addAnimation(MoveAnimation(positions))
             entity.add(positions.last())
-            entity.add(StatsComponent(entity.toStats().copy(currentAP = ap - 1)))
+            entity.toStats().useAp(1)
             return true
         }
         return false
@@ -54,7 +54,7 @@ object PlayerTurnSystem : EntitySystem() {
         engine.getSystem(EntitySelectionSystem::class.java).deselectEntity()
         players().forEach { player ->
             val stats = player.toStats()
-            player.add(StatsComponent(stats.copy(currentAP = stats.maxAP)))
+            player.add(StatsComponent(stats.restoreAp()))
         }
         engine.getSystem(EntitySelectionSystem::class.java).deselectEntity()
         return true

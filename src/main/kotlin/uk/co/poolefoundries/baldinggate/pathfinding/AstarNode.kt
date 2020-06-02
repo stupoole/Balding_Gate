@@ -5,6 +5,7 @@ import uk.co.poolefoundries.baldinggate.core.PositionComponent
 data class AstarNode(
     val x: Int,
     val y: Int,
+    val passingCost:Double,
     var startToNowCost: Double,
     var nowToEndCost: Double,
     var prevNode: AstarNode? = null
