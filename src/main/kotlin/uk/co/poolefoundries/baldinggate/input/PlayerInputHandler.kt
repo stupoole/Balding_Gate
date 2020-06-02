@@ -20,7 +20,7 @@ object RawInputHandler : InputProcessor {
     private var lastX = 0f
     private var lastY = 0f
     private var middle = false
-    val listener = InputProcessorSystem
+    private val listener = InputProcessorSystem
     // todo get list of valid actions that aren't movement and display on UI
 
     override fun keyDown(keycode: Int): Boolean {
@@ -75,6 +75,8 @@ object RawInputHandler : InputProcessor {
     override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean {
         return if (middle) {
             listener.dragCamera(x - lastX, y - lastY)
+            lastX = x.toFloat()
+            lastY = y.toFloat()
             true
         } else {
             false
