@@ -1,4 +1,4 @@
-package uk.co.poolefoundries.baldinggate.entitysystems.enemy
+package uk.co.poolefoundries.baldinggate.systems.enemy
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem

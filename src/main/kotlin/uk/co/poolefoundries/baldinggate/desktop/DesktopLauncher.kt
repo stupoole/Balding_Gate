@@ -8,7 +8,7 @@ object DesktopLauncher {
     lateinit var application:LwjglApplication
     @JvmStatic
     fun main(arg: Array<String>) {
-        application = LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
+        application = LwjglApplication(BaldingGateGame, LwjglApplicationConfiguration())
 
     }
 }
