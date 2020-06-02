@@ -55,7 +55,7 @@ fun getActionPlan(actions:Plan, primaryGoal: Goal, openSet: List<Branch>, bestOp
         newOpenSet = newOpenSet.filter { it.cost > bestOption.cost }
     }
 
-    newOpenSet = newOpenSet.groupBy { it.state }.map { it.value.minBy { it.cost } }.filterNotNull()
+    newOpenSet = newOpenSet.groupBy { it.state }.map { it.value.minBy { branch -> branch.cost } }.filterNotNull()
 
     return if (newOpenSet.isNotEmpty()) {
         getActionPlan(actions, primaryGoal, newOpenSet, newBestOption)

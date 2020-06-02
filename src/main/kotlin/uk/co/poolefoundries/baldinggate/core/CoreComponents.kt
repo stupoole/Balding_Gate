@@ -1,14 +1,9 @@
 package uk.co.poolefoundries.baldinggate.core
 
 import com.badlogic.ashley.core.*
-import com.badlogic.ashley.utils.ImmutableArray
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Array
 import uk.co.poolefoundries.baldinggate.model.Mob
 import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
@@ -82,7 +77,7 @@ interface Animation {
 
 
 
-data class MoveAnimation(val positions: List<PositionComponent> = listOf<PositionComponent>(), private var progress:Float = 0F) : Animation {
+data class MoveAnimation(val positions: List<PositionComponent> = listOf(), private var progress:Float = 0F) : Animation {
     private val animationDuration:Float = 0.1F
 
     override fun update(delta: Float) {
@@ -112,7 +107,7 @@ data class StatsComponent(val stats: Stats) : Component
 
 data class VisualComponent(val renderable: Renderable) : Component{
 
-    var pendingAnimations = mutableListOf<Animation>()
+    private var pendingAnimations = mutableListOf<Animation>()
     fun addAnimation(animation: Animation){
         pendingAnimations.add(animation)
     }

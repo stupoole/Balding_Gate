@@ -14,10 +14,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 
 object CameraSystem : EntitySystem() {
-    val gameCamera = OrthographicCamera()
-    var gameViewport = ScreenViewport(gameCamera)
-    val stageCamera = OrthographicCamera()
-    var stageViewport = ScreenViewport(stageCamera)
+    private val gameCamera = OrthographicCamera()
+    private var gameViewport = ScreenViewport(gameCamera)
+    private val stageCamera = OrthographicCamera()
+    private var stageViewport = ScreenViewport(stageCamera)
     val batch = SpriteBatch()
     val stage = Stage(stageViewport, batch)
 
@@ -36,6 +36,11 @@ object CameraSystem : EntitySystem() {
         gameCamera.update()
     }
 
+    fun updateGameCamera(){
+        gameViewport.apply()
+        gameCamera.update()
+        batch.projectionMatrix = gameCamera.combined
+    }
 
     fun resize(width:Int, height:Int){
         gameViewport.update(width, height, true)
@@ -54,8 +59,8 @@ object CameraSystem : EntitySystem() {
     }
 
     fun unproject(x:Int, y:Int):Vector2{
-        val vect = gameCamera.unproject(Vector3(x.toFloat(),y.toFloat(),0F))
-        return Vector2(vect.x, vect.y)
+        val vector = gameCamera.unproject(Vector3(x.toFloat(),y.toFloat(),0F))
+        return Vector2(vector.x, vector.y)
     }
 
     fun newStage(){
@@ -69,7 +74,7 @@ object CameraSystem : EntitySystem() {
         stage.scrollFocus = actor
     }
 
-    fun renderStage(delta: Float){
+    fun renderStage(){
         Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         stage.act()

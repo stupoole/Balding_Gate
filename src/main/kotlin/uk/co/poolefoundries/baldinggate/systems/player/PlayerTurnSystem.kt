@@ -34,7 +34,7 @@ object PlayerTurnSystem: EntitySystem() {
             var tempPos = entity.toPosition()
             val distance = tempPos.manhattanDistance(target)
             positions.add(tempPos)
-            // TODO: pathfinding
+            // TODO: path finding
             for (step in 0 until minOf(entity.toStats().speed, distance)) {
                 tempPos += tempPos.direction(target)
                 positions.add(tempPos)

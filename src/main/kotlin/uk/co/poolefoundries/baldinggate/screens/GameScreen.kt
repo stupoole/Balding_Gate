@@ -11,16 +11,19 @@ import uk.co.poolefoundries.baldinggate.systems.EntitySelectionSystem
 import uk.co.poolefoundries.baldinggate.systems.InputProcessorSystem
 import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
+import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 import uk.co.poolefoundries.baldinggate.systems.RenderingSystem
 
-// LevelScreen represents the gamplay screen of the game.
-class GameScreen(val game: BaldingGateGame, levelName:String) : ScreenAdapter() {
+// LevelScreen represents the gameplay screen of the game.
+class GameScreen(private val game: BaldingGateGame, levelName:String) : ScreenAdapter() {
 
 //    var stage = Stage(game.viewport, game.batch)
-    var input = InputMultiplexer()
+    private val input = InputMultiplexer()
 
     init {
         loadLevel(levelName).toEntities().forEach(game.engine::addEntity)
+        // Maybe the tile size should be specified after the loadLevel?
+
         // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
         // Should probably make this simpler for each screen (such as having an extended Engine with "add all systems" built in)
 
@@ -38,6 +41,7 @@ class GameScreen(val game: BaldingGateGame, levelName:String) : ScreenAdapter() 
     }
 
     override fun show() {
+        CameraSystem.switchToGame()
         Gdx.input.inputProcessor = input
     }
 

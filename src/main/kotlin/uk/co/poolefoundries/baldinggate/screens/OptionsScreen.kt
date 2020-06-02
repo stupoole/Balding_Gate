@@ -57,7 +57,7 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter
 
     override fun render(delta: Float) {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.renderStage(delta)
+        cameraSystem.renderStage()
     }
 
     override fun dispose() {

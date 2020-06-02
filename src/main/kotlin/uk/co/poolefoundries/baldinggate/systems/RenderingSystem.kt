@@ -11,7 +11,7 @@ import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.VisualComponent
 
 object RenderingSystem : EntitySystem() {
-    const val tileSize = 25f
+    private const val tileSize = 25f // TODO somehow make everything that needs this value get it from the same place
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
     private val visualComponentMapper = ComponentMapper.getFor(VisualComponent::class.java)
     private val colorComponentMapper = ComponentMapper.getFor(ColorComponent::class.java)
@@ -24,9 +24,7 @@ object RenderingSystem : EntitySystem() {
 
     override fun update(deltaTime: Float) {
         val cameraSystem = engine.getSystem(CameraSystem::class.java)
-        cameraSystem.gameCamera.update()
-
-        cameraSystem.batch.projectionMatrix = cameraSystem.gameCamera.combined
+        cameraSystem.updateGameCamera()
         Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 

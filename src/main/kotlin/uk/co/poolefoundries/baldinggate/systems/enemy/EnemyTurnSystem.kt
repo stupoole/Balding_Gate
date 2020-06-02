@@ -54,7 +54,7 @@ object EnemyTurnSystem : EntitySystem() {
                     val newStats = target.stats.applyDamage(damage)
                     playerIds.getValue(it.targetId).add(StatsComponent(newStats))
 
-                    println("Big oooof you just took $damage damage, ${newStats.hitPoints} hp left")
+                    println("Big oof you just took $damage damage, ${newStats.hitPoints} hp left")
                 }
                 is Win -> {
                     println("You is dead!!!")

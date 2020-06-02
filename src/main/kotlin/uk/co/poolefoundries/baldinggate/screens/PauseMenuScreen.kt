@@ -83,7 +83,7 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
 
     override fun render(delta: Float) {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.renderStage(delta)
+        cameraSystem.renderStage()
     }
 
     override fun dispose() {
