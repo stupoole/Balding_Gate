@@ -91,13 +91,19 @@ class MoveTowards(override val selfId: String, override val targetId: String) : 
 //    }
 
     fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
-        return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
+        val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
+        val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
+        return if (path.isNotEmpty()){
+            path.subList(0, minOf(selfInfo.stats.speed + 1, distance, path.size) ).last()
+        } else selfInfo.pos
+//        return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
     }
 
     fun getNewPath(selfInfo: MobInfo, targetInfo: MobInfo): List<PositionComponent> {
         val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
-        return PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
-            .subList(0, minOf(selfInfo.stats.speed + 1, distance) )
+        val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
+        return path.subList(0, minOf(selfInfo.stats.speed + 1, distance, path.size) )
+
     }
 }
 

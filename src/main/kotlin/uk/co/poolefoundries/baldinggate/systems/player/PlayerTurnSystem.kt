@@ -11,7 +11,9 @@ import uk.co.poolefoundries.baldinggate.systems.enemy.EnemyTurnSystem
 
 object PlayerTurnSystem : EntitySystem() {
     private val playerFamily: Family = Family.all(PlayerComponent::class.java).get()
+    private val floorsFamily: Family = Family.all(FloorComponent::class.java).get()
     private fun players() = engine.getEntitiesFor(playerFamily).toList()
+    private fun floors() = engine.getEntitiesFor(floorsFamily).toList()
 
     // todo get list of valid actions that aren't movement and display on UI
     private fun (Entity).toPosition(): PositionComponent {
@@ -39,10 +41,10 @@ object PlayerTurnSystem : EntitySystem() {
             if (path.isEmpty()) {
                 return false
             }
-            val positions = path.subList(0, minOf(entity.toStats().speed, distance) + 1)
+            val positions = path.subList(0, minOf(entity.toStats().speed + 1, distance + 1, path.size))
             entity.getComponent(VisualComponent::class.java).addAnimation(MoveAnimation(positions))
             entity.add(positions.last())
-            entity.toStats().useAp(1)
+            entity.add(StatsComponent(entity.toStats().useAp(1)))
             return true
         }
         return false
@@ -61,8 +63,12 @@ object PlayerTurnSystem : EntitySystem() {
     }
 
     // Will determine what action to do and do it and then return whether the action was successful
-    fun determineAction(selected: Entity, positionComponent: PositionComponent): Boolean {
-        move(selected, positionComponent)
-        return true
+    fun determineAction(selected: Entity, targetPos: PositionComponent): Boolean {
+        return if (floors().map { it.toPosition() }.contains(targetPos)) {
+            move(selected, targetPos)
+            true
+        } else {
+            false
+        }
     }
 }

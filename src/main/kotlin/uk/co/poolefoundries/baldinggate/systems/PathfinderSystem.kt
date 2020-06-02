@@ -49,12 +49,7 @@ object PathfinderSystem : EntitySystem() {
         val tiles = getEmptyTiles()
         val graph = constructGraph(tiles, start, end)
         val startNode = AstarNode(start.x, start.y, 0.0, 0.0, start.manhattanDistance(end).toDouble())
-        val endNode = AstarNode(end.x, end.y, 100.0, start.manhattanDistance(end).toDouble(), 0.0)
-        graph.add(startNode)
-        // add target position to graph even if there's an enemy on it
-        if (graph.none { it == endNode }){
-            graph.add(endNode)
-        }
+        val endNode = AstarNode(end.x, end.y, 1.0, start.manhattanDistance(end).toDouble(), 0.0)
         return pathfinder.getPath(graph, startNode, endNode).map { it.toPosition() }.reversed()
     }
 

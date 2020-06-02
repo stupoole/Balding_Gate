@@ -5,9 +5,14 @@ class Astar(val heuristic: AStarHeuristic) {
     // TODO remove any passing costs
     // TODO create a graph somehow
     //
-
-
     fun getPath(graph: List<AstarNode>, startNode: AstarNode, endNode: AstarNode): MutableList<AstarNode> {
+        if (graph.any { node -> node == endNode}) {
+            return getPathToTarget(graph, startNode, endNode)
+        }
+        return getPathToNearest(graph, startNode, endNode)
+    }
+
+    fun getPathToTarget(graph: List<AstarNode>, startNode: AstarNode, endNode: AstarNode): MutableList<AstarNode> {
         val openSet = mutableListOf<AstarNode>()
         val closedSet = mutableListOf<AstarNode>()
         openSet.add(startNode)
@@ -15,6 +20,36 @@ class Astar(val heuristic: AStarHeuristic) {
         while (openSet.size > 0) {
             workingNode = getLowestFScore(openSet)
             if (workingNode.equals(endNode)) {
+                return reconstructPath(workingNode)
+            }
+            openSet.remove(workingNode)
+            closedSet.add(workingNode)
+            for (neighbor in getNeighborNodes(workingNode, graph)) {
+                if (closedSet.contains(neighbor)) {
+                    continue
+                }
+                val tentativeGScore: Double = workingNode.startToNowCost + neighbor.passingCost
+                if (!openSet.contains(neighbor) || neighbor.startToNowCost > tentativeGScore) {
+                    neighbor.prevNode = workingNode
+                    neighbor.startToNowCost = tentativeGScore
+                    neighbor.nowToEndCost = neighbor.startToNowCost + heuristic.costEstimate(neighbor, endNode)
+                    if (!openSet.contains(neighbor)) {
+                        openSet.add(neighbor)
+                    }
+                }
+            }
+        }
+        return mutableListOf()
+    }
+
+    fun getPathToNearest(graph: List<AstarNode>, startNode: AstarNode, endNode: AstarNode): MutableList<AstarNode> {
+        val openSet = mutableListOf<AstarNode>()
+        val closedSet = mutableListOf<AstarNode>()
+        openSet.add(startNode)
+        var workingNode: AstarNode
+        while (openSet.size > 0) {
+            workingNode = getLowestFScore(openSet)
+            if (getNeighborNodes(endNode, graph).any{it == workingNode}) {
                 return reconstructPath(workingNode)
             }
             openSet.remove(workingNode)
