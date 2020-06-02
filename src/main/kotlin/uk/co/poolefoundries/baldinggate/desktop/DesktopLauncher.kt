@@ -5,9 +5,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 
 object DesktopLauncher {
+    lateinit var application:LwjglApplication
     @JvmStatic
     fun main(arg: Array<String>) {
-        LwjglApplication(BaldingGateGame(), LwjglApplicationConfiguration())
+        application = LwjglApplication(BaldingGateGame, LwjglApplicationConfiguration())
+
     }
 }
 

@@ -1,0 +1,28 @@
+{
+  com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: carved-stone-font.fnt } },
+  com.badlogic.gdx.graphics.Color: {
+    green: { a: 1, b: 0, g: 1, r: 0 },
+    white: { a: 1, b: 1, g: 1, r: 1 },
+    red: { a: 1, b: 0, g: 0, r: 1 },
+    black: { a: 1, b: 0, g: 0, r: 0 },
+  }
+  com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+    default: { down: button-on, up: button-off },
+    toggle: { down: button-on, checked: button-off, up: button-off}
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+    default: { down: button-on, up: button-off, font: default-font, fontColor: white },
+    toggle: { down: button-on, up: check-off, checked: check-on, font: default-font, fontColor: white, downFontColor: white }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+    default: { font: default-font, fontColor: white }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+    default: { checkboxOn: check-on, checkboxOff: check-off, font: default-font, fontColor: white }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+    default: { vScroll: vert-scroll-bar, hScrollKnob: horz-scroll, background: blank, hScroll: horz-scroll-bar, vScrollKnob: vert-scroll }
+  },
+
+}
+

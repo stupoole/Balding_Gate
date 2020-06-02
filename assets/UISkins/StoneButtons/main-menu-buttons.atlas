@@ -1,0 +1,92 @@
+
+main-menu-buttons.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+button-hover
+  rotate: false
+  xy: 200, 24
+  size: 64, 64
+  split: 28, 22, 26, 27
+  pad: 28, 22, 26, 27
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+button-off
+  rotate: false
+  xy: 68, 24
+  size: 64, 64
+  split: 25, 22, 28, 26
+  pad: 25, 22, 28, 26
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+button-on
+  rotate: false
+  xy: 134, 24
+  size: 64, 64
+  split: 27, 25, 28, 27
+  pad: 27, 25, 28, 27
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+check-off
+  rotate: false
+  xy: 266, 24
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+check-on
+  rotate: false
+  xy: 2, 24
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+horz-scroll
+  rotate: false
+  xy: 2, 2
+  size: 48, 20
+  split: 12, 12, 4, 5
+  pad: 12, 12, 4, 5
+  orig: 48, 20
+  offset: 0, 0
+  index: -1
+horz-scroll-bar
+  rotate: false
+  xy: 332, 68
+  size: 48, 20
+  split: 24, 21, 8, 10
+  pad: 24, 21, 8, 10
+  orig: 48, 20
+  offset: 0, 0
+  index: -1
+vert-scroll
+  rotate: false
+  xy: 332, 18
+  size: 20, 48
+  split: 4, 6, 12, 12
+  pad: 4, 6, 12, 12
+  orig: 20, 48
+  offset: 0, 0
+  index: -1
+vert-scroll-bar
+  rotate: false
+  xy: 354, 18
+  size: 20, 48
+  split: 8, 10, 23, 22
+  pad: 8, 10, 23, 22
+  orig: 20, 48
+  offset: 0, 0
+  index: -1
+blank
+    rotate:false
+    xy: 507, 0
+    size: 5,5
+    split: 1, 1, 1, 1
+    pad: 1, 1, 1, 1
+    orig: 5, 5
+    offset: 0, 0
+    index: -1

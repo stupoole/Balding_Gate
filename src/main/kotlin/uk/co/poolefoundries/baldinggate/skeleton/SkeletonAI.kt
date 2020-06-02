@@ -3,9 +3,10 @@ package uk.co.poolefoundries.baldinggate.skeleton
 import uk.co.poolefoundries.baldinggate.ai.*
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.Stats
+import uk.co.poolefoundries.baldinggate.systems.PathfinderSystem
 
 
-data class MobInfo(val id : String, val pos: PositionComponent, val stats : Stats)
+data class MobInfo(val id: String, val pos: PositionComponent, val stats: Stats)
 
 object Win : Action {
     override fun cost(state: WorldState): Double {
@@ -31,7 +32,7 @@ object EndTurn : Action {
         return 10.0
     }
 
-    override fun prerequisitesMet(state: WorldState) : Boolean {
+    override fun prerequisitesMet(state: WorldState): Boolean {
         // TODO: This is a bit naff but reduces the explosion of branches. Will have to implement a heuristic AI at some
         // point so it doesn't explore every single possibility
         return state.getEnemyIds().none { state.getMobInfo(it).stats.currentAP > 0 }
@@ -53,8 +54,8 @@ object EndTurn : Action {
 }
 
 interface TargetedAction : Action {
-    val selfId : String
-    val targetId : String
+    val selfId: String
+    val targetId: String
 
     fun (WorldState).selfInfo() = getMobInfo(selfId)
     fun (WorldState).targetInfo() = getMobInfo(targetId)
@@ -62,7 +63,7 @@ interface TargetedAction : Action {
     fun (WorldState).distToTarget() = selfInfo().pos.manhattanDistance(targetInfo().pos)
 }
 
-class MoveTowards(override val selfId : String, override val targetId : String) : TargetedAction {
+class MoveTowards(override val selfId: String, override val targetId: String) : TargetedAction {
     override fun cost(state: WorldState): Double {
         return 1.0
     }
@@ -82,13 +83,15 @@ class MoveTowards(override val selfId : String, override val targetId : String) 
         return "MoveTowards"
     }
 
-    // TODO: This is pretty crude but should work as a POC until we have pathfinding
-    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
-        return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
+    // TODO: This is pretty crude but should work as a POC until we have path finding
+    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo): PositionComponent {
+        val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
+        return PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos).reversed()
+            .subList(0, minOf(selfInfo.stats.speed, distance) + 1).last()
     }
 }
 
-class Attack(override val selfId : String, override val targetId : String) : TargetedAction {
+class Attack(override val selfId: String, override val targetId: String) : TargetedAction {
     override fun cost(state: WorldState): Double {
         return 1.0
     }
@@ -111,21 +114,22 @@ class Attack(override val selfId : String, override val targetId : String) : Tar
 
 object SkeletonAI {
 
-    fun getPlan(players : Collection<MobInfo>, enemies: Collection<MobInfo>): Branch {
+    fun getPlan(players: Collection<MobInfo>, enemies: Collection<MobInfo>): Branch {
         val goal = Goal(Win, 1.0)
         return getActionPlan(worldState(players, enemies), actions(players, enemies, goal), goal)!!
     }
 
-    fun worldState(players : Collection<MobInfo>, enemies: Collection<MobInfo>) : WorldState {
+    fun worldState(players: Collection<MobInfo>, enemies: Collection<MobInfo>): WorldState {
         return mutableMapOf<String, Any>()
             .setPlayerIds(players.map { it.id })
             .setEnemyIds(enemies.map { it.id })
             .setMobInfo(players.union(enemies))
     }
 
-    fun actions(players : Collection<MobInfo>, enemies: Collection<MobInfo>, goal: Goal) : List<Action> {
+    fun actions(players: Collection<MobInfo>, enemies: Collection<MobInfo>, goal: Goal): List<Action> {
         val attackPlayerActions = players.flatMap { player -> enemies.map { enemy -> Attack(enemy.id, player.id) } }
-        val moveTowardsPlayerActions = players.flatMap { player -> enemies.map { enemy -> MoveTowards(enemy.id, player.id) } }
+        val moveTowardsPlayerActions =
+            players.flatMap { player -> enemies.map { enemy -> MoveTowards(enemy.id, player.id) } }
 
         return listOf(goal.action, EndTurn)
             .union(attackPlayerActions)
