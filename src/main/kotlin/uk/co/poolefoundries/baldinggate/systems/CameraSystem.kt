@@ -5,53 +5,60 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import java.awt.ScrollPane
 
 
 object CameraSystem : EntitySystem() {
-    var camera = OrthographicCamera()
-    var viewport = ScreenViewport(camera)
+    val gameCamera = OrthographicCamera()
+    var gameViewport = ScreenViewport(gameCamera)
+    val stageCamera = OrthographicCamera()
+    var stageViewport = ScreenViewport(stageCamera)
     val batch = SpriteBatch()
-    val stage = Stage(viewport, batch)
+    val stage = Stage(stageViewport, batch)
 
     override fun addedToEngine(engine: Engine?) {
-        viewport.apply()
-        camera.update()
+        stageCamera.update()
     }
 
-//    override fun update(deltaTime: Float) {
-////        stage.draw()
-//    }
+    fun switchToStage(){
+        stage.clear()
+        stageCamera.update()
+    }
+
+    fun switchToGame(){
+        stage.clear()
+        gameViewport.apply()
+        gameCamera.update()
+    }
+
 
     fun resize(width:Int, height:Int){
-        viewport.update(width, height, true)
+        gameViewport.update(width, height, true)
+        stageViewport.update(width, height, true)
     }
 
     fun pan(deltaX: Float, deltaY: Float) {
-        camera.translate(camera.zoom * -(deltaX), camera.zoom * (deltaY))
+        gameCamera.translate(gameCamera.zoom * -(deltaX), gameCamera.zoom * (deltaY))
     }
 
     fun zoom(amount: Int){
-        camera.zoom += 0.1F * amount.toFloat()
-        if (camera.zoom < 0.2) {
-            camera.zoom = 0.2F
+        gameCamera.zoom += 0.1F * amount.toFloat()
+        if (gameCamera.zoom < 0.2) {
+            gameCamera.zoom = 0.2F
         }
     }
 
     fun unproject(x:Int, y:Int):Vector2{
-        val vect = camera.unproject(Vector3(x.toFloat(),y.toFloat(),0F))
+        val vect = gameCamera.unproject(Vector3(x.toFloat(),y.toFloat(),0F))
         return Vector2(vect.x, vect.y)
     }
 
     fun newStage(){
-        stage.clear()
     }
 
     fun addActorToStage(actor:Actor){

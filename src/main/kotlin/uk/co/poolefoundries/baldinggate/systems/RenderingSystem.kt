@@ -24,9 +24,9 @@ object RenderingSystem : EntitySystem() {
 
     override fun update(deltaTime: Float) {
         val cameraSystem = engine.getSystem(CameraSystem::class.java)
-        cameraSystem.camera.update()
+        cameraSystem.gameCamera.update()
 
-        cameraSystem.batch.projectionMatrix = cameraSystem.camera.combined
+        cameraSystem.batch.projectionMatrix = cameraSystem.gameCamera.combined
         Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 

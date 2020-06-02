@@ -66,7 +66,7 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
 
         table.add(scrollPane).fill().expand()
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.newStage()
+        cameraSystem.switchToStage()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)
     }
@@ -77,6 +77,7 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
 
     override fun show() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.switchToStage()
         cameraSystem.newStage()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)

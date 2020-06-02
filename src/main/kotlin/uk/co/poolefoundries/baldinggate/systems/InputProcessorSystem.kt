@@ -9,10 +9,6 @@ import uk.co.poolefoundries.baldinggate.systems.player.PlayerTurnSystem
 
 object InputProcessorSystem : EntitySystem(), InputHandler {
 
-    private var lastX = 0F
-    private var lastY = 0F
-    private var middle = false
-
     override fun endTurn() {
         PlayerTurnSystem.endTurn()
     }

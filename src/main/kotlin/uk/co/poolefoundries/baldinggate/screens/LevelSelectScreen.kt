@@ -65,7 +65,7 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
 
     override fun show() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.newStage()
+        CameraSystem.switchToStage()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)
         Gdx.input.inputProcessor = cameraSystem.stage
