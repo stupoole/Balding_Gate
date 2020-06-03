@@ -7,8 +7,8 @@ import uk.co.poolefoundries.baldinggate.core.EnemyComponent
 import uk.co.poolefoundries.baldinggate.core.FloorComponent
 import uk.co.poolefoundries.baldinggate.core.PlayerComponent
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
-import uk.co.poolefoundries.baldinggate.pathfinding.Astar
-import uk.co.poolefoundries.baldinggate.pathfinding.AstarNode
+import uk.co.poolefoundries.baldinggate.pathfinding.AStar
+import uk.co.poolefoundries.baldinggate.pathfinding.AStarNode
 import uk.co.poolefoundries.baldinggate.pathfinding.manhattanHeuristic
 
 object PathfinderSystem : EntitySystem() {
@@ -19,8 +19,8 @@ object PathfinderSystem : EntitySystem() {
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
     private fun floors() = engine.getEntitiesFor(floorsFamily).toList()
     private fun (Entity).toPosition() = getComponent(PositionComponent::class.java)
-    private fun (AstarNode).toPosition() = PositionComponent(x, y)
-    private val pathfinder = Astar(manhattanHeuristic())
+    private fun (AStarNode).toPosition() = PositionComponent(x, y)
+    private val pathfinder = AStar(manhattanHeuristic())
 
     private fun getEmptyTiles(): List<PositionComponent> {
         val playerPositions = players().map { it.toPosition() }
@@ -33,13 +33,13 @@ object PathfinderSystem : EntitySystem() {
         tiles: List<PositionComponent>,
         start: PositionComponent,
         finish: PositionComponent
-    ): MutableList<AstarNode> {
+    ): MutableList<AStarNode> {
         val startToNowCosts = tiles.map { it.manhattanDistance(start) }
         val nowToEndCosts = tiles.map { it.manhattanDistance(finish) }
-        val graph = mutableListOf<AstarNode>()
+        val graph = mutableListOf<AStarNode>()
         tiles.sortedBy { it.x }.forEachIndexed { index, tile ->
             val node =
-                AstarNode(tile.x, tile.y, 1.0, startToNowCosts[index].toDouble(), nowToEndCosts[index].toDouble())
+                AStarNode(tile.x, tile.y, startToNowCosts[index].toDouble(), nowToEndCosts[index].toDouble())
             graph.add(node)
         }
         return graph
@@ -48,8 +48,8 @@ object PathfinderSystem : EntitySystem() {
     fun findPath(start: PositionComponent, end: PositionComponent): List<PositionComponent> {
         val tiles = getEmptyTiles()
         val graph = constructGraph(tiles, start, end)
-        val startNode = AstarNode(start.x, start.y, 0.0, 0.0, start.manhattanDistance(end).toDouble())
-        val endNode = AstarNode(end.x, end.y, 1.0, start.manhattanDistance(end).toDouble(), 0.0)
+        val startNode = AStarNode(start.x, start.y, 0.0, start.manhattanDistance(end).toDouble())
+        val endNode = AStarNode(end.x, end.y, start.manhattanDistance(end).toDouble(), 0.0)
         return pathfinder.getPath(graph, startNode, endNode).map { it.toPosition() }.reversed()
     }
 
