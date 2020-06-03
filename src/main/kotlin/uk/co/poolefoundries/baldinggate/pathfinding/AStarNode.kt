@@ -5,8 +5,8 @@ import uk.co.poolefoundries.baldinggate.core.PositionComponent
 data class AStarNode(
     val x: Int,
     val y: Int,
-    var startToNowCost: Double,
-    var nowToEndCost: Double,
+    var startToNowCost: Double = 0.0,
+    var nowToEndCost: Double = 0.0,
     var prevNode: AStarNode? = null
 ) {
     override fun equals(other: Any?): Boolean {

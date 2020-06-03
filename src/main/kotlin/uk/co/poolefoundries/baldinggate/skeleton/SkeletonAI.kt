@@ -102,7 +102,7 @@ class MoveTowards(override val selfId: String, override val targetId: String) : 
     fun getNewPath(selfInfo: MobInfo, targetInfo: MobInfo): List<PositionComponent> {
         val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
         val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
-        return path.subList(0, minOf(selfInfo.stats.speed + 1, distance, path.size) )
+        return path.take(minOf(selfInfo.stats.speed + 1, distance, path.size) )
 
     }
 }

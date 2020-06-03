@@ -14,11 +14,11 @@ class AStar(val heuristic: AStarHeuristic) {
         while (openSet.size > 0) {
             workingNode = getLowestFScore(openSet)
             if (endInGraph) {
-                if (workingNode.equals(endNode)) {
+                if (workingNode == endNode) {
                     return reconstructPath(workingNode)
                 }
             } else {
-                if (getNeighborNodes(endNode, graph).any { it == workingNode }) {
+                if (getNeighborNodes(endNode, graph).contains(workingNode)) {
                     return reconstructPath(workingNode)
                 }
             }

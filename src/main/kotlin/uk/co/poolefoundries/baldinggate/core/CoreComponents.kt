@@ -8,6 +8,7 @@ import uk.co.poolefoundries.baldinggate.model.Mob
 import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
 import uk.co.poolefoundries.baldinggate.model.TileType
+import uk.co.poolefoundries.baldinggate.pathfinding.AStarNode
 import kotlin.math.absoluteValue
 import kotlin.math.round
 import kotlin.math.sign
@@ -17,6 +18,14 @@ import kotlin.random.Random
 data class IdComponent(val id : String) : Component
 
 data class PositionComponent(val x: Int, val y: Int) : Component {
+
+    override fun equals(other: Any?): Boolean {
+        return when (other) {
+            is AStarNode -> this.x == other.x && this.y == other.y
+            is PositionComponent -> this.x == other.x && this.y == other.y
+            else -> false
+        }
+    }
 
     fun crowFliesDistance(other: PositionComponent):Float{
         val xDiff = this.x - other.x
@@ -68,6 +77,12 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
         return PositionComponent((this.x.toFloat() * scalar).toInt(),(this.y.toFloat() * scalar).toInt())
     }
 
+    override fun hashCode(): Int {
+        var result = x
+        result = 31 * result + y
+        return result
+    }
+
 }
 
 interface Animation {
@@ -80,7 +95,7 @@ interface Animation {
 
 
 data class MoveAnimation(val positions: List<PositionComponent> = listOf(), private var progress:Float = 0F) : Animation {
-    private val animationDuration:Float = 0.1F
+    private val animationDuration:Float = 0.15F
 
     override fun update(delta: Float) {
         this.progress += delta / animationDuration

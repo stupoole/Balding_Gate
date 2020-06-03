@@ -1,5 +1,6 @@
 package uk.co.poolefoundries.baldinggate.systems
 
+import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
@@ -11,6 +12,7 @@ import uk.co.poolefoundries.baldinggate.pathfinding.AStar
 import uk.co.poolefoundries.baldinggate.pathfinding.AStarNode
 import uk.co.poolefoundries.baldinggate.pathfinding.manhattanHeuristic
 
+
 object PathfinderSystem : EntitySystem() {
     private val playerFamily: Family = Family.all(PlayerComponent::class.java).get()
     private val enemyFamily: Family = Family.all(EnemyComponent::class.java).get()
@@ -19,40 +21,26 @@ object PathfinderSystem : EntitySystem() {
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
     private fun floors() = engine.getEntitiesFor(floorsFamily).toList()
     private fun (Entity).toPosition() = getComponent(PositionComponent::class.java)
+    private fun (Entity).toNode() = AStarNode(toPosition().x, toPosition().y)
+
+
     private fun (AStarNode).toPosition() = PositionComponent(x, y)
     private val pathfinder = AStar(manhattanHeuristic())
+    private var levelMap = mutableListOf<AStarNode>()
 
-    private fun getEmptyTiles(): List<PositionComponent> {
-        val playerPositions = players().map { it.toPosition() }
-        val enemyPositions = enemies().map { it.toPosition() }
-        return floors().filter { !(playerPositions.contains(it.toPosition()) || enemyPositions.contains(it.toPosition())) }
-            .map { it.toPosition() }
-    }
-
-    private fun constructGraph(
-        tiles: List<PositionComponent>,
-        start: PositionComponent,
-        finish: PositionComponent
-    ): MutableList<AStarNode> {
-        val startToNowCosts = tiles.map { it.manhattanDistance(start) }
-        val nowToEndCosts = tiles.map { it.manhattanDistance(finish) }
-        val graph = mutableListOf<AStarNode>()
-        tiles.sortedBy { it.x }.forEachIndexed { index, tile ->
-            val node =
-                AStarNode(tile.x, tile.y, startToNowCosts[index].toDouble(), nowToEndCosts[index].toDouble())
-            graph.add(node)
-        }
-        return graph
+    override fun addedToEngine(engine: Engine?) {
+        levelMap = floors().map { it.toPosition() }.map { AStarNode(it.x, it.y) }.toMutableList()
     }
 
     fun findPath(start: PositionComponent, end: PositionComponent): List<PositionComponent> {
-        val tiles = getEmptyTiles()
-        val graph = constructGraph(tiles, start, end)
-        val startNode = AStarNode(start.x, start.y, 0.0, start.manhattanDistance(end).toDouble())
-        val endNode = AStarNode(end.x, end.y, start.manhattanDistance(end).toDouble(), 0.0)
-        return pathfinder.getPath(graph, startNode, endNode).map { it.toPosition() }.reversed()
+        val startNode = AStarNode(start.x, start.y)
+        val endNode = AStarNode(end.x, end.y)
+        val nodesToRemove = enemies().map { it.toNode() } + players().map { it.toNode() }
+        return pathfinder.getPath(levelMap - nodesToRemove, startNode, endNode).map { it.toPosition() }.reversed()
     }
-
 }
+
+
+
 
 

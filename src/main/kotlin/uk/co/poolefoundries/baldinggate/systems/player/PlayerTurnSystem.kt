@@ -41,7 +41,7 @@ object PlayerTurnSystem : EntitySystem() {
             if (path.isEmpty()) {
                 return false
             }
-            val positions = path.subList(0, minOf(entity.toStats().speed + 1, distance + 1, path.size))
+            val positions = path.take(minOf(entity.toStats().speed + 1, distance + 1, path.size))
             entity.getComponent(VisualComponent::class.java).addAnimation(MoveAnimation(positions))
             entity.add(positions.last())
             entity.add(StatsComponent(entity.toStats().useAp(1)))
