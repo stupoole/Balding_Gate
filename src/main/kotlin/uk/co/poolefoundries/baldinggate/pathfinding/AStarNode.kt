@@ -9,11 +9,6 @@ data class AStarNode(
     var nowToEndCost: Double,
     var prevNode: AStarNode? = null
 ) {
-
-    fun getPosition(): PositionComponent {
-        return PositionComponent(x, y)
-    }
-
     override fun equals(other: Any?): Boolean {
         return when (other) {
             is AStarNode -> this.x == other.x && this.y == other.y
