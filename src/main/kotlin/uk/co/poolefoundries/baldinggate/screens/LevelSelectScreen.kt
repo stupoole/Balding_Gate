@@ -2,40 +2,39 @@ package uk.co.poolefoundries.baldinggate.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
+import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
 
 class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter) : ScreenAdapter() {
 
-    var stage = Stage(game.viewport, game.batch)
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
     private val embossedSkin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons-embossed.json"), atlas)
-
+    private val table = Table()
+    private val scrollTable = Table()
+    private val scrollPane = ScrollPane(scrollTable, skin)
 
     init {
         val dirHandle = Gdx.files.internal("levels/")
-        val table = Table()
+
         table.center().center()
         table.setFillParent(true)
-        val scrollTable = Table()
         scrollTable.setFillParent(false)
-        val scrollPane = ScrollPane(scrollTable, skin)
         scrollPane.fadeScrollBars=false
 
         val backButton = TextButton("BACK...", embossedSkin)
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen
+                // TODO: This didn't work in the new camera system.
             }
         })
 
@@ -56,10 +55,6 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
         table.add(scrollPane).fill().expand()
 
 
-
-        stage.addActor(table)
-        stage.scrollFocus = scrollPane
-
     }
 
     override fun hide() {
@@ -67,18 +62,21 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
     }
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        CameraSystem.switchToStage()
+        cameraSystem.addActorToStage(table)
+        cameraSystem.setScrollFocus(scrollPane)
+        Gdx.input.inputProcessor = cameraSystem.stage
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-        stage.act()
-        stage.draw()
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.renderStage()
     }
 
     override fun dispose() {
-        stage.dispose()
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.newStage()
         skin.dispose()
         atlas.dispose()
     }

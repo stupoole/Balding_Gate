@@ -1,19 +1,15 @@
 package uk.co.poolefoundries.baldinggate.core
 
 import com.badlogic.ashley.core.*
-import com.badlogic.ashley.utils.ImmutableArray
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Array
 import uk.co.poolefoundries.baldinggate.model.Mob
 import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
 import uk.co.poolefoundries.baldinggate.model.TileType
 import kotlin.math.absoluteValue
+import kotlin.math.round
 import kotlin.math.sign
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -72,7 +68,35 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 
 }
 
+interface Animation {
+    fun update(delta: Float)
+    fun getX():Int
+    fun getY():Int
+    fun complete():Boolean
+}
 
+
+
+data class MoveAnimation(val positions: List<PositionComponent> = listOf(), private var progress:Float = 0F) : Animation {
+    private val animationDuration:Float = 0.1F
+
+    override fun update(delta: Float) {
+        this.progress += delta / animationDuration
+    }
+
+    override fun getX(): Int {
+        return positions[minOf(round(this.progress).toInt(), this.positions.size-1)].x
+    }
+
+    override fun getY(): Int {
+        return positions[minOf(round(this.progress).toInt(), this.positions.size-1)].y
+    }
+
+    override fun complete() : Boolean {
+        return progress > this.positions.size
+    }
+
+}
 
 object EnemyComponent : Component
 object PlayerComponent : Component
@@ -81,7 +105,26 @@ object FloorComponent : Component
 
 data class StatsComponent(val stats: Stats) : Component
 
-data class VisualComponent(val renderable: Renderable) : Component
+data class VisualComponent(val renderable: Renderable) : Component{
+
+    private var pendingAnimations = mutableListOf<Animation>()
+    fun addAnimation(animation: Animation){
+        pendingAnimations.add(animation)
+    }
+
+    fun updateAndGetAnimationPos(delta: Float):PositionComponent?{
+        var pos:PositionComponent? = null
+        if (pendingAnimations.isNotEmpty()){
+            pendingAnimations.first().update(delta)
+            pos = PositionComponent(pendingAnimations.first().getX(), pendingAnimations.first().getY())
+            if (pendingAnimations.first().complete()){
+                pendingAnimations.removeAt(0)
+            }
+        }
+        return pos
+    }
+
+}
 
 data class ColorComponent(val color:Color = Color.WHITE) : Component
 
@@ -129,35 +172,5 @@ data class MobRenderable(val entity: Entity, val renderable: Renderable) : Rende
     }
 }
 
-class RenderingSystem(val stage: Stage, val tileSize: Float) : EntitySystem() {
-    //    private val tileSize = 25f
-    private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
-    private val visualComponentMapper = ComponentMapper.getFor(VisualComponent::class.java)
-    private val colorComponentMapper = ComponentMapper.getFor(ColorComponent::class.java)
-    private var entities = ImmutableArray(Array<Entity>())
 
-
-    override fun addedToEngine(engine: Engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent::class.java, VisualComponent::class.java).get())
-    }
-
-    override fun update(deltaTime: Float) {
-        stage.camera.update()
-        stage.batch.projectionMatrix = stage.camera.combined
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        stage.batch.begin()
-        stage.batch.color= Color.WHITE
-        entities.forEach(::drawEntity)
-        stage.batch.end()
-    }
-
-    private fun drawEntity(entity: Entity) {
-        val pos = positionMapper.get(entity)
-        stage.batch.color = colorComponentMapper.get(entity).color
-        visualComponentMapper.get(entity).renderable.draw(stage.batch, pos.x * tileSize, pos.y * tileSize)
-
-    }
-}
 

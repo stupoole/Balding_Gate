@@ -4,25 +4,27 @@ package uk.co.poolefoundries.baldinggate.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Gdx.files
 import com.badlogic.gdx.ScreenAdapter
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
+import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
-class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
+class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
 
-    var stage = Stage(game.viewport, game.batch)
     private val atlas = TextureAtlas(files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
+    private val table = Table()
+    private val scrollTable = Table()
+    private val scrollPane = ScrollPane(scrollTable, skin)
 
     init {
-        val table = Table()
-        val scrollTable = Table()
+
         scrollTable.setFillParent(false)
         val scrollPane = ScrollPane(scrollTable, skin)
         scrollPane.fadeScrollBars=false
@@ -63,9 +65,10 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
         scrollTable.add(quitButton).padBottom(4F).expand()
 
         table.add(scrollPane).fill().expand()
-
-        stage.addActor(table)
-        stage.scrollFocus = scrollPane
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.switchToStage()
+        cameraSystem.addActorToStage(table)
+        cameraSystem.setScrollFocus(scrollPane)
     }
 
     override fun hide() {
@@ -73,19 +76,22 @@ class MainMenuScreen(val game: BaldingGateGame) : ScreenAdapter() {
     }
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
-//        stage.draw()
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.switchToStage()
+        cameraSystem.newStage()
+        cameraSystem.addActorToStage(table)
+        cameraSystem.setScrollFocus(scrollPane)
+        Gdx.input.inputProcessor = cameraSystem.stage
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-        stage.act()
-        stage.draw()
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.renderStage()
     }
 
     override fun dispose() {
-        stage.dispose()
+        val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
+        cameraSystem.newStage()
         skin.dispose()
         atlas.dispose()
     }

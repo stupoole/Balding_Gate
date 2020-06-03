@@ -82,7 +82,7 @@ class MoveTowards(override val selfId : String, override val targetId : String) 
         return "MoveTowards"
     }
 
-    // TODO: This is pretty crude but should work as a POC until we have pathfinding
+    // TODO: This is pretty crude but should work as a POC until we have path finding
     fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
         return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
     }

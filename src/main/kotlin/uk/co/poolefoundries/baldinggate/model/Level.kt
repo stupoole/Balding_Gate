@@ -22,7 +22,6 @@ data class MobType(val name: String, val texture: String, val stats: Stats, val 
                 texture
             )
         )
-
         val entity = Entity()
         return entity.add(VisualComponent(MobRenderable(entity, textureRunnable))).add(ColorComponent())
     }
