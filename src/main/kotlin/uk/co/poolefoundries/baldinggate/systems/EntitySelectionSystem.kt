@@ -103,4 +103,12 @@ object EntitySelectionSystem : EntitySystem() {
 
         return false
     }
+
+    fun getSelectedEntity():Entity?{
+        return selectedEntity.entity
+    }
+
+    fun getSelectedEntityStats():Stats?{
+        return selectedEntity.entity?.toStats()
+    }
 }

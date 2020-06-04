@@ -53,12 +53,12 @@ object PlayerTurnSystem : EntitySystem() {
     // Will do the end of turn stuff such as refresh AP and act out enemy actions
     fun endTurn(): Boolean {
         engine.getSystem(EnemyTurnSystem::class.java).takeTurn()
-        engine.getSystem(EntitySelectionSystem::class.java).deselectEntity()
+//        engine.getSystem(EntitySelectionSystem::class.java).deselectEntity()
         players().forEach { player ->
             val stats = player.toStats()
             player.add(StatsComponent(stats.restoreAp()))
         }
-        engine.getSystem(EntitySelectionSystem::class.java).deselectEntity()
+
         return true
     }
 

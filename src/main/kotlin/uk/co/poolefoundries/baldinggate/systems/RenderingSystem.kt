@@ -32,6 +32,7 @@ object RenderingSystem : EntitySystem() {
         cameraSystem.batch.color = Color.WHITE
         entities.forEach { drawEntity(it, deltaTime) }
         cameraSystem.batch.end()
+        cameraSystem.drawHUD()
     }
 
     private fun drawEntity(entity: Entity, delta: Float) {

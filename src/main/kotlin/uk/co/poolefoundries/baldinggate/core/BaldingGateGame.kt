@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Game
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
+import uk.co.poolefoundries.baldinggate.screens.UiTestScreen
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
 
@@ -16,8 +17,6 @@ object BaldingGateGame : Game() {
         engine.addSystem(CameraSystem)
         setScreen(MainMenuScreen(this))
     }
-
-    //TODO Some way to change screens without access to game scope
 
     override fun resize(width: Int, height: Int) {
         engine.getSystem(CameraSystem::class.java).resize(width, height)
