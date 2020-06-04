@@ -1,15 +1,12 @@
 package uk.co.poolefoundries.baldinggate.systems
 
 import com.badlogic.ashley.core.Engine
-import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import uk.co.poolefoundries.baldinggate.core.Stats
-import uk.co.poolefoundries.baldinggate.core.StatsComponent
 
 object HUDSystem : EntitySystem() {
 
@@ -46,7 +43,7 @@ object HUDSystem : EntitySystem() {
     }
 
     override fun update(deltaTime: Float) {
-        val stats = EntitySelectionSystem.getSelectedEntityStats()
+        val stats = EntitySelectionSystem.getSelectedPlayerStats()
         if (stats == null) {
             table.remove()
         } else {

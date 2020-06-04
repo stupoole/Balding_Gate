@@ -12,14 +12,16 @@ data class SelectedEntity(
     var entity: Entity? = null,
     var position: PositionComponent? = null,
     var actionPoints: Int = 0,
-    var speed: Int = 0
+    var speed: Int = 0,
+    var isPlayer: Boolean = false
 ) {
     fun clear() {
         this.entity?.add(ColorComponent(Color.WHITE))
-        this.entity = null
-        this.position = null
-        this.actionPoints = 0
-        this.speed = 0
+        entity = null
+        position = null
+        actionPoints = 0
+        speed = 0
+        isPlayer = false
     }
 }
 
@@ -45,7 +47,7 @@ object EntitySelectionSystem : EntitySystem() {
             val current = activePlayers.indexOf(selectedEntity.entity)
             // loops to select next player
             val next = (current + 1) % activePlayers.size
-            selectEntity(activePlayers[next])
+            selectEntity(activePlayers[next], true)
         } else {
             deselectEntity()
         }
@@ -53,19 +55,20 @@ object EntitySelectionSystem : EntitySystem() {
 
     // Will update whatever system we use to keep track of selected entity and return whether it was successful
     // should also update highlighted tiles
-    private fun selectEntity(entity: Entity): Boolean {
+    private fun selectEntity(entity: Entity, isPlayer:Boolean): Boolean {
         selectedEntity = SelectedEntity(
             entity,
             entity.toPosition(),
             entity.toStats().currentAP,
-            entity.toStats().speed
+            entity.toStats().speed,
+            isPlayer
         )
         return true
     }
 
 
     // Will clear selected entity and call updates to highlighted tiles
-    fun deselectEntity(): Boolean {
+    private fun deselectEntity(): Boolean {
         selectedEntity.clear()
         return true
     }
@@ -91,24 +94,26 @@ object EntitySelectionSystem : EntitySystem() {
 
         val selectedPlayers = players().filter { it.toPosition() == tilePos }
         if (selectedPlayers.isNotEmpty()) {
-            selectEntity(selectedPlayers.first())
+            selectEntity(selectedPlayers.first(), true)
             return true
         }
 
         val selectedEnemies = enemies().filter { it.toPosition() == tilePos }
         if (selectedEnemies.isNotEmpty()) {
-            selectEntity(selectedEnemies.first())
+            selectEntity(selectedEnemies.first(), false)
             return true
         }
 
         return false
     }
 
-    fun getSelectedEntity():Entity?{
+    fun getSelectedEntity(): Entity? {
         return selectedEntity.entity
     }
 
-    fun getSelectedEntityStats():Stats?{
-        return selectedEntity.entity?.toStats()
+    fun getSelectedPlayerStats(): Stats? {
+        return if (selectedEntity.isPlayer)
+            selectedEntity.entity?.toStats()
+        else null
     }
 }

@@ -29,14 +29,15 @@ object PathfinderSystem : EntitySystem() {
     private var levelMap = mutableListOf<AStarNode>()
 
     override fun addedToEngine(engine: Engine?) {
-        levelMap = floors().map { it.toPosition() }.map { AStarNode(it.x, it.y) }.toMutableList()
+        levelMap = floors().map { it.toNode() }.toMutableList()
     }
 
     fun findPath(start: PositionComponent, end: PositionComponent): List<PositionComponent> {
         val startNode = AStarNode(start.x, start.y)
         val endNode = AStarNode(end.x, end.y)
         val nodesToRemove = enemies().map { it.toNode() } + players().map { it.toNode() }
-        return pathfinder.getPath(levelMap - nodesToRemove, startNode, endNode).map { it.toPosition() }.reversed()
+        return pathfinder.getPath(levelMap.filterNot { tile -> nodesToRemove.any { tile == it } }, startNode, endNode)
+            .map { it.toPosition() }.reversed()
     }
 }
 

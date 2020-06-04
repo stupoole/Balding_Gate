@@ -85,7 +85,7 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 
 }
 
-interface Animation {
+interface NewAnimation {
     fun update(delta: Float)
     fun getX():Int
     fun getY():Int
@@ -94,7 +94,7 @@ interface Animation {
 
 
 
-data class MoveAnimation(val positions: List<PositionComponent> = listOf(), private var progress:Float = 0F) : Animation {
+data class MoveAnimation(val positions: List<PositionComponent> = listOf(), private var progress:Float = 0F) : NewAnimation {
     private val animationDuration:Float = 0.15F
 
     override fun update(delta: Float) {
@@ -124,9 +124,9 @@ data class StatsComponent(val stats: Stats) : Component
 
 data class VisualComponent(val renderable: Renderable) : Component{
 
-    private var pendingAnimations = mutableListOf<Animation>()
-    fun addAnimation(animation: Animation){
-        pendingAnimations.add(animation)
+    private var pendingAnimations = mutableListOf<NewAnimation>()
+    fun addAnimation(newAnimation: NewAnimation){
+        pendingAnimations.add(newAnimation)
     }
 
     fun updateAndGetAnimationPos(delta: Float):PositionComponent?{
