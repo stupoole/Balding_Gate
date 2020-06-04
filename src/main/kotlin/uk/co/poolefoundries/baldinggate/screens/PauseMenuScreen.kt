@@ -32,7 +32,7 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
         scrollTable.setFillParent(false)
         scrollPane.fadeScrollBars = false
 
-        val resumeButton = TextButton("resume", skin)
+        val resumeButton = TextButton("resume", skin, "embossed")
         val levelsButton = TextButton("levels", skin)
         val optionsButton = TextButton("options", skin)
         val quitButton = TextButton("quit", skin)
