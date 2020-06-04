@@ -738,7 +738,7 @@
       }
     },
     {
-      "mobType": "ranger",
+      "mobType": "adventurer",
       "position": {
         "x": 1,
         "y": 8
@@ -762,7 +762,7 @@
   "mobTypes": [
     {
       "name": "tank",
-      "texture": "characters/player.png",
+      "texture": "characters/tank.png",
       "stats": {
         "vitality": 50,
         "hitPoints": 50,
@@ -780,16 +780,52 @@
     },
     {
       "name": "ranger",
-      "texture": "characters/player.png",
+      "texture": "characters/ranger.png",
       "stats": {
         "vitality": 25,
         "hitPoints": 25,
-        "speed": 5,
+        "speed": 6,
         "maxAP": 2,
         "currentAP": 2,
         "attack": {
           "die": [
             6
+          ],
+          "mod": 1
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "mage",
+      "texture": "characters/mage.png",
+      "stats": {
+        "vitality": 15,
+        "hitPoints": 15,
+        "speed": 5,
+        "maxAP": 3,
+        "currentAP": 3,
+        "attack": {
+          "die": [
+            10
+          ],
+          "mod": 3
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "adventurer",
+      "texture": "characters/adventurer.png",
+      "stats": {
+        "vitality": 30,
+        "hitPoints": 30,
+        "speed": 5,
+        "maxAP": 2,
+        "currentAP": 2,
+        "attack": {
+          "die": [
+            8
           ],
           "mod": 1
         }
