@@ -106,7 +106,7 @@ object CameraSystem : EntitySystem() {
     }
 
     fun renderStage() {
-        Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
+        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         stage.act()
         stage.draw()

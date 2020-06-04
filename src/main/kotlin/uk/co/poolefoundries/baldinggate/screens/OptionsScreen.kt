@@ -35,7 +35,7 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter
             }
         })
 
-        scrollTable.add(backButton).padBottom(4F).expand()
+        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
 
         table.add(scrollPane).fill().expand()

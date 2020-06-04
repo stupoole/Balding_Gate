@@ -27,20 +27,20 @@ object HUDSystem : EntitySystem() {
     init {
         table.bottom().left()
         table.setFillParent(true)
-
         healthBar.setAnimateDuration(animationDuration); healthBar.value = 1F
         staminaBar.value = 1F
 //        miniHealthBar.setAnimateDuration(animationDuration); miniHealthBar.value = 1F
 //        miniStaminaBar.value = 1F
         table.row().expandY()
         table.row().uniformX()
-        table.add(healthBar).fill().expandX().padBottom(10F)
+        table.add(healthBar).fill().expandX().padBottom(10F).maxWidth(500F).left()
         table.add().expandX()
         table.add().expandX()
         table.row().uniformX()
-        table.add(staminaBar).fill().expandX().padBottom(10F)
+        table.add(staminaBar).fill().expandX().padBottom(10F).maxWidth(500F).left()
         table.add().expandX()
         table.add().expandX()
+
 
 //        table.add(miniHealthBar).padBottom(10F)
 //        table.row()

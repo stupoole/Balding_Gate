@@ -58,13 +58,13 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
             }
         })
 
-        scrollTable.add(resumeButton).padBottom(4F).expand()
+        scrollTable.add(resumeButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
-        scrollTable.add(levelsButton).padBottom(4F).expand()
+        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
-        scrollTable.add(optionsButton).padBottom(4F).expand()
+        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
-        scrollTable.add(quitButton).padBottom(4F).expand()
+        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
 
         table.add(scrollPane).fill().expand()
     }
