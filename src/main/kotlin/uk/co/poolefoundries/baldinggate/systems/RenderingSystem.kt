@@ -29,7 +29,6 @@ object RenderingSystem : EntitySystem() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         cameraSystem.batch.begin()
-        cameraSystem.batch.color = Color.WHITE
         entities.forEach { drawEntity(it, deltaTime) }
         cameraSystem.batch.end()
         cameraSystem.drawHUD()
