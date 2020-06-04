@@ -28,7 +28,7 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter
         table.setFillParent(true)
         table.center().center()
         scrollPane.fadeScrollBars = false
-        val backButton = TextButton("BACK???", skin)
+        val backButton = TextButton("back...", skin, "embossed")
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen

@@ -17,7 +17,6 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
 
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
-    private val embossedSkin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons-embossed.json"), atlas)
     private val table = Table()
     private val scrollTable = Table()
     private val scrollPane = ScrollPane(scrollTable, skin)
@@ -30,7 +29,7 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
         scrollTable.setFillParent(false)
         scrollPane.fadeScrollBars=false
 
-        val backButton = TextButton("BACK...", embossedSkin)
+        val backButton = TextButton("BACK...", skin, "embossed")
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen
