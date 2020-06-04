@@ -1,0 +1,69 @@
+
+status-bars.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+health-before
+  rotate: false
+  xy: 198, 2
+  size: 16, 56
+  split: 4, 4, 16, 20
+  pad: 4, 4, 16, 20
+  orig: 16, 56
+  offset: 0, 0
+  index: -1
+health-frame
+  rotate: false
+  xy: 100, 2
+  size: 96, 56
+  split: 60, 8, 16, 16
+  pad: 56, 8, 12, 16
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
+mini-frame
+  rotate: false
+  xy: 234, 8
+  size: 12, 20
+  split: 4, 2, 4, 4
+  pad: 2, 2, 2, 4
+  orig: 12, 20
+  offset: 0, 0
+  index: -1
+mini-health-before
+  rotate: false
+  xy: 244, 30
+  size: 8, 28
+  split: 2, 2, 8, 10
+  pad: 2, 2, 8, 10
+  orig: 8, 28
+  offset: 0, 0
+  index: -1
+mini-stamina-before
+  rotate: false
+  xy: 234, 30
+  size: 8, 28
+  split: 2, 2, 8, 10
+  pad: 2, 2, 8, 10
+  orig: 8, 28
+  offset: 0, 0
+  index: -1
+stamina-before
+  rotate: false
+  xy: 216, 2
+  size: 16, 56
+  split: 4, 4, 16, 20
+  pad: 4, 4, 16, 20
+  orig: 16, 56
+  offset: 0, 0
+  index: -1
+stamina-frame
+  rotate: false
+  xy: 2, 2
+  size: 96, 56
+  split: 60, 8, 16, 16
+  pad: 56, 8, 12, 16
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
