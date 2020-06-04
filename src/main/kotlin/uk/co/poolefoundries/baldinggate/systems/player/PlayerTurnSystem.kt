@@ -70,7 +70,7 @@ object PlayerTurnSystem : EntitySystem() {
             return false
         }
         return when {
-            distance <= playerStats.speed * playerStats.currentAP && distance > 1 -> {
+            distance <= playerStats.speed * playerStats.currentAP && distance >= 1 -> {
                 for (i in 0 until playerStats.currentAP) {
                     if (move(selected, targetPos)) {
                         return true
