@@ -103,7 +103,7 @@ object EntitySelectionSystem : EntitySystem() {
             selectEntity(selectedEnemies.first(), false)
             return true
         }
-
+        selectedEntity.clear()
         return false
     }
 

@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -26,16 +27,22 @@ object HUDSystem : EntitySystem() {
     init {
         table.bottom().left()
         table.setFillParent(true)
+        table.debug()
 
         healthBar.setAnimateDuration(animationDuration); healthBar.value = 1F
         staminaBar.value = 1F
 //        miniHealthBar.setAnimateDuration(animationDuration); miniHealthBar.value = 1F
 //        miniStaminaBar.value = 1F
+        table.row().expandY()
+        table.row().uniformX()
+        table.add(healthBar).fill().expandX().padBottom(10F)
+        table.add().expandX()
+        table.add().expandX()
+        table.row().uniformX()
+        table.add(staminaBar).fill().expandX().padBottom(10F)
+        table.add().expandX()
+        table.add().expandX()
 
-        table.add(healthBar).padBottom(10F)
-        table.row()
-        table.add(staminaBar).padBottom(10F)
-        table.row()
 //        table.add(miniHealthBar).padBottom(10F)
 //        table.row()
 //        table.add(miniStaminaBar).padBottom(10F)
