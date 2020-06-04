@@ -27,7 +27,6 @@ object HUDSystem : EntitySystem() {
     init {
         table.bottom().left()
         table.setFillParent(true)
-        table.debug()
 
         healthBar.setAnimateDuration(animationDuration); healthBar.value = 1F
         staminaBar.value = 1F
