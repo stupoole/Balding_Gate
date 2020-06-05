@@ -36,7 +36,7 @@ object PathfinderSystem : EntitySystem() {
         val startNode = AStarNode(start.x, start.y)
         val endNode = AStarNode(end.x, end.y)
         val nodesToRemove = enemies().map { it.toNode() } + players().map { it.toNode() }
-        return pathfinder.getPath(levelMap.filterNot { tile -> nodesToRemove.any { tile == it } }, startNode, endNode)
+        return pathfinder.getPath((levelMap-nodesToRemove).map{it.copy()}, startNode, endNode)
             .map { it.toPosition() }.reversed()
     }
 }
