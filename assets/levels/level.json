@@ -731,7 +731,7 @@
   ],
   "mobs": [
     {
-      "mobType": "tank",
+      "mobType": "ranger",
       "position": {
         "x": 1,
         "y": 1
