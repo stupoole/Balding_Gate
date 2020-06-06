@@ -46,8 +46,6 @@ object PlayerTurnSystem : EntitySystem() {
     // Returns if move reached as close to target as is valid i.e. is finished moving
     private fun move(entity: Entity, target: PositionComponent): Boolean {
         val ap = entity.toStats().currentAP
-
-
         val startPos = entity.toPosition()
         val distance = startPos.manhattanDistance(target)
         val path = PathfinderSystem.findPath(startPos, target)

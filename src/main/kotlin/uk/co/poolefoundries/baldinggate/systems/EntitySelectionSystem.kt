@@ -47,7 +47,6 @@ object EntitySelectionSystem : EntitySystem() {
     }
 
 
-
     // Selects next player with AP or deselects
     fun nextPlayer(): Boolean {
         val activePlayers = players().filter { it.toStats().currentAP > 0 }
@@ -89,9 +88,24 @@ object EntitySelectionSystem : EntitySystem() {
         val gamePos = cameraSystem.unproject(x, y)
         val targetPos = PositionComponent((gamePos.x / tileSize).toInt(), (gamePos.y / tileSize).toInt())
         if (players().contains(selectedEntity.entity)) {
-            return playerSystem.determineAction(selectedEntity.entity!!, targetPos)
+            val acted = playerSystem.determineAction(selectedEntity.entity!!, targetPos)
+            reselectEntity()
+            return acted
         }
         return false
+    }
+
+    fun reselectEntity() {
+        val entity = selectedEntity.entity!!
+        if (selectedEntity.isPlayer) {
+            selectEntity(entity, true)
+            selectionBorders = Pair(calculateSelectionBorders(), Theme.BLUE)
+            movementBorders = Pair(calculateMovementBorders().reversed(), listOf(Theme.VIOLET, Theme.MAGENTA).reversed())
+        } else {
+            selectEntity(entity, false)
+            selectionBorders = Pair(calculateSelectionBorders(), Theme.RED)
+            movementBorders = Pair(calculateMovementBorders().reversed(), listOf(Theme.ORANGE, Theme.YELLOW).reversed())
+        }
     }
 
     // Will select entity at given position if valid target exists. Returns whether an entity was selected
@@ -104,7 +118,8 @@ object EntitySelectionSystem : EntitySystem() {
         if (selectedPlayers.isNotEmpty()) {
             selectEntity(selectedPlayers.first(), true)
             selectionBorders = Pair(calculateSelectionBorders(), Theme.BLUE)
-            movementBorders = Pair(calculateMovementBorders(), listOf(Theme.VIOLET, Theme.MAGENTA))
+            movementBorders =
+                Pair(calculateMovementBorders().reversed(), listOf(Theme.VIOLET, Theme.MAGENTA).reversed())
             return true
         }
 
@@ -112,7 +127,7 @@ object EntitySelectionSystem : EntitySystem() {
         if (selectedEnemies.isNotEmpty()) {
             selectEntity(selectedEnemies.first(), false)
             selectionBorders = Pair(calculateSelectionBorders(), Theme.RED)
-            movementBorders = Pair(calculateMovementBorders(), listOf(Theme.ORANGE, Theme.YELLOW))
+            movementBorders = Pair(calculateMovementBorders().reversed(), listOf(Theme.ORANGE, Theme.YELLOW).reversed())
             return true
         }
         selectedEntity.clear()
@@ -138,17 +153,30 @@ object EntitySelectionSystem : EntitySystem() {
     }
 
     fun calculateMovementBorders(): List<List<Line>> {
+
         val borders = mutableListOf<List<Line>>()
         val ap = selectedEntity.entity!!.toStats().currentAP
-        for (action in 0 until ap) {
+        for (action in 1..ap) {
+            val edgeTiles = PathfinderSystem.findSpread(selectedEntity.position!!, selectedEntity.speed * action)
+                .filter { (it.left || it.right || it.top || it.bottom) }
             val lines = mutableListOf<Line>()
-            val x = selectedEntity.entity!!.toPosition().x.toFloat()
-            val y = selectedEntity.entity!!.toPosition().y.toFloat()
+            edgeTiles.forEach { tile ->
 
-            lines.add(Line((x - 1 - action) * tileSize, (y - 1 - action) * tileSize, (x + 2 + action) * tileSize, (y - 1 - action) * tileSize)) // bottom
-            lines.add(Line((x - 1 - action) * tileSize, (y - 1 - action) * tileSize, (x - 1 - action) * tileSize, (y + 2 + action) * tileSize)) // left
-            lines.add(Line((x + 2 + action) * tileSize, (y - 1 - action) * tileSize, (x + 2 + action) * tileSize, (y + 2 + action) * tileSize)) // right
-            lines.add(Line((x - 1 - action) * tileSize, (y + 2 + action) * tileSize, (x + 2 + action) * tileSize, (y + 2 + action) * tileSize)) // top
+                val x = tile.x.toFloat()
+                val y = tile.y.toFloat()
+                if (tile.right){
+                    lines.add(Line((x + 1) * tileSize, (y) * tileSize, (x + 1) * tileSize, (y + 1) * tileSize))
+                }
+                if (tile.left) {
+                    lines.add(Line((x) * tileSize, (y) * tileSize, (x) * tileSize, (y + 1) * tileSize))
+                }
+                if (tile.bottom) {
+                    lines.add(Line((x) * tileSize, (y) * tileSize, (x + 1) * tileSize, (y) * tileSize))
+                }
+                if (tile.top) {
+                    lines.add(Line((x) * tileSize, (y + 1) * tileSize, (x + 1) * tileSize, (y + 1) * tileSize))
+                }
+            }
             borders.add(lines.toList())
         }
         return borders.toList()

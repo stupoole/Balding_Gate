@@ -68,11 +68,12 @@ object CameraSystem : EntitySystem() {
         shapeRenderer.projectionMatrix = gameCamera.combined
         val (moveBorders, moveColors) = EntitySelectionSystem.movementBorders
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+
         if (moveBorders.isNotEmpty()) {
             moveBorders.forEachIndexed { index, border ->
                 shapeRenderer.color = moveColors[index]
                 border.forEach { line ->
-                    shapeRenderer.rectLine(line.startX, line.startY, line.endX, line.endY, 3F)
+                    shapeRenderer.rectLine(line.startX, line.startY, line.endX, line.endY, 2F)
                 }
             }
         }
