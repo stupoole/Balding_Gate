@@ -25,13 +25,14 @@ object RenderingSystem : EntitySystem() {
     override fun update(deltaTime: Float) {
         val cameraSystem = engine.getSystem(CameraSystem::class.java)
         cameraSystem.updateGameCamera()
-        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
+        Gdx.gl.glClearColor(.0F, .168F, .212F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         cameraSystem.batch.begin()
         entities.forEach { drawEntity(it, deltaTime) }
         cameraSystem.batch.end()
         cameraSystem.drawHUD()
+        cameraSystem.drawOverlays()
     }
 
     private fun drawEntity(entity: Entity, delta: Float) {

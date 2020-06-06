@@ -1,11 +1,14 @@
 package uk.co.poolefoundries.baldinggate.systems
 
 import com.badlogic.ashley.core.Engine
+import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -22,6 +25,7 @@ object CameraSystem : EntitySystem() {
     private val HUDCamera = OrthographicCamera()
     private var HUDViewport = ScreenViewport(HUDCamera)
     private var actors: Array<Actor> = Array()
+    private val shapeRenderer = ShapeRenderer()
 
     val batch = SpriteBatch()
     val stage = Stage(stageViewport, batch)
@@ -41,7 +45,6 @@ object CameraSystem : EntitySystem() {
 
 
     fun switchToGame() {
-
         stage.clear()
         gameViewport.apply()
         gameCamera.update()
@@ -58,6 +61,29 @@ object CameraSystem : EntitySystem() {
         HUDCamera.update()
         HUDStage.draw()
         HUDStage.act()
+    }
+
+    fun drawOverlays() {
+        gameCamera.update()
+        shapeRenderer.projectionMatrix = gameCamera.combined
+        val (moveBorders, moveColors) = EntitySelectionSystem.movementBorders
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        if (moveBorders.isNotEmpty()) {
+            moveBorders.forEachIndexed { index, border ->
+                shapeRenderer.color = moveColors[index]
+                border.forEach { line ->
+                    shapeRenderer.rectLine(line.startX, line.startY, line.endX, line.endY, 3F)
+                }
+            }
+        }
+        val (selectLines, selectColor) = EntitySelectionSystem.selectionBorders
+        if (selectLines.isNotEmpty()) {
+            shapeRenderer.color = selectColor
+            selectLines.forEach { line ->
+                shapeRenderer.rectLine(line.startX, line.startY, line.endX, line.endY, 2F)
+            }
+        }
+        shapeRenderer.end()
     }
 
 
@@ -106,7 +132,7 @@ object CameraSystem : EntitySystem() {
     }
 
     fun renderStage() {
-        Gdx.gl.glClearColor(.1F, .12F, .16F, 1F)
+        Gdx.gl.glClearColor(.0F, .168F, .212F, 1F)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         stage.act()
         stage.draw()
