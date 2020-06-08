@@ -820,9 +820,9 @@
       "stats": {
         "vitality": 30,
         "hitPoints": 30,
-        "speed": 5,
-        "maxAP": 2,
-        "currentAP": 2,
+        "speed": 3,
+        "maxAP": 3,
+        "currentAP": 3,
         "attack": {
           "die": [
             8

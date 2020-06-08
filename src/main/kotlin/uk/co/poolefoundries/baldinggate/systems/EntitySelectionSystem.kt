@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import jdk.nashorn.internal.runtime.SharedPropertyMap
 import uk.co.poolefoundries.baldinggate.core.*
 import uk.co.poolefoundries.baldinggate.systems.player.PlayerTurnSystem
 
@@ -34,8 +32,21 @@ object EntitySelectionSystem : EntitySystem() {
     private val enemyFamily: Family = Family.all(EnemyComponent::class.java).get()
     private fun players() = engine.getEntitiesFor(playerFamily).toList()
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
-    var selectionBorders = Pair(listOf<Line>(), Color.CLEAR)
-    var movementBorders = Pair(listOf<List<Line>>(), listOf<Color>())
+    var selectionBorders = listOf<Line>()
+    var movementBorders = listOf<List<Line>>()
+    fun movementColors(step: Int) = if (selectedEntity.isPlayer) {
+        when (step) {
+            0 -> Theme.VIOLET
+            else -> Theme.MAGENTA
+        }
+    } else {
+        when (step) {
+            0 -> Theme.ORANGE
+            else -> Theme.YELLOW
+        }
+    }
+
+    fun selectColors() = if (selectedEntity.isPlayer) Theme.BLUE else Theme.RED
     private const val tileSize = 25F //TODO get this from the game engine/level somehow
     private var selectedEntity = SelectedEntity()
     private fun (Entity).toPosition(): PositionComponent {
@@ -49,12 +60,13 @@ object EntitySelectionSystem : EntitySystem() {
 
     // Selects next player with AP or deselects
     fun nextPlayer(): Boolean {
-        val activePlayers = players().filter { it.toStats().currentAP > 0 }
+        val activePlayers = players().filter { it.toStats().currentAP > 0 && it.toStats().hitPoints > 0 }
         return if (activePlayers.isNotEmpty()) {
             val current = activePlayers.indexOf(selectedEntity.entity)
-            // loops to select next player
             val next = (current + 1) % activePlayers.size
-            selectEntity(activePlayers[next], true)
+            updateSelectedEntity(activePlayers[next])
+            recalculateBorders()
+            true
         } else {
             deselectEntity()
         }
@@ -62,14 +74,15 @@ object EntitySelectionSystem : EntitySystem() {
 
     // Will update whatever system we use to keep track of selected entity and return whether it was successful
     // should also update highlighted tiles
-    private fun selectEntity(entity: Entity, isPlayer: Boolean): Boolean {
+    private fun updateSelectedEntity(entity: Entity): Boolean {
         selectedEntity = SelectedEntity(
             entity,
             entity.toPosition(),
             entity.toStats().currentAP,
             entity.toStats().speed,
-            isPlayer
+            players().contains(entity)
         )
+
         return true
     }
 
@@ -77,6 +90,8 @@ object EntitySelectionSystem : EntitySystem() {
     // Will clear selected entity and call updates to highlighted tiles
     private fun deselectEntity(): Boolean {
         selectedEntity.clear()
+        selectionBorders = listOf<Line>()
+        movementBorders = listOf<List<Line>>()
         return true
     }
 
@@ -89,23 +104,16 @@ object EntitySelectionSystem : EntitySystem() {
         val targetPos = PositionComponent((gamePos.x / tileSize).toInt(), (gamePos.y / tileSize).toInt())
         if (players().contains(selectedEntity.entity)) {
             val acted = playerSystem.determineAction(selectedEntity.entity!!, targetPos)
-            reselectEntity()
+            recalculateBorders()
             return acted
         }
         return false
     }
 
-    fun reselectEntity() {
-        val entity = selectedEntity.entity!!
-        if (selectedEntity.isPlayer) {
-            selectEntity(entity, true)
-            selectionBorders = Pair(calculateSelectionBorders(), Theme.BLUE)
-            movementBorders = Pair(calculateMovementBorders().reversed(), listOf(Theme.VIOLET, Theme.MAGENTA).reversed())
-        } else {
-            selectEntity(entity, false)
-            selectionBorders = Pair(calculateSelectionBorders(), Theme.RED)
-            movementBorders = Pair(calculateMovementBorders().reversed(), listOf(Theme.ORANGE, Theme.YELLOW).reversed())
-        }
+    private fun recalculateBorders() {
+        selectedEntity.entity?.let { updateSelectedEntity(it) }
+        selectionBorders = calculateSelectionBorders().reversed()
+        movementBorders = calculateMovementBorders().reversed()
     }
 
     // Will select entity at given position if valid target exists. Returns whether an entity was selected
@@ -114,25 +122,13 @@ object EntitySelectionSystem : EntitySystem() {
         val gamePos = cameraSystem.unproject(x, y)
         val tilePos = PositionComponent((gamePos.x / tileSize).toInt(), (gamePos.y / tileSize).toInt())
 
-        val selectedPlayers = players().filter { it.toPosition() == tilePos }
-        if (selectedPlayers.isNotEmpty()) {
-            selectEntity(selectedPlayers.first(), true)
-            selectionBorders = Pair(calculateSelectionBorders(), Theme.BLUE)
-            movementBorders =
-                Pair(calculateMovementBorders().reversed(), listOf(Theme.VIOLET, Theme.MAGENTA).reversed())
+        val selectedMobs = (players() + enemies()).filter { it.toPosition() == tilePos && it.toStats().hitPoints > 0 }
+        if (selectedMobs.isNotEmpty()) {
+            updateSelectedEntity(selectedMobs.first())
+            recalculateBorders()
             return true
         }
-
-        val selectedEnemies = enemies().filter { it.toPosition() == tilePos }
-        if (selectedEnemies.isNotEmpty()) {
-            selectEntity(selectedEnemies.first(), false)
-            selectionBorders = Pair(calculateSelectionBorders(), Theme.RED)
-            movementBorders = Pair(calculateMovementBorders().reversed(), listOf(Theme.ORANGE, Theme.YELLOW).reversed())
-            return true
-        }
-        selectedEntity.clear()
-        selectionBorders = Pair(listOf<Line>(), Color())
-        movementBorders = Pair(listOf<List<Line>>(), listOf<Color>())
+        deselectEntity()
         return false
     }
 
@@ -152,7 +148,7 @@ object EntitySelectionSystem : EntitySystem() {
         else null
     }
 
-    fun calculateMovementBorders(): List<List<Line>> {
+    private fun calculateMovementBorders(): List<List<Line>> {
 
         val borders = mutableListOf<List<Line>>()
         val ap = selectedEntity.entity!!.toStats().currentAP
@@ -164,7 +160,7 @@ object EntitySelectionSystem : EntitySystem() {
 
                 val x = tile.x.toFloat()
                 val y = tile.y.toFloat()
-                if (tile.right){
+                if (tile.right) {
                     lines.add(Line((x + 1) * tileSize, (y) * tileSize, (x + 1) * tileSize, (y + 1) * tileSize))
                 }
                 if (tile.left) {
@@ -182,7 +178,7 @@ object EntitySelectionSystem : EntitySystem() {
         return borders.toList()
     }
 
-    fun calculateSelectionBorders(): List<Line> {
+    private fun calculateSelectionBorders(): List<Line> {
 
         val lines = mutableListOf<Line>()
         val x = selectedEntity.entity!!.toPosition().x.toFloat()

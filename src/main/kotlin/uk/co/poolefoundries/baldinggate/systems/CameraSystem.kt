@@ -18,13 +18,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 
 object CameraSystem : EntitySystem() {
-    private val gameCamera = OrthographicCamera()
+    val gameCamera = OrthographicCamera()
     private var gameViewport = ScreenViewport(gameCamera)
     private val stageCamera = OrthographicCamera()
     private var stageViewport = ScreenViewport(stageCamera)
     private val HUDCamera = OrthographicCamera()
     private var HUDViewport = ScreenViewport(HUDCamera)
-    private var actors: Array<Actor> = Array()
     private val shapeRenderer = ShapeRenderer()
 
     val batch = SpriteBatch()
@@ -66,22 +65,22 @@ object CameraSystem : EntitySystem() {
     fun drawOverlays() {
         gameCamera.update()
         shapeRenderer.projectionMatrix = gameCamera.combined
-        val (moveBorders, moveColors) = EntitySelectionSystem.movementBorders
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        val moveBorders = EntitySelectionSystem.movementBorders
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
 
         if (moveBorders.isNotEmpty()) {
             moveBorders.forEachIndexed { index, border ->
-                shapeRenderer.color = moveColors[index]
+                shapeRenderer.color = EntitySelectionSystem.movementColors(moveBorders.size - index - 1)
                 border.forEach { line ->
-                    shapeRenderer.rectLine(line.startX, line.startY, line.endX, line.endY, 2F)
+                    shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
                 }
             }
         }
-        val (selectLines, selectColor) = EntitySelectionSystem.selectionBorders
+        val selectLines = EntitySelectionSystem.selectionBorders
         if (selectLines.isNotEmpty()) {
-            shapeRenderer.color = selectColor
+            shapeRenderer.color = EntitySelectionSystem.selectColors()
             selectLines.forEach { line ->
-                shapeRenderer.rectLine(line.startX, line.startY, line.endX, line.endY, 2F)
+                shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
             }
         }
         shapeRenderer.end()

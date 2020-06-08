@@ -7,10 +7,19 @@
   }
 
   com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
-    health: { background: health-frame , knobBefore: health-before},
-    stamina: { background: stamina-frame , knobBefore: stamina-before},
-    mini-health: { background: mini-frame , knobBefore: mini-health-before},
-    mini-stamina: { background: mini-frame , knobBefore: mini-stamina-before},
+    health: { background: health-frame , knobBefore: health-bar},
+    stamina: { background: stamina-frame , knobBefore: stamina-filled},
+    mini-health: {knobBefore: mini-health-bar},
+    mini-stamina: {knobBefore: mini-stamina-bar},
   },
+
+  uk.co.poolefoundries.baldinggate.statusbars.HealthBar$HealthBarStyle:{
+    default:{frame: health-frame , bar: health-bar}
+    mini:{bar: mini-health-bar}
+  }
+  uk.co.poolefoundries.baldinggate.statusbars.StaminaBar$StaminaBarStyle:{
+    default:{frame: stamina-frame , filledBar: stamina-filled, emptyBar: status-empty}
+    mini:{filledBar: mini-stamina-bar, emptyBar:mini-empty}
+  }
 }
 
