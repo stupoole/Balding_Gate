@@ -20,7 +20,6 @@ object PathfinderSystem : EntitySystem() {
     private fun floors() = engine.getEntitiesFor(floorsFamily).toList()
     private fun (Entity).toPosition() = getComponent(PositionComponent::class.java)
     private fun (Entity).toAStar() = AStarNode(toPosition().x, toPosition().y)
-    private fun (Entity).toSpread() = SpreadNode(toPosition().x, toPosition().y)
     private fun (AStarNode).toSpread() = SpreadNode(x, y)
 
     private fun (AStarNode).toPosition() = PositionComponent(x, y)
@@ -42,7 +41,6 @@ object PathfinderSystem : EntitySystem() {
 
     fun findSpread(start:PositionComponent, speed:Int): List<SpreadNode>{
         val startNode = SpreadNode(start.x, start.y)
-        val nodesToRemove = enemies().map { it.toSpread() } + players().map { it.toSpread() }
         return spreadFinder.getMovementBorder((levelMap.map{it.toSpread()}).map{it.copy()} , startNode, speed)
     }
 }

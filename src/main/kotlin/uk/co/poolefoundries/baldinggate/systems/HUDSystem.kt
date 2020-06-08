@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import uk.co.poolefoundries.baldinggate.core.EnemyComponent
@@ -26,12 +25,7 @@ object HUDSystem : EntitySystem() {
     private val skin = Skin(Gdx.files.internal("UISkins/StatusBars/status-bars.json"), atlas)
     private val table = Table()
     private val miniHealthBarStyle = skin.get("mini", HealthBar.HealthBarStyle::class.java)
-    private val miniStaminaBarStyle = skin.get("mini", StaminaBar.StaminaBarStyle::class.java)
 
-    //    val miniStaminaBar =
-//        ProgressBar(0F, 1F, 0.01F, false, skin.get("mini-stamina", ProgressBar.ProgressBarStyle::class.java))
-//    val miniHealthBar =
-//         ProgressBar(0F, 1F, 0.01F, false, skin.get("mini-health", ProgressBar.ProgressBarStyle::class.java))
     private val healthBar = HealthBar(1F, 0F, skin.get("default", HealthBar.HealthBarStyle::class.java))
     private val staminaBar = StaminaBar(1, 0, skin.get("default", StaminaBar.StaminaBarStyle::class.java))
     private val miniHealthBars = mutableMapOf<Entity, HealthBar>()
@@ -39,13 +33,9 @@ object HUDSystem : EntitySystem() {
 
     init {
         table.bottom().left()
-//        table.debug()
         table.setFillParent(true)
         healthBar.animateDuration = animationDuration
 
-
-//        miniHealthBar.setAnimateDuration(animationDuration); miniHealthBar.value = 1F
-//        miniStaminaBar.value = 1F
         table.row().expandY()
         table.row().uniformX()
         table.add(healthBar).fill().expandX().padBottom(10F).maxWidth(500F).left()
@@ -56,27 +46,16 @@ object HUDSystem : EntitySystem() {
         table.add().expandX()
         table.add().expandX()
 
-
-
-
-//        table.add(miniHealthBar).padBottom(10F)
-//        table.row()
-//        table.add(miniStaminaBar).padBottom(10F)
-//        table.row()
     }
 
     override fun update(deltaTime: Float) {
         val stats = EntitySelectionSystem.getSelectedPlayerStats()
         if (stats == null) {
             staminaBar.updateValues(0, 0)
-
             healthBar.value = 0F
         } else {
-//            CameraSystem.addActorToStage(table)
             healthBar.value = stats.hitPoints.toFloat() / stats.vitality.toFloat()
-//            miniHealthBar.value = stats.hitPoints.toFloat() / stats.vitality.toFloat()
             staminaBar.updateValues(stats.currentAP, stats.maxAP)
-//            miniStaminaBar.value = stats.currentAP.toFloat() / stats.maxAP.toFloat()
         }
         val batch  = CameraSystem.batch
         batch.begin()
@@ -89,7 +68,6 @@ object HUDSystem : EntitySystem() {
         }
         batch.end()
     }
-
 
     fun show() {
         for (mob in mobs()) {

@@ -86,12 +86,11 @@ object EntitySelectionSystem : EntitySystem() {
         return true
     }
 
-
     // Will clear selected entity and call updates to highlighted tiles
     private fun deselectEntity(): Boolean {
         selectedEntity.clear()
-        selectionBorders = listOf<Line>()
-        movementBorders = listOf<List<Line>>()
+        selectionBorders = listOf()
+        movementBorders = listOf()
         return true
     }
 
@@ -132,24 +131,13 @@ object EntitySelectionSystem : EntitySystem() {
         return false
     }
 
-    fun getSelectedEntity(): Entity? {
-        return selectedEntity.entity
-    }
-
     fun getSelectedPlayerStats(): Stats? {
         return if (selectedEntity.isPlayer)
             selectedEntity.entity?.toStats()
         else null
     }
 
-    fun getSelectedPlayerPos(): PositionComponent? {
-        return if (selectedEntity.isPlayer)
-            selectedEntity.entity?.toPosition()
-        else null
-    }
-
     private fun calculateMovementBorders(): List<List<Line>> {
-
         val borders = mutableListOf<List<Line>>()
         val ap = selectedEntity.entity!!.toStats().currentAP
         for (action in 1..ap) {
@@ -190,7 +178,5 @@ object EntitySelectionSystem : EntitySystem() {
         lines.add(Line(x * tileSize, (y + 1) * tileSize, (x + 1) * tileSize, (y + 1) * tileSize))
 
         return lines.toList()
-
-
     }
 }

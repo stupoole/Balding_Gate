@@ -14,61 +14,11 @@ class StaminaBar(
 
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        val style = style
-        val frame = style!!.frame
-        val filledBar = style.filledBar
-        val emptyBar = style.emptyBar
-        val color = color
         val x = x
         val y = y
         val width = width
         val height = height
-        val currentAP = value
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha)
-
-        var maxBarWidth = width
-        var bgLeftWidth = 0f
-        if (frame != null) {
-            frame.draw(
-                batch, x, (y + (height - frame.minHeight) * 0.5f).roundToInt().toFloat(),
-                width, frame.minHeight.roundToInt().toFloat()
-            )
-            bgLeftWidth = frame.leftWidth
-            maxBarWidth -= bgLeftWidth + frame.rightWidth
-        }
-        if (maxAP == 0) {
-            return
-        }
-
-        val barWidth = maxBarWidth / maxAP.toFloat()
-
-        if (filledBar != null) {
-            for (bar in 0 until currentAP) {
-                val left = x + bgLeftWidth + barWidth * bar
-                filledBar.draw(
-                    batch,
-                    left,
-                    (y + (height - filledBar.minHeight) * 0.5f).roundToInt().toFloat(),
-                    barWidth,
-                    filledBar.minHeight.roundToInt().toFloat()
-                )
-
-            }
-        }
-        if (emptyBar != null) {
-            for (bar in currentAP until maxAP) {
-                val left = x + bgLeftWidth + barWidth * bar
-                emptyBar.draw(
-                    batch,
-                    left,
-                    (y + (height - emptyBar.minHeight) * 0.5f).roundToInt().toFloat(),
-                    barWidth,
-                    emptyBar.minHeight.roundToInt().toFloat()
-                )
-
-            }
-        }
-
+        drawAt(batch,x,y,width,height)
     }
 
     fun drawAt(batch: Batch, x: Float, y: Float, width: Float, height: Float) {
@@ -77,7 +27,6 @@ class StaminaBar(
         val filledBar = style.filledBar
         val emptyBar = style.emptyBar
         val color = color
-
         val currentAP = value
         batch.setColor(color.r, color.g, color.b, color.a)
 

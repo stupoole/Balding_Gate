@@ -54,51 +54,21 @@ class HealthBar(
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        val style = style
-        val frame = style!!.frame
-        val bar = style.bar
-        val color = color
         val x = x
         val y = y
         val width = width
         val height = height
-        val percent = visualPercent()
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha)
-
-        var maxBarWidth = width
-        var bgLeftWidth = 0f
-        if (frame != null) {
-            frame.draw(
-                batch, x, (y + (height - frame.minHeight) * 0.5f).roundToInt().toFloat(),
-                width, frame.minHeight.roundToInt().toFloat()
-            )
-            bgLeftWidth = frame.leftWidth
-            maxBarWidth -= bgLeftWidth + frame.rightWidth
-        }
-        val barWidth = maxBarWidth * percent
-        if (bar != null) {
-            if (barWidth > bar.minWidth) {
-                bar.draw(
-                    batch,
-                    (x + bgLeftWidth).roundToInt().toFloat(),
-                    (y + (height - bar.minHeight) * 0.5f).roundToInt().toFloat(),
-                    barWidth,
-                    bar.minHeight.roundToInt().toFloat()
-                )
-            }
-
-        }
+        drawAt(batch, x, y, width, height)
 
     }
 
-    fun drawAt(batch: Batch, x:Float, y:Float, width:Float, height:Float) {
+    fun drawAt(batch: Batch, x: Float, y: Float, width: Float, height: Float) {
         val style = style
         val frame = style!!.frame
         val bar = style.bar
         val color = color
         val percent = visualPercent()
         batch.setColor(color.r, color.g, color.b, color.a)
-
         var maxBarWidth = width
         var bgLeftWidth = 0f
         if (frame != null) {
@@ -133,13 +103,8 @@ class HealthBar(
         if (animateTime > 0) animateInterpolation.apply(animateFromValue, value, 1 - animateTime / animateDuration)
         else value
 
-    private fun percent(): Float =
-        if (minValue == maxValue) 0F else (value - minValue) / (maxValue - minValue)
-
-
     private fun visualPercent(): Float =
         if (minValue == maxValue) 0F else visualInterpolation.apply((visualValue() - minValue) / (maxValue - minValue))
-
 
 
     /**
@@ -162,14 +127,15 @@ class HealthBar(
     open class HealthBarStyle {
         /** The progress bar background, stretched only in x. Optional.  */
         var frame: Drawable? = null
+
         /** The Bar that is stretched to fill the background's content area.  */
         var bar: Drawable? = null
 
-        constructor(){
+        constructor() {
 
         }
 
-        constructor(style: HealthBarStyle){
+        constructor(style: HealthBarStyle) {
             frame = style.frame
             bar = style.bar
         }

@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Game
 import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
-import uk.co.poolefoundries.baldinggate.screens.UiTestScreen
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
 
