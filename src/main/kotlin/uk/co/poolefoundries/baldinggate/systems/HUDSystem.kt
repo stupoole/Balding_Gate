@@ -68,7 +68,8 @@ object HUDSystem : EntitySystem() {
     override fun update(deltaTime: Float) {
         val stats = EntitySelectionSystem.getSelectedPlayerStats()
         if (stats == null) {
-            staminaBar.value = 0
+            staminaBar.updateValues(0, 0)
+
             healthBar.value = 0F
         } else {
 //            CameraSystem.addActorToStage(table)
