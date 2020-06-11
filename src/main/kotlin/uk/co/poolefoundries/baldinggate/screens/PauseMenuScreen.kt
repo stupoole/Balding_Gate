@@ -77,6 +77,8 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     if (LevelEditorSystem.saveLevel(levelNameField.text)){
                         levelNameField.text = "Saved Successfully"
+                    } else {
+                        levelNameField.text = "Save Failed?"
                     }
                 }
             })
