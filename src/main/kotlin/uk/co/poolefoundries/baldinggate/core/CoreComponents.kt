@@ -189,5 +189,8 @@ data class MobRenderable(val entity: Entity, val renderable: Renderable) : Rende
     }
 }
 
+data class MobTypeComponent(val mobType:MobType):Component
+data class TileTypeComponent(val tileType: TileType):Component
+
 
 

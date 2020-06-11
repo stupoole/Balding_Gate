@@ -3,6 +3,7 @@ package uk.co.poolefoundries.baldinggate.model
 import com.badlogic.ashley.core.Entity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.sun.org.apache.xpath.internal.operations.Bool
 import uk.co.poolefoundries.baldinggate.Resources
 import uk.co.poolefoundries.baldinggate.core.*
 import java.io.File
@@ -63,6 +64,7 @@ fun Level.toEntities() = this.tiles.map {
 
     type.toEntity()
         .add(PositionComponent(it.position.x, it.position.y))
+        .add(TileTypeComponent(type))
 
 } + this.mobs.map {
     val type = this.mobTypes.find { type -> type.name == it.mobType }
@@ -72,5 +74,8 @@ fun Level.toEntities() = this.tiles.map {
         .add(StatsComponent(type.stats))
         .add(IdComponent(UUID.randomUUID().toString()))
         .add(behaviourMap.getValue(type.behaviour))
+        .add(MobTypeComponent(type))
 
 }
+
+

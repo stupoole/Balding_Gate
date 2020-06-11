@@ -6,9 +6,7 @@ import com.badlogic.ashley.core.Family
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import uk.co.poolefoundries.baldinggate.core.*
-import uk.co.poolefoundries.baldinggate.model.MobType
-import uk.co.poolefoundries.baldinggate.model.TileType
-import uk.co.poolefoundries.baldinggate.model.behaviourMap
+import uk.co.poolefoundries.baldinggate.model.*
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 import java.io.File
 import java.util.*
@@ -24,7 +22,13 @@ object LevelEditorSystem : EntitySystem() {
     private fun walls() = engine.getEntitiesFor(wallsFamily).toList()
     private fun allEntities() = players() + enemies() + floors() + walls()
     private fun (Entity).toPosition() = getComponent(PositionComponent::class.java)
+    private fun (Entity).toMobType() = getComponent(MobTypeComponent::class.java).mobType
+    private fun (Entity).toTileType() = getComponent(TileTypeComponent::class.java).tileType
+    private fun (Entity).toTile() = Tile(toTileType().name, Position(toPosition().x, toPosition().y))
+    private fun (Entity).toMob() = Mob(toMobType().name, Position(toPosition().x, toPosition().y))
     private const val tileSize = 25F
+//    private var tileTypes = setOf<TileType>()
+//    private var mobTypes = setOf<MobType>()
 
 
     // takes game coords and places selectedtile at that position if valid
@@ -37,10 +41,12 @@ object LevelEditorSystem : EntitySystem() {
         if (selectedTile.toString().contains("floors") or selectedTile.toString().contains("walls")) {
             val tileType: TileType =
                 jacksonObjectMapper().readValue(File(selectedTile.pathWithoutExtension() + ".json"))
+//            tileTypes = tileTypes.union(setOf(tileType))
             addTile(tilePos, tileType)
 
         } else if (selectedTile.toString().contains("characters") or selectedTile.toString().contains("mobs")) {
             val mobType: MobType = jacksonObjectMapper().readValue(File(selectedTile.pathWithoutExtension() + ".json"))
+//            mobTypes = mobTypes.union(setOf(mobType))
             addMob(tilePos, mobType)
 
         } else {
@@ -52,13 +58,27 @@ object LevelEditorSystem : EntitySystem() {
         val gamePos = CameraSystem.unproject(x, y)
         val tilePos = PositionComponent((gamePos.x / tileSize).toInt(), (gamePos.y / tileSize).toInt())
         val selectedTile = LevelEditHUDSystem.selectedTile ?: return
-        if (selectedTile.toString().contains("floors") or selectedTile.toString().contains("walls")){
+        if (selectedTile.toString().contains("floors") or selectedTile.toString().contains("walls")) {
             removeTile(tilePos)
-        } else if (selectedTile.toString().contains("characters") or selectedTile.toString().contains("mobs")){
+        } else if (selectedTile.toString().contains("characters") or selectedTile.toString().contains("mobs")) {
             removeMob(tilePos)
         } else {
             println("Tile type not yet implemented")
         }
+    }
+
+    fun saveLevel(levelName: String): Boolean {
+        val tiles = (floors() + walls())
+        val mobs = (enemies() + players())
+        val level = Level(
+            levelName,
+            tiles.map { it.toTile() },
+            tiles.map { it.toTileType() }.distinct(),
+            mobs.map { it.toMob() },
+            mobs.map { it.toMobType() }.distinct()
+        )
+        jacksonObjectMapper().writeValue(File("levels/$levelName.json"), level)
+        return false
     }
 
     private fun addTile(pos: PositionComponent, type: TileType) {
@@ -66,27 +86,39 @@ object LevelEditorSystem : EntitySystem() {
         if (tiles.isNotEmpty()) {
             tiles.forEach { engine.removeEntity(it) }
         }
-        engine.addEntity(type.toEntity().add(pos))
+        engine.addEntity(
+            type.toEntity().add(pos)
+                .add(TileTypeComponent(type))
+        )
 
     }
 
-    private fun addMob(pos:PositionComponent, mob: MobType) {
+    private fun addMob(pos: PositionComponent, mobType: MobType) {
         val mobs = (enemies() + players()).filter { it.toPosition() == pos }
-        if (mobs.isNotEmpty()) {mobs.forEach { engine.removeEntity(it) }}
-        engine.addEntity(mob.toEntity().add(pos)
-            .add(StatsComponent(mob.stats))
-            .add(IdComponent(UUID.randomUUID().toString()))
-            .add(behaviourMap.getValue(mob.behaviour)))
+        if (mobs.isNotEmpty()) {
+            mobs.forEach { engine.removeEntity(it) }
+        }
+        engine.addEntity(
+            mobType.toEntity().add(pos)
+                .add(StatsComponent(mobType.stats))
+                .add(IdComponent(UUID.randomUUID().toString()))
+                .add(behaviourMap.getValue(mobType.behaviour))
+                .add(MobTypeComponent(mobType))
+        )
     }
 
     private fun removeTile(pos: PositionComponent) {
         val tiles = (floors() + walls()).filter { it.toPosition() == pos }
-        if (tiles.isNotEmpty()) {tiles.forEach { engine.removeEntity(it) }}
+        if (tiles.isNotEmpty()) {
+            tiles.forEach { engine.removeEntity(it) }
+        }
     }
 
     private fun removeMob(pos: PositionComponent) {
         val mobs = (enemies() + players()).filter { it.toPosition() == pos }
-        if (mobs.isNotEmpty()) {mobs.forEach { engine.removeEntity(it) }}
+        if (mobs.isNotEmpty()) {
+            mobs.forEach { engine.removeEntity(it) }
+        }
     }
 
 

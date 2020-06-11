@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.desktop.DesktopLauncher
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
+import uk.co.poolefoundries.baldinggate.systems.editor.LevelEditorSystem
 
 // will need to take in previous screen and just display this before returning to the previous screen on resume or
 // change to options or quit
@@ -20,6 +18,8 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
 
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
+    private val defaultAtlas = TextureAtlas(Gdx.files.internal("UISkins/default/skin/uiskin.atlas"))
+    private val defaultSkin = Skin(Gdx.files.internal("UISkins/default/skin/uiskin.json"),defaultAtlas)
 
     private val table = Table()
     private val scrollTable = Table()
@@ -34,6 +34,7 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
 
         val resumeButton = TextButton("resume", skin, "embossed")
         val levelsButton = TextButton("levels", skin)
+        val editLevelsButton = TextButton("Edit Level", skin)
         val optionsButton = TextButton("options", skin)
         val quitButton = TextButton("quit", skin)
 
@@ -45,6 +46,11 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
         levelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = LevelSelectScreen(game, this@PauseMenuScreen)
+            }
+        })
+        editLevelsButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = LevelEditSelectScreen(game, this@PauseMenuScreen)
             }
         })
         optionsButton.addListener(object : ClickListener() {
@@ -60,7 +66,22 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
 
         scrollTable.add(resumeButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
+        if (previousScreen is LevelEditScreen){
+            val levelNameField = TextField("examplelevelname", defaultSkin)
+            val saveLevelButton = TextButton("Save Level", skin)
+            saveLevelButton.addListener(object : ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    LevelEditorSystem.saveLevel(levelNameField.text)
+                }
+            })
+            scrollTable.add(levelNameField).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+            scrollTable.row()
+            scrollTable.add(saveLevelButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+            scrollTable.row()
+        }
         scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.row()
+        scrollTable.add(editLevelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
         scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
         scrollTable.row()
