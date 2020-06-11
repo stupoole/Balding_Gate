@@ -13,7 +13,7 @@ import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
 
-class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter) : ScreenAdapter() {
+class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter, val previousGameScreen : ScreenAdapter?) : ScreenAdapter() {
 
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
@@ -37,18 +37,19 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
             }
         })
 
-        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(300F)
         scrollTable.row()
         dirHandle.list().forEach { level ->
             val name = level.nameWithoutExtension()
             val button = TextButton(name, skin)
             button.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    previousGameScreen?.dispose()
                     game.screen = LevelEditScreen(game, name)
                     // If going from pause menu to level select to level this does not work.
                 }
             })
-            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(300F)
             scrollTable.row()
         }
 

@@ -38,7 +38,6 @@ class LevelEditScreen(private val game: BaldingGateGame, levelName:String) : Scr
         game.engine.addSystem(LevelEditorSystem)
 
         input.addProcessor(0, CameraSystem.HUDStage)
-
         input.addProcessor(1, RawEditorInputHandler)
 
 
@@ -57,7 +56,9 @@ class LevelEditScreen(private val game: BaldingGateGame, levelName:String) : Scr
     }
 
     override fun dispose() {
-        CameraSystem.dispose()
+        CameraSystem.newMenu()
+        CameraSystem.newHUD()
+        HUDSystem.clear()
         game.engine.removeAllEntities()
         game.engine.removeSystem(RenderingSystem)
         game.engine.removeSystem(LevelEditorInputProcessor)

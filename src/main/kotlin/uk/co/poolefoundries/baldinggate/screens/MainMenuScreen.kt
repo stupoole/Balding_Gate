@@ -45,12 +45,12 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
         })
         levelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = LevelSelectScreen(game, this@MainMenuScreen)
+                game.screen = LevelSelectScreen(game, this@MainMenuScreen, null)
             }
         })
         editLevelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = LevelEditSelectScreen(game, this@MainMenuScreen)
+                game.screen = LevelEditSelectScreen(game, this@MainMenuScreen, null)
             }
         })
         optionsButton.addListener(object : ClickListener() {
@@ -64,15 +64,15 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
             }
         })
         scrollTable.row().expand()
-        scrollTable.add(playButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(playButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(editLevelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(editLevelsButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
         scrollTable.row().expand()
         table.add(scrollPane).fill().expand()
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)

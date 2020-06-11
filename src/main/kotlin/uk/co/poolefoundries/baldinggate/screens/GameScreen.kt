@@ -56,7 +56,10 @@ class GameScreen(private val game: BaldingGateGame, levelName:String) : ScreenAd
 
 
     override fun dispose() {
-        CameraSystem.dispose()
+        CameraSystem.newMenu()
+        CameraSystem.newHUD()
+        HUDSystem.clear()
+
         game.engine.removeAllEntities()
         game.engine.removeSystem(RenderingSystem)
         game.engine.removeSystem(PlayerTurnSystem)
@@ -65,9 +68,6 @@ class GameScreen(private val game: BaldingGateGame, levelName:String) : ScreenAd
         game.engine.removeSystem(EntitySelectionSystem)
         game.engine.removeSystem(PathfinderSystem)
         Gdx.input.inputProcessor = null
-
-
-
     }
 }
 

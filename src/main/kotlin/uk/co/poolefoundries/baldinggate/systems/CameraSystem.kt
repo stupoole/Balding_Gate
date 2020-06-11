@@ -27,6 +27,12 @@ object CameraSystem : EntitySystem() {
     val menuStage = Stage(menuViewport, batch)
     val HUDStage = Stage(HUDViewport, batch)
 
+    init {
+        gameViewport.update(1280, 720, true)
+        menuViewport.update(1280, 720, true)
+        HUDViewport.update(1280, 720, true)
+    }
+
     fun addActorToStage(actor: Actor) {
         menuStage.addActor(actor)
         menuStage.act()
