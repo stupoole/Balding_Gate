@@ -45,7 +45,8 @@ object LevelEditHUDSystem : EntitySystem() {
             Gdx.files.internal("mobs/"),
             Gdx.files.internal("characters/")
         )
-
+        
+        // filter out all tiles that do not have a json with same name
         dirHandles.forEach { dirHandle ->
             dirHandle.list().filter { it.extension() == "png" }.forEach { tile ->
                 val texture = Texture(tile)
