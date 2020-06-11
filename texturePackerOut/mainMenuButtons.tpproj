@@ -32,7 +32,46 @@ limitMemory=true
 useIndexes=true
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:../Pyxel Files/menuelements/vert-scroll_0.png,type:Input,regionName:vert-scroll-bar,ninepatch:{splits:[8,10,23,22],pads:[8,10,23,22]}},{path:../Pyxel Files/menuelements/vert-scroll_1.png,type:Input,regionName:vert-scroll,ninepatch:{splits:[4,6,12,12],pads:[4,6,12,12]}},{path:../Pyxel Files/menuelements/horz-scroll_0.png,type:Input,regionName:horz-scroll-bar,ninepatch:{splits:[24,21,8,10],pads:[24,21,8,10]}},{path:../Pyxel Files/menuelements/horz-scroll_1.png,type:Input,regionName:horz-scroll,ninepatch:{splits:[12,12,4,5],pads:[12,12,4,5]}},{path:../Pyxel Files/menuelements/MainMenuButtons_0.png,type:Input,regionName:button-off,ninepatch:{splits:[12,12,12,12],pads:[12,12,12,12]}},{path:../Pyxel Files/menuelements/MainMenuButtons_1.png,type:Input,regionName:button-on,ninepatch:{splits:[12,12,16,8],pads:[12,12,16,8]}},{path:../Pyxel Files/menuelements/MainMenuButtons_2.png,type:Input,regionName:button-hover,ninepatch:{splits:[12,12,12,12],pads:[12,12,12,12]}},{path:../Pyxel Files/menuelements/MainMenuButtons_3.png,type:Input,regionName:check-off},{path:../Pyxel Files/menuelements/MainMenuButtons_4.png,type:Input,regionName:check-on,ninepatch:{splits:[0,0,0,0],pads:[-1,-1,-1,-1]}},{path:../pyxel files/menuelements/MainMenuButtons_5.png,type:Input,regionName:check-over,ninepatch:{splits:[0,0,0,0],pads:[-1,-1,-1,-1]}}]
+inputFiles=[{path:../Pyxel Files/menuelements/vert-scroll_0.png,type:Input,regionName:vert-scroll-bar,ninepatch:{splits:[8,10,23,22],pads:[8,10,23,22]}},{path:../Pyxel Files/menuelements/vert-scroll_1.png,type:Input,regionName:vert-scroll,ninepatch:{splits:[4,6,12,12],pads:[4,6,12,12]}},{path:../Pyxel Files/menuelements/horz-scroll_0.png,type:Input,regionName:horz-scroll-bar,ninepatch:{splits:[24,21,8,10],pads:[24,21,8,10]}},{path:../Pyxel Files/menuelements/horz-scroll_1.png,type:Input,regionName:horz-scroll,ninepatch:{splits:[12,12,4,5],pads:[12,12,4,5]}},{path:../Pyxel Files/menuelements/MainMenuButtons_0.png,type:Input,regionName:button-off,ninepatch:{splits:[12,12,12,12],pads:[12,12,12,12]}},{path:../Pyxel Files/menuelements/MainMenuButtons_1.png,type:Input,regionName:button-on,ninepatch:{splits:[12,12,16,8],pads:[12,12,16,8]}},{path:../Pyxel Files/menuelements/MainMenuButtons_2.png,type:Input,regionName:button-hover,ninepatch:{splits:[12,12,12,12],pads:[12,12,12,12]}},{path:../Pyxel Files/menuelements/MainMenuButtons_3.png,type:Input,regionName:check-off},{path:../Pyxel Files/menuelements/MainMenuButtons_4.png,type:Input,regionName:check-on,ninepatch:{splits:[0,0,0,0],pads:[-1,-1,-1,-1]}},{path:../pyxel files/menuelements/MainMenuButtons_5.png,type:Input,regionName:check-over,ninepatch:{splits:[0,0,0,0],pads:[-1,-1,-1,-1]}},{path:background.png,type:Input,regionName:null,ninepatch:{splits:[6,6,6,6],pads:[4,6,4,6]}}]
+
+
+---
+
+name=background
+filename=
+output=.
+
+alias=true
+alphaThreshold=0
+debug=false
+duplicatePadding=false
+edgePadding=true
+fast=false
+filterMag=Nearest
+filterMin=Nearest
+ignoreBlankImages=true
+maxHeight=2048
+maxWidth=2048
+minHeight=16
+minWidth=16
+paddingX=2
+paddingY=2
+pot=true
+mof=false
+rotation=false
+stripWhitespaceX=false
+stripWhitespaceY=false
+wrapX=ClampToEdge
+wrapY=ClampToEdge
+premultiplyAlpha=false
+grid=false
+square=false
+bleed=true
+limitMemory=true
+useIndexes=true
+
+scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
+inputFiles=[{path:../pyxel files/menuelements/background.png,type:Input,regionName:null,ninepatch:{splits:[4,2,4,2],pads:[2,2,2,2]}}]
 
 
 ---
