@@ -44,9 +44,9 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
             }
         })
 
-        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(300F)
+        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
-        scrollTable.add(newLevelbutton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(300F)
+        scrollTable.add(newLevelbutton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
         dirHandle.list().forEach { level ->
             val name = level.nameWithoutExtension()
@@ -58,7 +58,7 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
                     // If going from pause menu to level select to level this does not work.
                 }
             })
-            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(300F)
+            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
             scrollTable.row()
         }
 

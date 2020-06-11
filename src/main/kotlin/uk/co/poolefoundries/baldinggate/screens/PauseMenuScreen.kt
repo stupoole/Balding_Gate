@@ -64,14 +64,14 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
             }
         })
 
-        scrollTable.add(resumeButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+        scrollTable.add(resumeButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
-        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
-        scrollTable.add(editLevelsButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+        scrollTable.add(editLevelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
         if (previousScreen is LevelEditScreen){
-            val levelNameField = TextField("examplelevelname", defaultSkin)
+            val levelNameField = TextField(previousScreen.levelName, defaultSkin)
             val saveLevelButton = TextButton("Save Level", skin)
             saveLevelButton.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -80,14 +80,14 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
                     }
                 }
             })
-            scrollTable.add(levelNameField).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+            scrollTable.add(levelNameField).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
             scrollTable.row()
-            scrollTable.add(saveLevelButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+            scrollTable.add(saveLevelButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
             scrollTable.row()
         }
-        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
-        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).prefWidth(450F)
+        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
 
         table.add(scrollPane).fill().expand()
     }

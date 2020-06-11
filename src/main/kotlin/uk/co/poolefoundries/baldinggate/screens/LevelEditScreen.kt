@@ -11,9 +11,10 @@ import uk.co.poolefoundries.baldinggate.systems.*
 import uk.co.poolefoundries.baldinggate.systems.editor.LevelEditHUDSystem
 import uk.co.poolefoundries.baldinggate.systems.editor.LevelEditorSystem
 
-class LevelEditScreen(private val game: BaldingGateGame, levelName:String) : ScreenAdapter() {
+class LevelEditScreen(private val game: BaldingGateGame, val levelName:String) : ScreenAdapter() {
 
     private val input = InputMultiplexer()
+
 
     // Todo: made a scroll pane which shows all available mobs/tiles
     // tie in the UI to have an ability to edit stats/components of each entity in the level
