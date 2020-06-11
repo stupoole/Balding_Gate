@@ -85,7 +85,6 @@ object LevelEditorSystem : EntitySystem() {
             jacksonObjectMapper().writeValue(file, level)
             return true
         }
-
         return false
     }
 

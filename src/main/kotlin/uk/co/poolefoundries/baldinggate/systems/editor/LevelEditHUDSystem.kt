@@ -105,4 +105,8 @@ object LevelEditHUDSystem : EntitySystem() {
         CameraSystem.newHUD()
     }
 
+    override fun update(deltaTime: Float) {
+        CameraSystem.drawOrigin()
+    }
+
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.core.Theme
 
 
 object CameraSystem : EntitySystem() {
@@ -66,6 +67,15 @@ object CameraSystem : EntitySystem() {
         HUDStage.act()
     }
 
+    fun drawOrigin(){
+        gameCamera.update()
+        shapeRenderer.projectionMatrix = gameCamera.combined
+        shapeRenderer.color = Theme.MAGENTA
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        shapeRenderer.line(0F,0F, 1000F, 0F)
+        shapeRenderer.line(0F,0F, 0F, 1000F)
+        shapeRenderer.end()
+    }
 
     fun drawOverlays() {
         gameCamera.update()
