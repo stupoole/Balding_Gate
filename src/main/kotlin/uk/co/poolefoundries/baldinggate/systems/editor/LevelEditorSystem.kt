@@ -69,6 +69,8 @@ object LevelEditorSystem : EntitySystem() {
 
     fun saveLevel(levelName: String): Boolean {
         // TODO check if save succeeds and make overwrite harder
+        if (levelName == "Saved Successfully") {return false}
+
         val tiles = (floors() + walls())
         val mobs = (enemies() + players())
         val level = Level(
