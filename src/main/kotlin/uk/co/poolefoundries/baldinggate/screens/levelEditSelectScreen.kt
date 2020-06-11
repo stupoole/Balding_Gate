@@ -36,8 +36,8 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
                 // TODO: This didn't work in the new camera system.
             }
         })
-        val newLevelbutton = TextButton("New Level", skin, "embossed")
-        newLevelbutton.addListener(object : ClickListener() {
+        val newLevelButton = TextButton("New Level", skin, "embossed")
+        newLevelButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = LevelEditScreen(game, "")
                 // TODO: This didn't work in the new camera system.
@@ -46,7 +46,7 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
 
         scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
-        scrollTable.add(newLevelbutton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
+        scrollTable.add(newLevelButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
         dirHandle.list().forEach { level ->
             val name = level.nameWithoutExtension()
