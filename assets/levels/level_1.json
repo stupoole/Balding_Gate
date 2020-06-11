@@ -1,0 +1,854 @@
+{
+  "name": "Meeting Tavern",
+  "tiles": [
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 0,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 1,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 1,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 1,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 2,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 2,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 2,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 3,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 3,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 3,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 4,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 4,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 4,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 4,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "lava",
+      "position": {
+        "x": 4,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "lava",
+      "position": {
+        "x": 4,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 4,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 4,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 4,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 4,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 5,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 5,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 5,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 5,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "lava",
+      "position": {
+        "x": 5,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "lava",
+      "position": {
+        "x": 5,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 5,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 5,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 5,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 5,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 6,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 6,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 6,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 7,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 7,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 7,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 8,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "floor",
+      "position": {
+        "x": 8,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 8,
+        "y": 9
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 0
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 1
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 2
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 3
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 4
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 5
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 6
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 7
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 8
+      }
+    },
+    {
+      "tileType": "wall",
+      "position": {
+        "x": 9,
+        "y": 9
+      }
+    }
+  ],
+  "tileTypes": [
+    {
+      "name": "wall",
+      "texture": "obstacles/wall.png",
+      "passable": false
+    },
+    {
+      "name": "floor",
+      "texture": "floors/floor.png",
+      "passable": true
+    },
+    {
+      "name": "lava",
+      "texture": "obstacles/lava.png",
+      "passable": false
+    },
+    {
+      "name": "door-vert",
+      "texture": "interactables/door-vertical.png",
+      "passable": true
+    },
+    {
+      "name": "door-horiz",
+      "texture": "interactables/door-horizontal.png",
+      "passable": true
+    }
+  ],
+  "mobs": [
+    {
+      "mobType": "ranger",
+      "position": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "mobType": "adventurer",
+      "position": {
+        "x": 1,
+        "y": 8
+      }
+    },
+    {
+      "mobType": "skeleton",
+      "position": {
+        "x": 8,
+        "y": 8
+      }
+    },
+    {
+      "mobType": "skeleton",
+      "position": {
+        "x": 8,
+        "y": 1
+      }
+    }
+  ],
+  "mobTypes": [
+    {
+      "name": "tank",
+      "texture": "characters/tank.png",
+      "stats": {
+        "vitality": 50,
+        "hitPoints": 50,
+        "speed": 4,
+        "maxAP": 1,
+        "currentAP": 1,
+        "attack": {
+          "die": [
+            8
+          ],
+          "mod": 2
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "ranger",
+      "texture": "characters/ranger.png",
+      "stats": {
+        "vitality": 25,
+        "hitPoints": 25,
+        "speed": 6,
+        "maxAP": 2,
+        "currentAP": 2,
+        "attack": {
+          "die": [
+            6
+          ],
+          "mod": 1
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "mage",
+      "texture": "characters/mage.png",
+      "stats": {
+        "vitality": 15,
+        "hitPoints": 15,
+        "speed": 5,
+        "maxAP": 3,
+        "currentAP": 3,
+        "attack": {
+          "die": [
+            10
+          ],
+          "mod": 3
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "adventurer",
+      "texture": "characters/adventurer.png",
+      "stats": {
+        "vitality": 30,
+        "hitPoints": 30,
+        "speed": 3,
+        "maxAP": 3,
+        "currentAP": 3,
+        "attack": {
+          "die": [
+            8
+          ],
+          "mod": 1
+        }
+      },
+      "behaviour": "player"
+    },
+    {
+      "name": "skeleton",
+      "texture": "mobs/skeleton.png",
+      "stats": {
+        "vitality": 10,
+        "hitPoints": 10,
+        "speed": 3,
+        "maxAP": 2,
+        "currentAP": 2,
+        "attack": {
+          "die": [
+            4
+          ],
+          "mod": 1
+        }
+      },
+      "behaviour": "skeleton"
+    }
+  ]
+}

@@ -1,12 +1,11 @@
 package uk.co.poolefoundries.baldinggate.input
 
+
 import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputProcessor
 
-interface GameInputHandler {
-    fun endTurn()
-    fun nextPlayer()
+interface EditorInputHandler {
     fun pause()
     fun leftClick(x: Int, y: Int)
     fun rightClick(x: Int, y: Int)
@@ -14,24 +13,25 @@ interface GameInputHandler {
     fun zoom(amount: Int)
 }
 
-object RawInputHandler : InputProcessor {
+object RawEditorInputHandler : InputProcessor {
 
     private var lastX = 0f
     private var lastY = 0f
     private var middle = false
-    private val listener = GameInputProcessor
+    private val listener = LevelEditorInputProcessor
     // todo get list of valid actions that aren't movement and display on UI
 
     override fun keyDown(keycode: Int): Boolean {
         return when (keycode) {
-            Keys.ENTER -> {
-                listener.endTurn()
-                true
-            }
-            Keys.TAB -> {
-                listener.nextPlayer()
-                true
-            }
+//            Keys.ENTER -> {
+//                listener.endTurn()
+//                true
+//            }
+//            Keys.TAB -> {
+//                listener.inventory()
+//                listener.nextPlayer()
+//                true
+//            }
             Keys.ESCAPE -> {
                 listener.pause()
                 true

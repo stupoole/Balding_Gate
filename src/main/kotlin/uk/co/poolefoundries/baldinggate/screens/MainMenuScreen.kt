@@ -80,10 +80,10 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
     override fun show() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
         cameraSystem.switchToStage()
-        cameraSystem.newStage()
+        cameraSystem.newMenu()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)
-        Gdx.input.inputProcessor = cameraSystem.stage
+        Gdx.input.inputProcessor = cameraSystem.menuStage
     }
 
     override fun render(delta: Float) {
@@ -93,7 +93,7 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
 
     override fun dispose() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.newStage()
+        cameraSystem.newMenu()
         skin.dispose()
         atlas.dispose()
     }
