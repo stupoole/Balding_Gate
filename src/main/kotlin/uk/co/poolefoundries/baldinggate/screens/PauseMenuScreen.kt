@@ -71,7 +71,9 @@ class PauseMenuScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapt
             val saveLevelButton = TextButton("Save Level", skin)
             saveLevelButton.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    LevelEditorSystem.saveLevel(levelNameField.text)
+                    if (LevelEditorSystem.saveLevel(levelNameField.text)){
+                        levelNameField.text = "Saved Successfully"
+                    }
                 }
             })
             scrollTable.add(levelNameField).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)

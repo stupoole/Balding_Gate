@@ -68,6 +68,7 @@ object LevelEditorSystem : EntitySystem() {
     }
 
     fun saveLevel(levelName: String): Boolean {
+        // TODO check if save succeeds and make overwrite harder
         val tiles = (floors() + walls())
         val mobs = (enemies() + players())
         val level = Level(
@@ -77,7 +78,12 @@ object LevelEditorSystem : EntitySystem() {
             mobs.map { it.toMob() },
             mobs.map { it.toMobType() }.distinct()
         )
-        jacksonObjectMapper().writeValue(File("levels/$levelName.json"), level)
+        val file = File("levels/$levelName.json")
+        if (!file.isFile) {
+            jacksonObjectMapper().writeValue(file, level)
+            return true
+        }
+
         return false
     }
 

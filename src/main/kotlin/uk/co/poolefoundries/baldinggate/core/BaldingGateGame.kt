@@ -15,8 +15,7 @@ object BaldingGateGame : Game() {
 
     override fun create() {
         engine.addSystem(CameraSystem)
-//        setScreen(MainMenuScreen(this))
-        setScreen(LevelEditScreen(this, "level_1"))
+        setScreen(MainMenuScreen(this))
     }
 
 
