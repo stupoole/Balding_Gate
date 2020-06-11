@@ -3,6 +3,7 @@ package uk.co.poolefoundries.baldinggate.systems.editor
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -24,37 +25,38 @@ object LevelEditHUDSystem : EntitySystem() {
         scrollTable,
         skin
     )
-    var selected:TextureRegionDrawable? = null
+    var selectedTile:FileHandle? = null
+    var selectedDrawable:TextureRegionDrawable? = null
     var selectedCell:Cell<Image>? = null
     var selectedLabel: Cell<Label>? = null
 
     init {
         table.right().center()
-        scrollTable.debug()
-        table.debug()
+//        scrollTable.debug()
+//        table.debug()
         table.setFillParent(true)
         scrollTable.setFillParent(false)
         scrollPane.fadeScrollBars = false
 
         val dirHandles = listOf(
             Gdx.files.internal("floors/"),
-            Gdx.files.internal("obstacles/"),
+            Gdx.files.internal("walls/"),
             Gdx.files.internal("interactables/"),
             Gdx.files.internal("mobs/"),
             Gdx.files.internal("characters/")
         )
 
         dirHandles.forEach { dirHandle ->
-            dirHandle.list().forEach { tile ->
+            dirHandle.list().filter { it.extension() == "png" }.forEach { tile ->
                 val texture = Texture(tile)
                 val name = tile.nameWithoutExtension()
                 val button = ImageButton(TextureRegionDrawable(texture))
                 button.addListener(object : ClickListener() {
                     override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                        println(tile.toString())
-                        selected = TextureRegionDrawable(Texture(tile))
-                        selectedCell?.setActor(Image(selected))
+                        selectedDrawable = TextureRegionDrawable(Texture(tile))
+                        selectedCell?.setActor(Image(selectedDrawable))
                         selectedLabel?.setActor(Label(name, defaultSkin))
+                        selectedTile = tile
                         // If going from pause menu to level select to level this does not work.
                     }
                 })
@@ -76,7 +78,7 @@ object LevelEditHUDSystem : EntitySystem() {
         val selectedTable = Table()
         selectedTable.add(Label("Selected:", defaultSkin)).center()
         selectedTable.row()
-        selectedCell = selectedTable.add(Image(selected)).width(75F).height(75F).top()
+        selectedCell = selectedTable.add(Image(selectedDrawable)).width(75F).height(75F).top()
         selectedTable.row()
         selectedLabel = selectedTable.add(Label("", defaultSkin)).top()
         selectedTable.row()
@@ -84,9 +86,6 @@ object LevelEditHUDSystem : EntitySystem() {
         table.add().expand().fill()
         table.add(scrollPane).fill().width(120F)
         table.row()
-
-
-
 
         val backgroundTexture = atlas.createPatch("background")
         scrollTable.background = NinePatchDrawable(backgroundTexture)

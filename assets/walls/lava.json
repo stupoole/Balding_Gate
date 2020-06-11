@@ -1,0 +1,5 @@
+{
+  "name": "lava",
+  "texture": "walls/lava.png",
+  "passable": false
+}

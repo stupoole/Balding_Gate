@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.screens.PauseMenuScreen
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
+import uk.co.poolefoundries.baldinggate.systems.editor.LevelEditorSystem
 
 object LevelEditorInputProcessor : EntitySystem(), EditorInputHandler {
 
@@ -15,10 +16,15 @@ object LevelEditorInputProcessor : EntitySystem(), EditorInputHandler {
 
     override fun leftClick(x: Int, y: Int) {
         CameraSystem.unfocus()
+        LevelEditorSystem.place(x,y)
+        // todo drag place
     }
 
     override fun rightClick(x: Int, y: Int) {
         CameraSystem.unfocus()
+        LevelEditorSystem.remove(x,y)
+
+        // todo drag remove
     }
 
     override fun dragCamera(deltaX: Float, deltaY: Float) {

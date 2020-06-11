@@ -9,6 +9,7 @@ import uk.co.poolefoundries.baldinggate.model.loadLevel
 import uk.co.poolefoundries.baldinggate.model.toEntities
 import uk.co.poolefoundries.baldinggate.systems.*
 import uk.co.poolefoundries.baldinggate.systems.editor.LevelEditHUDSystem
+import uk.co.poolefoundries.baldinggate.systems.editor.LevelEditorSystem
 
 class LevelEditScreen(private val game: BaldingGateGame, levelName:String) : ScreenAdapter() {
 
@@ -34,7 +35,7 @@ class LevelEditScreen(private val game: BaldingGateGame, levelName:String) : Scr
         game.engine.addSystem(RenderingSystem)
         game.engine.addSystem(LevelEditorInputProcessor)
         game.engine.addSystem(LevelEditHUDSystem)
-
+        game.engine.addSystem(LevelEditorSystem)
 
         input.addProcessor(0, CameraSystem.HUDStage)
 
@@ -61,6 +62,7 @@ class LevelEditScreen(private val game: BaldingGateGame, levelName:String) : Scr
         game.engine.removeSystem(RenderingSystem)
         game.engine.removeSystem(LevelEditorInputProcessor)
         game.engine.removeSystem(LevelEditHUDSystem)
+        game.engine.removeSystem(LevelEditorSystem)
         Gdx.input.inputProcessor = null
     }
 

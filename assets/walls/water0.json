@@ -1,0 +1,5 @@
+{
+  "name": "water",
+  "texture": "walls/water0.png",
+  "passable": false
+}

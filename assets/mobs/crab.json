@@ -1,0 +1,18 @@
+{
+  "name": "crab",
+  "texture": "mobs/crab.png",
+  "stats": {
+    "vitality": 10,
+    "hitPoints": 10,
+    "speed": 3,
+    "maxAP": 2,
+    "currentAP": 2,
+    "attack": {
+      "die": [
+        4
+      ],
+      "mod": 1
+    }
+  },
+  "behaviour": "skeleton"
+}

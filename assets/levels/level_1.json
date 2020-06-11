@@ -705,7 +705,7 @@
   "tileTypes": [
     {
       "name": "wall",
-      "texture": "obstacles/wall.png",
+      "texture": "walls/wall.png",
       "passable": false
     },
     {
@@ -715,7 +715,7 @@
     },
     {
       "name": "lava",
-      "texture": "obstacles/lava.png",
+      "texture": "walls/lava.png",
       "passable": false
     },
     {

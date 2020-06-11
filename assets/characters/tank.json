@@ -1,0 +1,18 @@
+{
+  "name": "tank",
+  "texture": "characters/tank.png",
+  "stats": {
+    "vitality": 50,
+    "hitPoints": 50,
+    "speed": 4,
+    "maxAP": 1,
+    "currentAP": 1,
+    "attack": {
+      "die": [
+        8
+      ],
+      "mod": 2
+    }
+  },
+  "behaviour": "player"
+}
