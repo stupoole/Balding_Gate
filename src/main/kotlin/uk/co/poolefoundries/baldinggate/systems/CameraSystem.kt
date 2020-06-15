@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import uk.co.poolefoundries.baldinggate.core.Theme
+import uk.co.poolefoundries.baldinggate.systems.EntitySelectionSystem.movementColors
+import uk.co.poolefoundries.baldinggate.systems.EntitySelectionSystem.selectColors
 
 
 object CameraSystem : EntitySystem() {
@@ -85,7 +87,7 @@ object CameraSystem : EntitySystem() {
 
         if (moveBorders.isNotEmpty()) {
             moveBorders.forEachIndexed { index, border ->
-                shapeRenderer.color = EntitySelectionSystem.movementColors(moveBorders.size - index - 1)
+                shapeRenderer.color = EntitySelectionSystem.selectedEntity?.movementColors  (moveBorders.size - index - 1)
                 border.forEach { line ->
                     shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
                 }
@@ -93,7 +95,7 @@ object CameraSystem : EntitySystem() {
         }
         val selectLines = EntitySelectionSystem.selectionBorders
         if (selectLines.isNotEmpty()) {
-            shapeRenderer.color = EntitySelectionSystem.selectColors()
+            shapeRenderer.color = EntitySelectionSystem.selectedEntity?.selectColors()
             selectLines.forEach { line ->
                 shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
             }
