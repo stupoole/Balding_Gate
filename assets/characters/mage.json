@@ -1,0 +1,18 @@
+{
+  "name": "mage",
+  "texture": "characters/mage.png",
+  "stats": {
+    "vitality": 15,
+    "hitPoints": 15,
+    "speed": 5,
+    "maxAP": 3,
+    "currentAP": 3,
+    "attack": {
+      "die": [
+        10
+      ],
+      "mod": 3
+    }
+  },
+  "behaviour": "player"
+}

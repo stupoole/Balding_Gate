@@ -12,51 +12,71 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import uk.co.poolefoundries.baldinggate.core.Theme
+import uk.co.poolefoundries.baldinggate.systems.EntitySelectionSystem.movementColors
+import uk.co.poolefoundries.baldinggate.systems.EntitySelectionSystem.selectColors
 
 
 object CameraSystem : EntitySystem() {
     val gameCamera = OrthographicCamera()
     private var gameViewport = ScreenViewport(gameCamera)
-    private val stageCamera = OrthographicCamera()
-    private var stageViewport = ScreenViewport(stageCamera)
+    private val menuCamera = OrthographicCamera()
+    private var menuViewport = ScreenViewport(menuCamera)
     private val HUDCamera = OrthographicCamera()
     private var HUDViewport = ScreenViewport(HUDCamera)
     private val shapeRenderer = ShapeRenderer()
 
     val batch = SpriteBatch()
-    val stage = Stage(stageViewport, batch)
+    val menuStage = Stage(menuViewport, batch)
     val HUDStage = Stage(HUDViewport, batch)
 
+    init {
+        gameViewport.update(1280, 720, true)
+        menuViewport.update(1280, 720, true)
+        HUDViewport.update(1280, 720, true)
+    }
+
+    fun addActorToStage(actor: Actor) {
+        menuStage.addActor(actor)
+        menuStage.act()
+        menuStage.draw()
+    }
+
+
+    fun addActorToHUD(actor: Actor) {
+        HUDStage.addActor(actor)
+    }
+
+
     override fun addedToEngine(engine: Engine?) {
-        stageCamera.update()
+        menuCamera.update()
         gameCamera.position.set(Vector3(gameViewport.worldHeight / 4F, gameViewport.worldWidth / 4F, 0F))
         gameCamera.update()
 
     }
 
-    fun switchToStage() {
-        stage.clear()
-        stageCamera.update()
+
+    fun dispose() {
+        menuStage.dispose()
+        batch.dispose()
     }
 
-
-    fun switchToGame() {
-        stage.clear()
-        gameViewport.apply()
-        gameCamera.update()
-    }
-
-    fun updateGameCamera() {
-        batch.projectionMatrix = gameCamera.combined
-        gameViewport.apply()
-        gameCamera.update()
-    }
 
     fun drawHUD() {
         batch.projectionMatrix = HUDCamera.combined
         HUDCamera.update()
         HUDStage.draw()
         HUDStage.act()
+    }
+
+    fun drawOrigin(){
+        gameCamera.update()
+        shapeRenderer.projectionMatrix = gameCamera.combined
+        shapeRenderer.color = Theme.MAGENTA
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        shapeRenderer.line(0F,0F, 1000F, 0F)
+        shapeRenderer.line(0F,0F, 0F, 1000F)
+        shapeRenderer.end()
     }
 
     fun drawOverlays() {
@@ -67,7 +87,7 @@ object CameraSystem : EntitySystem() {
 
         if (moveBorders.isNotEmpty()) {
             moveBorders.forEachIndexed { index, border ->
-                shapeRenderer.color = EntitySelectionSystem.movementColors(moveBorders.size - index - 1)
+                shapeRenderer.color = EntitySelectionSystem.selectedEntity?.movementColors  (moveBorders.size - index - 1)
                 border.forEach { line ->
                     shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
                 }
@@ -75,7 +95,7 @@ object CameraSystem : EntitySystem() {
         }
         val selectLines = EntitySelectionSystem.selectionBorders
         if (selectLines.isNotEmpty()) {
-            shapeRenderer.color = EntitySelectionSystem.selectColors()
+            shapeRenderer.color = EntitySelectionSystem.selectedEntity?.selectColors()
             selectLines.forEach { line ->
                 shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
             }
@@ -86,60 +106,78 @@ object CameraSystem : EntitySystem() {
     }
 
 
-    fun resize(width: Int, height: Int) {
-        gameViewport.update(width, height, false)
-        stageViewport.update(width, height, true)
-        HUDViewport.update(width, height, true)
+    fun newMenu() {
+        menuStage.clear()
     }
+
+
+    fun newHUD() {
+        HUDStage.clear()
+    }
+
 
     fun pan(deltaX: Float, deltaY: Float) {
         gameCamera.translate(gameCamera.zoom * -(deltaX), gameCamera.zoom * (deltaY))
     }
 
-    fun zoom(amount: Int) {
-        gameCamera.zoom += 0.1F * amount.toFloat()
-        if (gameCamera.zoom < 0.2) {
-            gameCamera.zoom = 0.2F
-        }
+
+    fun resize(width: Int, height: Int) {
+        gameViewport.update(width, height, false)
+        menuViewport.update(width, height, true)
+        HUDViewport.update(width, height, true)
     }
+
+
+    fun renderStage() {
+        Gdx.gl.glClearColor(.0F, .168F, .212F, 1F)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
+        menuStage.act()
+        menuStage.draw()
+    }
+
+
+    fun setScrollFocus(actor: Actor?) {
+        menuStage.scrollFocus = actor
+    }
+
+
+    fun switchToStage() {
+        menuStage.clear()
+        menuCamera.update()
+    }
+
+
+    fun switchToGame() {
+        menuStage.clear()
+        gameViewport.apply()
+        gameCamera.update()
+    }
+
+
+    fun updateGameCamera() {
+        batch.projectionMatrix = gameCamera.combined
+        gameViewport.apply()
+        gameCamera.update()
+    }
+
+
+    fun unfocus() {
+        HUDStage.unfocusAll()
+        menuStage.unfocusAll()
+    }
+
 
     fun unproject(x: Int, y: Int): Vector2 {
         val vector = gameCamera.unproject(Vector3(x.toFloat(), y.toFloat(), 0F))
         return Vector2(vector.x, vector.y)
     }
 
-    fun newStage() {
-        stage.clear()
-    }
 
-    fun newHUD() {
-        HUDStage.clear()
-    }
-
-    fun addActorToStage(actor: Actor) {
-        stage.addActor(actor)
-        stage.act()
-        stage.draw()
-    }
-
-    fun addActorToHUD(actor: Actor) {
-        HUDStage.addActor(actor)
-    }
-
-    fun setScrollFocus(actor: Actor) {
-        stage.scrollFocus = actor
-    }
-
-    fun renderStage() {
-        Gdx.gl.glClearColor(.0F, .168F, .212F, 1F)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-        stage.act()
-        stage.draw()
-    }
-
-    fun dispose() {
-        stage.dispose()
-        batch.dispose()
+    fun zoom(amount: Int) {
+        gameCamera.zoom += 0.1F * amount.toFloat()
+        if (gameCamera.zoom < 0.2) {
+            gameCamera.zoom = 0.2F
+        }
     }
 
 }

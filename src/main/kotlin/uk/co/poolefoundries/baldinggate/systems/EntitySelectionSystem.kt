@@ -9,32 +9,39 @@ import uk.co.poolefoundries.baldinggate.systems.player.PlayerTurnSystem
 
 
 data class SelectedEntity(
-    var entity: Entity? = null,
-    var position: PositionComponent? = null,
-    var actionPoints: Int = 0,
-    var speed: Int = 0,
-    var isPlayer: Boolean = false
+    var entity: Entity,
+    var position: PositionComponent,
+    var actionPoints: Int,
+    var speed: Int,
+    var isPlayer: Boolean
 ) {
-    fun clear() {
-        this.entity?.add(ColorComponent(Color.WHITE))
-        entity = null
-        position = null
-        actionPoints = 0
-        speed = 0
-        isPlayer = false
-    }
 }
 
 data class Line(val startX: Float, val startY: Float, val endX: Float, val endY: Float)
 
 object EntitySelectionSystem : EntitySystem() {
+
     private val playerFamily: Family = Family.all(PlayerComponent::class.java).get()
     private val enemyFamily: Family = Family.all(EnemyComponent::class.java).get()
     private fun players() = engine.getEntitiesFor(playerFamily).toList()
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
+
+    private const val tileSize = 25F //TODO get this from the game engine/level somehow
+    var selectedEntity:SelectedEntity? = null
     var selectionBorders = listOf<Line>()
     var movementBorders = listOf<List<Line>>()
-    fun movementColors(step: Int) = if (selectedEntity.isPlayer) {
+
+    private fun (Entity).toStats(): Stats {
+        return getComponent(StatsComponent::class.java).stats
+    }
+
+    private fun (Entity).toPosition(): PositionComponent {
+        return getComponent(PositionComponent::class.java)
+    }
+
+    fun (SelectedEntity).selectColors() = if (isPlayer) Theme.BLUE else Theme.RED
+
+    fun (SelectedEntity).movementColors(step: Int) = if (isPlayer) {
         when (step) {
             0 -> Theme.VIOLET
             else -> Theme.MAGENTA
@@ -46,23 +53,11 @@ object EntitySelectionSystem : EntitySystem() {
         }
     }
 
-    fun selectColors() = if (selectedEntity.isPlayer) Theme.BLUE else Theme.RED
-    private const val tileSize = 25F //TODO get this from the game engine/level somehow
-    private var selectedEntity = SelectedEntity()
-    private fun (Entity).toPosition(): PositionComponent {
-        return getComponent(PositionComponent::class.java)
-    }
-
-    private fun (Entity).toStats(): Stats {
-        return getComponent(StatsComponent::class.java).stats
-    }
-
-
     // Selects next player with AP or deselects
     fun nextPlayer(): Boolean {
         val activePlayers = players().filter { it.toStats().currentAP > 0 && it.toStats().hitPoints > 0 }
         return if (activePlayers.isNotEmpty()) {
-            val current = activePlayers.indexOf(selectedEntity.entity)
+            val current = activePlayers.indexOf(selectedEntity?.entity)
             val next = (current + 1) % activePlayers.size
             updateSelectedEntity(activePlayers[next])
             recalculateBorders()
@@ -88,7 +83,7 @@ object EntitySelectionSystem : EntitySystem() {
 
     // Will clear selected entity and call updates to highlighted tiles
     private fun deselectEntity(): Boolean {
-        selectedEntity.clear()
+        selectedEntity = null
         selectionBorders = listOf()
         movementBorders = listOf()
         return true
@@ -101,8 +96,8 @@ object EntitySelectionSystem : EntitySystem() {
         val cameraSystem = engine.getSystem(CameraSystem::class.java)
         val gamePos = cameraSystem.unproject(x, y)
         val targetPos = PositionComponent((gamePos.x / tileSize).toInt(), (gamePos.y / tileSize).toInt())
-        if (players().contains(selectedEntity.entity)) {
-            val acted = playerSystem.determineAction(selectedEntity.entity!!, targetPos)
+        if (players().contains(selectedEntity?.entity)) {
+            val acted = playerSystem.determineAction(selectedEntity!!.entity, targetPos)
             recalculateBorders()
             return acted
         }
@@ -110,7 +105,7 @@ object EntitySelectionSystem : EntitySystem() {
     }
 
     private fun recalculateBorders() {
-        selectedEntity.entity?.let { updateSelectedEntity(it) }
+        selectedEntity?.entity?.let { updateSelectedEntity(it) }
         selectionBorders = calculateSelectionBorders().reversed()
         movementBorders = calculateMovementBorders().reversed()
     }
@@ -132,16 +127,19 @@ object EntitySelectionSystem : EntitySystem() {
     }
 
     fun getSelectedPlayerStats(): Stats? {
-        return if (selectedEntity.isPlayer)
-            selectedEntity.entity?.toStats()
+        if (selectedEntity == null) return null
+        return if (selectedEntity!!.isPlayer)
+            selectedEntity?.entity?.toStats()
         else null
     }
 
     private fun calculateMovementBorders(): List<List<Line>> {
         val borders = mutableListOf<List<Line>>()
-        val ap = selectedEntity.entity!!.toStats().currentAP
+        if (selectedEntity == null ){return listOf<List<Line>>()
+        }
+        val ap = selectedEntity!!.entity.toStats().currentAP
         for (action in 1..ap) {
-            val edgeTiles = PathfinderSystem.findSpread(selectedEntity.position!!, selectedEntity.speed * action)
+            val edgeTiles = PathfinderSystem.findSpread(selectedEntity!!.position, selectedEntity!!.speed * action)
                 .filter { (it.left || it.right || it.top || it.bottom) }
             val lines = mutableListOf<Line>()
             edgeTiles.forEach { tile ->
@@ -167,10 +165,13 @@ object EntitySelectionSystem : EntitySystem() {
     }
 
     private fun calculateSelectionBorders(): List<Line> {
-
         val lines = mutableListOf<Line>()
-        val x = selectedEntity.entity!!.toPosition().x.toFloat()
-        val y = selectedEntity.entity!!.toPosition().y.toFloat()
+        if (selectedEntity == null ){
+            return lines.toList()
+        }
+
+        val x = selectedEntity!!.entity.toPosition().x.toFloat()
+        val y = selectedEntity!!.entity.toPosition().y.toFloat()
 
         lines.add(Line(x * tileSize, y * tileSize, (x + 1) * tileSize, y * tileSize))
         lines.add(Line(x * tileSize, y * tileSize, (x) * tileSize, (y + 1) * tileSize))

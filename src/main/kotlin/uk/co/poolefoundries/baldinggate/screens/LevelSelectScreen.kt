@@ -13,7 +13,7 @@ import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
 
-class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter) : ScreenAdapter() {
+class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter, val previousGameScreen : ScreenAdapter?) : ScreenAdapter() {
 
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
@@ -37,18 +37,19 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
             }
         })
 
-        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
         dirHandle.list().forEach { level ->
             val name = level.nameWithoutExtension()
             val button = TextButton(name, skin)
             button.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    previousGameScreen?.dispose()
                     game.screen = GameScreen(game, name)
                     // If going from pause menu to level select to level this does not work.
                 }
             })
-            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
             scrollTable.row()
         }
 
@@ -66,7 +67,7 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
         CameraSystem.switchToStage()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)
-        Gdx.input.inputProcessor = cameraSystem.stage
+        Gdx.input.inputProcessor = cameraSystem.menuStage
     }
 
     override fun render(delta: Float) {
@@ -76,7 +77,7 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
 
     override fun dispose() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.newStage()
+        cameraSystem.newMenu()
         skin.dispose()
         atlas.dispose()
     }

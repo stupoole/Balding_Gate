@@ -12,10 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import uk.co.poolefoundries.baldinggate.core.BaldingGateGame
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
-// will need to take in previous screen and just display this before returning to the previous screen on resume or
-// change to options or quit
-// options screen should do the same thing so that you can go back from options to pause and then back to game
-class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter) : ScreenAdapter() {
+
+class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter, val previousGameScreen : ScreenAdapter?) : ScreenAdapter() {
 
     private val atlas = TextureAtlas(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.atlas"))
     private val skin = Skin(Gdx.files.internal("UISkins/StoneButtons/main-menu-buttons.json"), atlas)
@@ -24,19 +22,45 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter
     private val scrollPane = ScrollPane(scrollTable, skin)
 
     init {
+        val dirHandle = Gdx.files.internal("levels/")
 
-        table.setFillParent(true)
         table.center().center()
-        scrollPane.fadeScrollBars = false
-        val backButton = TextButton("back...", skin, "embossed")
+        table.setFillParent(true)
+        scrollTable.setFillParent(false)
+        scrollPane.fadeScrollBars=false
+
+        val backButton = TextButton("BACK...", skin, "embossed")
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen
+                // TODO: This didn't work in the new camera system.
+            }
+        })
+        val newLevelButton = TextButton("New Level", skin, "embossed")
+        newLevelButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = LevelEditScreen(game, "")
+                // TODO: This didn't work in the new camera system.
             }
         })
 
-        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(backButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row()
+        scrollTable.add(newLevelButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
+        scrollTable.row()
+        dirHandle.list().forEach { level ->
+            val name = level.nameWithoutExtension()
+            val button = TextButton(name, skin)
+            button.addListener(object : ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    previousGameScreen?.dispose()
+                    game.screen = LevelEditScreen(game, name)
+                    // If going from pause menu to level select to level this does not work.
+                }
+            })
+            scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
+            scrollTable.row()
+        }
 
         table.add(scrollPane).fill().expand()
 
@@ -49,7 +73,7 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter
 
     override fun show() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.switchToStage()
+        CameraSystem.switchToStage()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)
         Gdx.input.inputProcessor = cameraSystem.menuStage
@@ -66,5 +90,4 @@ class OptionsScreen(val game: BaldingGateGame, val previousScreen: ScreenAdapter
         skin.dispose()
         atlas.dispose()
     }
-
 }

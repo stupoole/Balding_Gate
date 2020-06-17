@@ -1,0 +1,5 @@
+{
+  "name": "floor",
+  "texture": "floors/floor.png",
+  "passable": true
+}

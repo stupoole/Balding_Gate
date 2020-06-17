@@ -76,8 +76,13 @@ object HUDSystem : EntitySystem() {
         CameraSystem.addActorToHUD(table)
     }
 
+
     fun hide() {
         CameraSystem.newHUD()
+    }
+
+    fun clear(){
+        miniHealthBars.clear()
     }
 
     override fun addedToEngine(engine: Engine?) {

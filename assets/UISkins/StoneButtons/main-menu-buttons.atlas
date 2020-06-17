@@ -4,9 +4,18 @@ size: 512,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+background
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  split: 6, 6, 6, 6
+  pad: 4, 6, 4, 6
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 button-hover
   rotate: false
-  xy: 200, 24
+  xy: 200, 42
   size: 64, 64
   split: 12, 12, 12, 12
   pad: 12, 12, 12, 12
@@ -15,7 +24,7 @@ button-hover
   index: -1
 button-off
   rotate: false
-  xy: 68, 24
+  xy: 68, 42
   size: 64, 64
   split: 12, 12, 12, 12
   pad: 12, 12, 12, 12
@@ -24,7 +33,7 @@ button-off
   index: -1
 button-on
   rotate: false
-  xy: 134, 24
+  xy: 134, 42
   size: 64, 64
   split: 12, 12, 16, 8
   pad: 12, 12, 16, 8
@@ -33,14 +42,14 @@ button-on
   index: -1
 check-off
   rotate: false
-  xy: 266, 24
+  xy: 266, 42
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 check-on
   rotate: false
-  xy: 2, 24
+  xy: 2, 42
   size: 64, 64
   split: 0, 0, 0, 0
   pad: -1, -1, -1, -1
@@ -49,7 +58,7 @@ check-on
   index: -1
 check-over
   rotate: false
-  xy: 332, 24
+  xy: 332, 42
   size: 64, 64
   split: 0, 0, 0, 0
   pad: -1, -1, -1, -1
@@ -58,7 +67,7 @@ check-over
   index: -1
 horz-scroll
   rotate: false
-  xy: 2, 2
+  xy: 2, 20
   size: 48, 20
   split: 12, 12, 4, 5
   pad: 12, 12, 4, 5
@@ -67,7 +76,7 @@ horz-scroll
   index: -1
 horz-scroll-bar
   rotate: false
-  xy: 398, 68
+  xy: 398, 86
   size: 48, 20
   split: 24, 21, 8, 10
   pad: 24, 21, 8, 10
@@ -76,7 +85,7 @@ horz-scroll-bar
   index: -1
 vert-scroll
   rotate: false
-  xy: 398, 18
+  xy: 398, 36
   size: 20, 48
   split: 4, 6, 12, 12
   pad: 4, 6, 12, 12
@@ -85,7 +94,7 @@ vert-scroll
   index: -1
 vert-scroll-bar
   rotate: false
-  xy: 420, 18
+  xy: 420, 36
   size: 20, 48
   split: 8, 10, 23, 22
   pad: 8, 10, 23, 22

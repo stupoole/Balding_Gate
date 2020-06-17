@@ -1,0 +1,18 @@
+{
+  "name": "adventurer",
+  "texture": "characters/adventurer.png",
+  "stats": {
+    "vitality": 30,
+    "hitPoints": 30,
+    "speed": 3,
+    "maxAP": 3,
+    "currentAP": 3,
+    "attack": {
+      "die": [
+        8
+      ],
+      "mod": 1
+    }
+  },
+  "behaviour": "player"
+}

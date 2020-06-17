@@ -1,0 +1,18 @@
+{
+  "name": "ranger",
+  "texture": "characters/ranger.png",
+  "stats": {
+    "vitality": 25,
+    "hitPoints": 25,
+    "speed": 6,
+    "maxAP": 2,
+    "currentAP": 2,
+    "attack": {
+      "die": [
+        6
+      ],
+      "mod": 1
+    }
+  },
+  "behaviour": "player"
+}

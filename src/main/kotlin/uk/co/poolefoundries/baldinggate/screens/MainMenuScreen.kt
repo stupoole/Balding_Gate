@@ -34,6 +34,7 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
         table.center().center()
         val playButton = TextButton("play", skin)
         val levelsButton = TextButton("levels", skin)
+        val editLevelsButton = TextButton("Edit Level", skin)
         val optionsButton = TextButton("options", skin)
         val quitButton = TextButton("quit", skin)
 
@@ -44,7 +45,12 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
         })
         levelsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = LevelSelectScreen(game, this@MainMenuScreen)
+                game.screen = LevelSelectScreen(game, this@MainMenuScreen, null)
+            }
+        })
+        editLevelsButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = LevelEditSelectScreen(game, this@MainMenuScreen, null)
             }
         })
         optionsButton.addListener(object : ClickListener() {
@@ -58,13 +64,15 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
             }
         })
         scrollTable.row().expand()
-        scrollTable.add(playButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(playButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(levelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(editLevelsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row().expand()
-        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(300F)
+        scrollTable.add(optionsButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
+        scrollTable.row().expand()
+        scrollTable.add(quitButton).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
         scrollTable.row().expand()
         table.add(scrollPane).fill().expand()
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
@@ -80,10 +88,10 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
     override fun show() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
         cameraSystem.switchToStage()
-        cameraSystem.newStage()
+        cameraSystem.newMenu()
         cameraSystem.addActorToStage(table)
         cameraSystem.setScrollFocus(scrollPane)
-        Gdx.input.inputProcessor = cameraSystem.stage
+        Gdx.input.inputProcessor = cameraSystem.menuStage
     }
 
     override fun render(delta: Float) {
@@ -93,7 +101,7 @@ class MainMenuScreen(val game:BaldingGateGame) : ScreenAdapter() {
 
     override fun dispose() {
         val cameraSystem = game.engine.getSystem(CameraSystem::class.java)
-        cameraSystem.newStage()
+        cameraSystem.newMenu()
         skin.dispose()
         atlas.dispose()
     }

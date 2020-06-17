@@ -1,0 +1,5 @@
+{
+  "name": "door-horiz",
+  "texture": "interactables/door-horizontal.png",
+  "passable": true
+}
