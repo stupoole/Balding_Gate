@@ -26,7 +26,7 @@ object EntitySelectionSystem : EntitySystem() {
     private fun players() = engine.getEntitiesFor(playerFamily).toList()
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
 
-    private const val tileSize = 25F //TODO get this from the game engine/level somehow
+    private const val tileSize = 25F // TODO: get this from the game engine/level somehow
     var selectedEntity:SelectedEntity? = null
     var selectionBorders = listOf<Line>()
     var movementBorders = listOf<List<Line>>()

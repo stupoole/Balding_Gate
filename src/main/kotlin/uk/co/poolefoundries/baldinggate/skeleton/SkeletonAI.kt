@@ -33,7 +33,7 @@ object EndTurn : Action {
     }
 
     override fun prerequisitesMet(state: WorldState): Boolean {
-        // TODO: This is a bit naff but reduces the explosion of branches. Will have to implement a heuristic AI at some
+        // TODO (Tatskaari) This is a bit naff but reduces the explosion of branches. Will have to implement a heuristic AI at some
         // point so it doesn't explore every single possibility
         return state.getEnemyIds().none { state.getMobInfo(it).stats.currentAP > 0 }
     }

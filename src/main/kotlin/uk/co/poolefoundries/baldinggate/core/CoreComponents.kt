@@ -51,7 +51,7 @@ data class PositionComponent(val x: Int, val y: Int) : Component {
 
     fun moveTowards(target : PositionComponent, speed: Int) : PositionComponent {
 
-        // TODO replace with pathfinding??
+        // TODO (Tatskaari) Replace this with optimised path finding
         var distanceTravelled = 0
         var pos = this
         while (distanceTravelled <= speed) {

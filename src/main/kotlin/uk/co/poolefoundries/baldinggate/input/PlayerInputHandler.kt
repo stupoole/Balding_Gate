@@ -1,5 +1,6 @@
 package uk.co.poolefoundries.baldinggate.input
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Buttons
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputProcessor
@@ -18,9 +19,7 @@ object RawInputHandler : InputProcessor {
 
     private var lastX = 0f
     private var lastY = 0f
-    private var middle = false
     private val listener = GameInputProcessor
-    // todo get list of valid actions that aren't movement and display on UI
 
     override fun keyDown(keycode: Int): Boolean {
         return when (keycode) {
@@ -50,7 +49,6 @@ object RawInputHandler : InputProcessor {
     }
 
     override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean {
-        // TODO: attack skeletons with certain button presses
         return when (button) {
             Buttons.LEFT -> {
                 listener.leftClick(x, y)
@@ -63,7 +61,6 @@ object RawInputHandler : InputProcessor {
             Buttons.MIDDLE -> {
                 lastX = x.toFloat()
                 lastY = y.toFloat()
-                middle = true
                 true
             }
             else -> false
@@ -72,7 +69,7 @@ object RawInputHandler : InputProcessor {
     }
 
     override fun touchDragged(x: Int, y: Int, pointer: Int): Boolean {
-        return if (middle) {
+        return if ( Gdx.input.isButtonPressed(Buttons.MIDDLE)) {
             listener.dragCamera(x - lastX, y - lastY)
             lastX = x.toFloat()
             lastY = y.toFloat()
@@ -85,7 +82,6 @@ object RawInputHandler : InputProcessor {
     override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean {
         return when (button) {
             Buttons.MIDDLE -> {
-                middle = false
                 true
             }
             else -> false

@@ -28,7 +28,7 @@ object EnemyTurnSystem : EntitySystem() {
 
 
     fun takeTurn() {
-        // TODO: Add an ID component so we can identify entities by a UUID
+        // TODO (Tatskaari) Add an ID component so we can identify entities by a UUID
         val playerIds = players()
             .associateBy { it.getComponent(IdComponent::class.java).id }
         val enemyIds = enemies()
@@ -42,7 +42,7 @@ object EnemyTurnSystem : EntitySystem() {
         actions.actions.forEach {
             when(it) {
                 is MoveTowards -> {
-                    // TODO: Add animations
+                    // TODO: Add attack/walking animations
                     val enemy = enemyIds.getValue(it.selfId).toMobInfo()
                     val target = playerIds.getValue(it.targetId).toMobInfo()
 

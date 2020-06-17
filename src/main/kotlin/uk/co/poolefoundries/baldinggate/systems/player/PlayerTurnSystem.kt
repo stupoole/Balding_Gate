@@ -17,7 +17,7 @@ object PlayerTurnSystem : EntitySystem() {
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
     private fun floors() = engine.getEntitiesFor(floorsFamily).toList()
 
-    // todo get list of valid actions that aren't movement and display on UI
+    // TODO: get list of valid actions that aren't movement and display on UI
     private fun (Entity).toPosition(): PositionComponent {
         return getComponent(PositionComponent::class.java)
     }

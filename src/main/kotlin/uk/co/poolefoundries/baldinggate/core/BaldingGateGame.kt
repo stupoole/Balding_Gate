@@ -8,7 +8,6 @@ import uk.co.poolefoundries.baldinggate.screens.MainMenuScreen
 import uk.co.poolefoundries.baldinggate.systems.CameraSystem
 
 
-// TODO: this class should basically be empty and just delegate to systems/input handlers
 object BaldingGateGame : Game() {
 
     var engine = Engine()

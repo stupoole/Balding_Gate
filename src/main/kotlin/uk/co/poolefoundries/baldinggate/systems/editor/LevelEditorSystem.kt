@@ -34,7 +34,7 @@ object LevelEditorSystem : EntitySystem() {
     // takes game coords and places selectedtile at that position if valid
     fun place(x: Int, y: Int) {
 
-        // TODO: catch when the json is not valid
+        // TODO (SPoole) catch when the json is not valid
         val gamePos = CameraSystem.unproject(x, y)
         val tilePos = PositionComponent((gamePos.x / tileSize).toInt(), (gamePos.y / tileSize).toInt())
         val selectedTile = LevelEditHUDSystem.selectedTile ?: return
@@ -68,7 +68,7 @@ object LevelEditorSystem : EntitySystem() {
     }
 
     fun saveLevel(levelName: String): Boolean {
-        // TODO check if save succeeds and make overwrite harder
+        // TODO (SPoole) check if save succeeds and make overwrite harder
         if (levelName == "Saved Successfully" ||levelName == "Save Failed?" ) {return false}
 
         val tiles = (floors() + walls())

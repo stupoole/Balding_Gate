@@ -16,18 +16,11 @@ class LevelEditScreen(private val game: BaldingGateGame, val levelName:String) :
     private val input = InputMultiplexer()
 
 
-    // Todo: made a scroll pane which shows all available mobs/tiles
-    // tie in the UI to have an ability to edit stats/components of each entity in the level
-    // create a popup/ability to save/load levels for editing.
-    // create input handler to allow the left and right click to be interpreted
-    // click to place current tile/mob
-    // click again to select current tile type
-    // r-click to remove tile
-    // esc - deselect if selected else menu?
-    // add layers to allow users to draw mobs on top of tiles?
-    // create the code to convert a level to json
-    //  ability to add and remove tile types
-    //  to have a tabbed pane with tiles from each folder
+    /* TODO ( SPoole): tie in the UI to have an ability to edit stats/components of each entity in the level
+         click again to select current tile type
+         esc - deselect all tiles
+         ability to add and remove tile types to have a tabbed pane with tiles from each folder
+    */
 
     init {
         if (levelName.isNotBlank()) {

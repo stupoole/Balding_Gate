@@ -21,8 +21,7 @@ class GameScreen(private val game: BaldingGateGame, levelName:String) : ScreenAd
     init {
         loadLevel(levelName).toEntities().forEach(game.engine::addEntity)
         // Maybe the tile size should be specified after the loadLevel?
-
-        // TODO: Move the engine stuff out of the game (as it's only meant to multiplex screens)
+        // TODO (Tatskaari) Move the engine stuff out of the game (as it's only meant to multiplex screens)
         // Should probably make this simpler for each screen (such as having an extended Engine with "add all systems" built in)
 
         // input and rendering group

@@ -30,6 +30,7 @@ object HUDSystem : EntitySystem() {
     private val staminaBar = StaminaBar(1, 0, skin.get("default", StaminaBar.StaminaBarStyle::class.java))
     private val miniHealthBars = mutableMapOf<Entity, HealthBar>()
     private const val animationDuration = 0.1F
+    // TODO (SPoole) get list of valid actions that aren't movement and display on UI
 
     init {
         table.bottom().left()

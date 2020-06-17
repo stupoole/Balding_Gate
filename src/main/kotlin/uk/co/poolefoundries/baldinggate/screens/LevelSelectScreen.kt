@@ -33,7 +33,6 @@ class LevelSelectScreen(val game: BaldingGateGame, val previousScreen: ScreenAda
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen
-                // TODO: This didn't work in the new camera system.
             }
         })
 

@@ -36,5 +36,4 @@ class PositionComponentTest {
         assertEquals(1, newPos.manhattanDistance(pos2))
     }
 
-    // TODO: Test distance
 }

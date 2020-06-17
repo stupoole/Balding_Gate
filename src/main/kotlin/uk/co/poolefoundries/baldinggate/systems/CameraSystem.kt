@@ -87,7 +87,8 @@ object CameraSystem : EntitySystem() {
 
         if (moveBorders.isNotEmpty()) {
             moveBorders.forEachIndexed { index, border ->
-                shapeRenderer.color = EntitySelectionSystem.selectedEntity?.movementColors  (moveBorders.size - index - 1)
+                shapeRenderer.color = EntitySelectionSystem.selectedEntity
+                    ?.movementColors  (moveBorders.size - index - 1)
                 border.forEach { line ->
                     shapeRenderer.line(line.startX, line.startY, line.endX, line.endY)
                 }
@@ -102,7 +103,7 @@ object CameraSystem : EntitySystem() {
         }
         shapeRenderer.end()
 
-        // TODO: Move the drawing of entity mini health bars into this system
+        // TODO (SPoole): Move the drawing of entity mini health bars into this system
     }
 
 

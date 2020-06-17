@@ -33,14 +33,12 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = previousScreen
-                // TODO: This didn't work in the new camera system.
             }
         })
         val newLevelButton = TextButton("New Level", skin, "embossed")
         newLevelButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = LevelEditScreen(game, "")
-                // TODO: This didn't work in the new camera system.
             }
         })
 
@@ -55,7 +53,6 @@ class LevelEditSelectScreen(val game: BaldingGateGame, val previousScreen: Scree
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     previousGameScreen?.dispose()
                     game.screen = LevelEditScreen(game, name)
-                    // If going from pause menu to level select to level this does not work.
                 }
             })
             scrollTable.add(button).padBottom(4F).expand().fill().maxHeight(100F).maxWidth(450F)
