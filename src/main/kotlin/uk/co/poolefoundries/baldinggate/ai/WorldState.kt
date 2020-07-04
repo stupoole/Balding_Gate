@@ -1,7 +1,7 @@
 package uk.co.poolefoundries.baldinggate.ai
 
 import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStarNode
-import uk.co.poolefoundries.baldinggate.skeleton.MobInfo
+import uk.co.poolefoundries.baldinggate.systems.enemy.ai.MobInfo
 
 const val MOBS_KEY = "mobs"
 const val PLAYER_IDS_KEY = "players"
