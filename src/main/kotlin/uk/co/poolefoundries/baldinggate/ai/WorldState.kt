@@ -1,10 +1,12 @@
 package uk.co.poolefoundries.baldinggate.ai
 
+import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStarNode
 import uk.co.poolefoundries.baldinggate.skeleton.MobInfo
 
 const val MOBS_KEY = "mobs"
 const val PLAYER_IDS_KEY = "players"
 const val ENEMY_IDS_KEY = "enemies"
+const val WORLD_MAP = "world_map"
 
 typealias WorldState = Map<String, Any>
 
@@ -34,9 +36,17 @@ fun (WorldState).setMobInfo(info: MobInfo) : WorldState {
 }
 
 fun (WorldState).setMobInfo(info : Collection<MobInfo>) = withValue(MOBS_KEY, info.associateBy { it.id })
+fun (WorldState).getMobInfo() = (get(MOBS_KEY) as Map<String, MobInfo>).values
 
 fun (WorldState).getPlayerIds() : Collection<String> = this[PLAYER_IDS_KEY] as Collection<String>
 fun (WorldState).setPlayerIds(ids : Collection<String>) = withValue(PLAYER_IDS_KEY, ids)
 
 fun (WorldState).getEnemyIds() : Collection<String> = this[ENEMY_IDS_KEY] as Collection<String>
 fun (WorldState).setEnemyIds(ids : Collection<String>) = withValue(ENEMY_IDS_KEY, ids)
+
+fun (WorldState).setWorldMap(map : Collection<AStarNode>) = withValue(WORLD_MAP, map)
+fun (WorldState).getWorldMap() = get(WORLD_MAP) as Collection<AStarNode>
+fun (WorldState).getNavigationMap(selfId: String) : List<AStarNode> {
+    val toRemove = getMobInfo().filter { it.id != selfId }.map { AStarNode(it.pos.x, it.pos.y) }
+    return getWorldMap() - toRemove
+}

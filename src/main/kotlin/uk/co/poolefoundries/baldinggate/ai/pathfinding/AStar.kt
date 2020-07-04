@@ -1,6 +1,12 @@
-package uk.co.poolefoundries.baldinggate.pathfinding
+package uk.co.poolefoundries.baldinggate.ai.pathfinding
 
-class AStar(val heuristic: AStarHeuristic) {
+import uk.co.poolefoundries.baldinggate.core.PositionComponent
+import kotlin.math.absoluteValue
+
+object AStar {
+    fun getPath(graph: List<AStarNode>, start : PositionComponent, end : PositionComponent) : List<PositionComponent> {
+        return getPath(graph, AStarNode(start.x, start.y), AStarNode(end.x, end.y)).map { PositionComponent(it.x, it.y) }
+    }
 
     fun getPath(graph: List<AStarNode>, startNode: AStarNode, endNode: AStarNode): MutableList<AStarNode> {
         var endInGraph = false
@@ -32,7 +38,7 @@ class AStar(val heuristic: AStarHeuristic) {
                 if (!openSet.contains(neighbor) || neighbor.startToNowCost > tentativeGScore) {
                     neighbor.prevNode = workingNode
                     neighbor.startToNowCost = tentativeGScore
-                    neighbor.nowToEndCost = neighbor.startToNowCost + heuristic.costEstimate(neighbor, endNode)
+                    neighbor.nowToEndCost = neighbor.startToNowCost + costEstimate(neighbor, endNode)
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor)
                     }
@@ -40,6 +46,12 @@ class AStar(val heuristic: AStarHeuristic) {
             }
         }
         return mutableListOf()
+    }
+
+    fun costEstimate(node: AStarNode, endNode: AStarNode): Double {
+        val xDiff = node.x - endNode.x
+        val yDiff = node.y - endNode.y
+        return (xDiff.absoluteValue + yDiff.absoluteValue).toDouble()
     }
 
     private fun getLowestFScore(openSet: MutableList<AStarNode>): AStarNode {
@@ -72,6 +84,4 @@ class AStar(val heuristic: AStarHeuristic) {
                     || (it.x == x && it.y == y - 1)
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-package uk.co.poolefoundries.baldinggate.pathfinding
+package uk.co.poolefoundries.baldinggate.ai.pathfinding
 
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 

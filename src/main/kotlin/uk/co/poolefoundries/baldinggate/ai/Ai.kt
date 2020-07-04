@@ -3,8 +3,6 @@ package uk.co.poolefoundries.baldinggate.ai
 typealias Plan = List<Action>
 data class Branch(val actions: Plan, val state: WorldState, val cost: Double)
 
-
-
 data class Goal(val action: Action, val priority: Double)
 
 interface Action {
@@ -26,8 +24,6 @@ interface Action {
     override fun toString(): String
 
 }
-
-
 
 fun Plan.applyValidActions(branch: Branch) =
     this.getValidActions(branch.state).map { it.apply(branch) }

@@ -1,6 +1,4 @@
-package uk.co.poolefoundries.baldinggate.pathfinding
-
-import uk.co.poolefoundries.baldinggate.core.PositionComponent
+package uk.co.poolefoundries.baldinggate.ai.pathfinding
 
 object SpreadPath {
 

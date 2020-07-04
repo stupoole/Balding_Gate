@@ -1,6 +1,8 @@
 package uk.co.poolefoundries.baldinggate.skeleton
 
 import uk.co.poolefoundries.baldinggate.ai.*
+import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStar
+import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStarNode
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.Stats
 import uk.co.poolefoundries.baldinggate.systems.PathfinderSystem
@@ -76,27 +78,19 @@ class MoveTowards(override val selfId: String, override val targetId: String) : 
         val targetInfo = state.targetInfo()
         val selfInfo = state.selfInfo()
 
-        return state.setMobInfo(selfInfo.copy(pos = getNewPos(selfInfo, targetInfo), stats = selfInfo.stats.useAp(1)))
+        return state.setMobInfo(selfInfo.copy(pos = getNewPos(state, selfInfo, targetInfo), stats = selfInfo.stats.useAp(1)))
     }
 
     override fun toString(): String {
         return "MoveTowards"
     }
 
-//    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo): PositionComponent {
-//        val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
-//        val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
-//        if (path.isEmpty()){return selfInfo.pos}
-//        return path.subList(0, minOf(selfInfo.stats.speed, distance) + 1).last()
-//    }
-
-    fun getNewPos(selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
+    fun getNewPos(worldState: WorldState, selfInfo: MobInfo, targetInfo: MobInfo) : PositionComponent {
         val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
-        val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
+        val path = AStar.getPath(worldState.getNavigationMap(selfId), worldState.selfInfo().pos, targetInfo.pos).reversed()
         return if (path.isNotEmpty()){
             path.subList(0, minOf(selfInfo.stats.speed + 1, distance, path.size) ).last()
         } else selfInfo.pos
-//        return selfInfo.pos.moveTowards(targetInfo.pos, selfInfo.stats.speed)
     }
 
     fun getNewPath(selfInfo: MobInfo, targetInfo: MobInfo): List<PositionComponent> {
@@ -130,16 +124,17 @@ class Attack(override val selfId: String, override val targetId: String) : Targe
 
 object SkeletonAI {
 
-    fun getPlan(players: Collection<MobInfo>, enemies: Collection<MobInfo>): Branch {
+    fun getPlan(worldMap : Collection<AStarNode>, players: Collection<MobInfo>, enemies: Collection<MobInfo>): Branch {
         val goal = Goal(Win, 1.0)
-        return getActionPlan(worldState(players, enemies), actions(players, enemies, goal), goal)!!
+        return getActionPlan(worldState(worldMap, players, enemies), actions(players, enemies, goal), goal)!!
     }
 
-    fun worldState(players: Collection<MobInfo>, enemies: Collection<MobInfo>): WorldState {
+    fun worldState(worldMap : Collection<AStarNode>, players: Collection<MobInfo>, enemies: Collection<MobInfo>): WorldState {
         return mutableMapOf<String, Any>()
             .setPlayerIds(players.map { it.id })
             .setEnemyIds(enemies.map { it.id })
             .setMobInfo(players.union(enemies))
+            .setWorldMap(worldMap)
     }
 
     fun actions(players: Collection<MobInfo>, enemies: Collection<MobInfo>, goal: Goal): List<Action> {

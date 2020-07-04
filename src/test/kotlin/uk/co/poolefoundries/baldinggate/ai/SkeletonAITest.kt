@@ -1,6 +1,7 @@
 package uk.co.poolefoundries.baldinggate.ai
 
 import org.junit.Test
+import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStarNode
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.Roll
 import uk.co.poolefoundries.baldinggate.core.Stats
@@ -10,6 +11,16 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class SkeletonAITest {
+    fun worldMap() : Collection<AStarNode> {
+        val list = mutableListOf<AStarNode>()
+        for (i  in 0..100) {
+            for (j in 0..100) {
+                list.add(AStarNode(i, j))
+            }
+        }
+        return list
+    }
+
     fun basicMob(id : String, pos: PositionComponent) : MobInfo {
         return MobInfo(id, pos, Stats(10, 10, 5, 2, 2, Roll(listOf(6), 0)))
     }
@@ -17,6 +28,7 @@ class SkeletonAITest {
     @Test
     fun testSkeletonAi() {
         val plan = SkeletonAI.getPlan(
+            worldMap(),
             listOf(basicMob("player1", PositionComponent(0, 0)), basicMob("player2", PositionComponent(0, 0))),
             listOf(basicMob("skel1", PositionComponent(3, 3)), basicMob("skel2", PositionComponent(3, 3)))
         )
@@ -51,14 +63,14 @@ class SkeletonAITest {
         val enemies = listOf(basicMob("skel1", PositionComponent(0, 20)))
 
         val actions = SkeletonAI.actions(players, enemies, Goal(Win, 1.0))
-        var state = SkeletonAI.worldState(players, enemies)
+        var state = SkeletonAI.worldState(worldMap(), players, enemies)
         fun info() = state.getMobInfo("skel1")
 
         val moveAction = actions.filterIsInstance<MoveTowards>().first()
         val endTurn = actions.filterIsInstance<EndTurn>().first()
 
 
-        val pos = moveAction.getNewPos(enemies.first(), players.first())
+        val pos = moveAction.getNewPos(state, enemies.first(), players.first())
         assertEquals(15, playerPos.manhattanDistance(pos))
         assertTrue(moveAction.prerequisitesMet(state))
 
@@ -85,7 +97,7 @@ class SkeletonAITest {
         val enemies = listOf(basicMob("skel1", PositionComponent(2, 0)))
 
         val actions = SkeletonAI.actions(players, enemies, Goal(Win, 1.0))
-        var state = SkeletonAI.worldState(players, enemies)
+        var state = SkeletonAI.worldState(worldMap(), players, enemies)
 
         fun info() = state.getMobInfo("skel1")
         fun targetInfo() = state.getMobInfo("player1")

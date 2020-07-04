@@ -8,7 +8,7 @@ import uk.co.poolefoundries.baldinggate.model.Mob
 import uk.co.poolefoundries.baldinggate.model.MobType
 import uk.co.poolefoundries.baldinggate.model.Tile
 import uk.co.poolefoundries.baldinggate.model.TileType
-import uk.co.poolefoundries.baldinggate.pathfinding.AStarNode
+import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStarNode
 import kotlin.math.absoluteValue
 import kotlin.math.round
 import kotlin.math.sign

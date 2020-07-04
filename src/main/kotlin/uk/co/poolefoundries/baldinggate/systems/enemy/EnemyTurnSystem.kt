@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import uk.co.poolefoundries.baldinggate.core.*
 import uk.co.poolefoundries.baldinggate.skeleton.*
+import uk.co.poolefoundries.baldinggate.systems.PathfinderSystem
 
 object EnemyTurnSystem : EntitySystem() {
     private val playerFamily: Family = Family.all(PlayerComponent::class.java).get()
@@ -28,13 +29,13 @@ object EnemyTurnSystem : EntitySystem() {
 
 
     fun takeTurn() {
-        // TODO (Tatskaari) Add an ID component so we can identify entities by a UUID
         val playerIds = players()
             .associateBy { it.getComponent(IdComponent::class.java).id }
         val enemyIds = enemies()
             .associateBy { it.getComponent(IdComponent::class.java).id }
 
         val actions = SkeletonAI.getPlan(
+            PathfinderSystem.levelMap,
             playerIds.map { it.value.toMobInfo() },
             enemyIds.map { it.value.toMobInfo() }
         )

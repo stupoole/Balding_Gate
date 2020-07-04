@@ -1,4 +1,4 @@
-package uk.co.poolefoundries.baldinggate.pathfinding
+package uk.co.poolefoundries.baldinggate.ai.pathfinding
 
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 // Connections : 0 -> fully connected, 1-> none on top, 2-> none on bottom, 4-> none on left, 8-> none on right
