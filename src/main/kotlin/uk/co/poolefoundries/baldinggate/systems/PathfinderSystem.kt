@@ -8,7 +8,7 @@ import uk.co.poolefoundries.baldinggate.core.EnemyComponent
 import uk.co.poolefoundries.baldinggate.core.FloorComponent
 import uk.co.poolefoundries.baldinggate.core.PlayerComponent
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
-import uk.co.poolefoundries.baldinggate.pathfinding.*
+import uk.co.poolefoundries.baldinggate.ai.pathfinding.*
 
 
 object PathfinderSystem : EntitySystem() {
@@ -19,13 +19,15 @@ object PathfinderSystem : EntitySystem() {
     private fun enemies() = engine.getEntitiesFor(enemyFamily).toList()
     private fun floors() = engine.getEntitiesFor(floorsFamily).toList()
     private fun (Entity).toPosition() = getComponent(PositionComponent::class.java)
-    private fun (Entity).toAStar() = AStarNode(toPosition().x, toPosition().y)
     private fun (AStarNode).toSpread() = SpreadNode(x, y)
+    private fun (Entity).toAStar() : AStarNode {
+        val pos = toPosition()
+        return AStarNode(pos.x, pos.y)
+    }
 
     private fun (AStarNode).toPosition() = PositionComponent(x, y)
-    private val pathfinder = AStar(manhattanHeuristic())
     private val spreadFinder = SpreadPath
-    private var levelMap = mutableListOf<AStarNode>()
+    lateinit var levelMap : List<AStarNode>
 
     override fun addedToEngine(engine: Engine?) {
         levelMap = floors().map { it.toAStar() }.toMutableList()
@@ -35,7 +37,7 @@ object PathfinderSystem : EntitySystem() {
         val startNode = AStarNode(start.x, start.y)
         val endNode = AStarNode(end.x, end.y)
         val nodesToRemove = enemies().map { it.toAStar() } + players().map { it.toAStar() }
-        return pathfinder.getPath((levelMap-nodesToRemove).map{it.copy()}, startNode, endNode)
+        return AStar.getPath((levelMap-nodesToRemove).map{it.copy()}, startNode, endNode)
             .map { it.toPosition() }.reversed()
     }
 

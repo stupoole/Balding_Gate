@@ -13,7 +13,6 @@ object DesktopLauncher {
         configuration.width = 1280
         configuration.height = 720
         application = LwjglApplication(BaldingGateGame, configuration)
-
     }
 }
 

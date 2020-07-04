@@ -3,7 +3,6 @@ package uk.co.poolefoundries.baldinggate.model
 import com.badlogic.ashley.core.Entity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.sun.org.apache.xpath.internal.operations.Bool
 import uk.co.poolefoundries.baldinggate.Resources
 import uk.co.poolefoundries.baldinggate.core.*
 import java.io.File
