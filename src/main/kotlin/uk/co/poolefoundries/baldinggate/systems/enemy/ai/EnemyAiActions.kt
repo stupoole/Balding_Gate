@@ -1,11 +1,9 @@
-package uk.co.poolefoundries.baldinggate.skeleton
+package uk.co.poolefoundries.baldinggate.systems.enemy.ai
 
 import uk.co.poolefoundries.baldinggate.ai.*
 import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStar
-import uk.co.poolefoundries.baldinggate.ai.pathfinding.AStarNode
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.core.Stats
-import uk.co.poolefoundries.baldinggate.systems.PathfinderSystem
 
 
 data class MobInfo(val id: String, val pos: PositionComponent, val stats: Stats)
@@ -65,7 +63,8 @@ interface TargetedAction : Action {
     fun (WorldState).distToTarget() = selfInfo().pos.manhattanDistance(targetInfo().pos)
 }
 
-class MoveTowards(override val selfId: String, override val targetId: String) : TargetedAction {
+class MoveTowards(override val selfId: String, override val targetId: String) :
+    TargetedAction {
     override fun cost(state: WorldState): Double {
         return 1.0
     }
@@ -92,22 +91,18 @@ class MoveTowards(override val selfId: String, override val targetId: String) : 
             path.subList(0, minOf(selfInfo.stats.speed + 1, distance, path.size) ).last()
         } else selfInfo.pos
     }
-
-    fun getNewPath(selfInfo: MobInfo, targetInfo: MobInfo): List<PositionComponent> {
-        val distance = selfInfo.pos.manhattanDistance(targetInfo.pos)
-        val path = PathfinderSystem.findPath(selfInfo.pos, targetInfo.pos)
-        return path.take(minOf(selfInfo.stats.speed + 1, distance, path.size) )
-
-    }
 }
 
-class Attack(override val selfId: String, override val targetId: String) : TargetedAction {
+class Attack(override val selfId: String, override val targetId: String) :
+    TargetedAction {
     override fun cost(state: WorldState): Double {
         return 1.0
     }
 
     override fun prerequisitesMet(state: WorldState): Boolean {
-        return state.distToTarget() == 1 && state.selfInfo().stats.currentAP >= 1
+        return state.distToTarget() == 1 &&
+                state.selfInfo().stats.currentAP >= 1 &&
+                state.targetInfo().stats.hitPoints > 0
     }
 
     override fun update(state: WorldState): WorldState {
@@ -119,32 +114,5 @@ class Attack(override val selfId: String, override val targetId: String) : Targe
 
     override fun toString(): String {
         return "AttackPlayer"
-    }
-}
-
-object SkeletonAI {
-
-    fun getPlan(worldMap : Collection<AStarNode>, players: Collection<MobInfo>, enemies: Collection<MobInfo>): Branch {
-        val goal = Goal(Win, 1.0)
-        return getActionPlan(worldState(worldMap, players, enemies), actions(players, enemies, goal), goal)!!
-    }
-
-    fun worldState(worldMap : Collection<AStarNode>, players: Collection<MobInfo>, enemies: Collection<MobInfo>): WorldState {
-        return mutableMapOf<String, Any>()
-            .setPlayerIds(players.map { it.id })
-            .setEnemyIds(enemies.map { it.id })
-            .setMobInfo(players.union(enemies))
-            .setWorldMap(worldMap)
-    }
-
-    fun actions(players: Collection<MobInfo>, enemies: Collection<MobInfo>, goal: Goal): List<Action> {
-        val attackPlayerActions = players.flatMap { player -> enemies.map { enemy -> Attack(enemy.id, player.id) } }
-        val moveTowardsPlayerActions =
-            players.flatMap { player -> enemies.map { enemy -> MoveTowards(enemy.id, player.id) } }
-
-        return listOf(goal.action, EndTurn)
-            .union(attackPlayerActions)
-            .union(moveTowardsPlayerActions)
-            .toList()
     }
 }

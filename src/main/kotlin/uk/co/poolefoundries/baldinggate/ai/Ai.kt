@@ -1,8 +1,11 @@
 package uk.co.poolefoundries.baldinggate.ai
 
+interface Ai {
+    fun getActionPlan(state: WorldState): Plan
+}
+
 typealias Plan = List<Action>
 data class Branch(val actions: Plan, val state: WorldState, val cost: Double)
-
 data class Goal(val action: Action, val priority: Double)
 
 interface Action {
@@ -24,39 +27,3 @@ interface Action {
     override fun toString(): String
 
 }
-
-fun Plan.applyValidActions(branch: Branch) =
-    this.getValidActions(branch.state).map { it.apply(branch) }
-
-fun Plan.getValidActions(worldState: WorldState) =
-    this.filter { it.prerequisitesMet(worldState) }
-
-
-fun getActionPlan(state: WorldState, actions: Plan, primaryGoal: Goal): Branch? {
-    val openSet = actions.applyValidActions(Branch(emptyList(), state, 0.0))
-    return getActionPlan(actions, primaryGoal, openSet, null)
-}
-
-fun getActionPlan(actions:Plan, primaryGoal: Goal, openSet: List<Branch>, bestOption: Branch?): Branch? {
-    val goalAchievedBranches = (openSet.filter { it.actions.last() == primaryGoal.action } + bestOption).filterNotNull()
-    var newOpenSet = openSet - goalAchievedBranches
-
-
-    val newBestOption = goalAchievedBranches.minBy { it.cost }
-    if (newBestOption != null) newOpenSet = newOpenSet.filter { it.cost < newBestOption.cost }
-
-
-    newOpenSet = newOpenSet.flatMap { actions.applyValidActions(it) }
-    if (bestOption != null) {
-        newOpenSet = newOpenSet.filter { it.cost > bestOption.cost }
-    }
-
-    newOpenSet = newOpenSet.groupBy { it.state }.map { it.value.minBy { branch -> branch.cost } }.filterNotNull()
-
-    return if (newOpenSet.isNotEmpty()) {
-        getActionPlan(actions, primaryGoal, newOpenSet, newBestOption)
-    } else {
-        newBestOption
-    }
-}
-

@@ -9,6 +9,7 @@ import uk.co.poolefoundries.baldinggate.core.FloorComponent
 import uk.co.poolefoundries.baldinggate.core.PlayerComponent
 import uk.co.poolefoundries.baldinggate.core.PositionComponent
 import uk.co.poolefoundries.baldinggate.ai.pathfinding.*
+import java.lang.RuntimeException
 
 
 object PathfinderSystem : EntitySystem() {
@@ -34,11 +35,12 @@ object PathfinderSystem : EntitySystem() {
     }
 
     fun findPath(start: PositionComponent, end: PositionComponent): List<PositionComponent> {
-        val startNode = AStarNode(start.x, start.y)
-        val endNode = AStarNode(end.x, end.y)
         val nodesToRemove = enemies().map { it.toAStar() } + players().map { it.toAStar() }
-        return AStar.getPath((levelMap-nodesToRemove).map{it.copy()}, startNode, endNode)
-            .map { it.toPosition() }.reversed()
+        val path =  AStar.getPath((levelMap-nodesToRemove).map{it.copy()}, start, end).reversed()
+        if (nodesToRemove.any {it.toPosition() == path.last()}) {
+            throw RuntimeException("what?")
+        }
+        return path
     }
 
     fun findSpread(start:PositionComponent, speed:Int): List<SpreadNode>{

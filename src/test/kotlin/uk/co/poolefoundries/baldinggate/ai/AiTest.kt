@@ -1,5 +1,6 @@
 package uk.co.poolefoundries.baldinggate.ai
 
+import uk.co.poolefoundries.baldinggate.ai.experimental.ExperimentalAi
 import kotlin.test.assertEquals
 import kotlin.test.Test
 
@@ -8,17 +9,16 @@ class AiTest {
     fun testing() {
         val action = GoalAction()
         val goal = Goal(action, 1.0)
-        val plan = getActionPlan(emptyMap(), listOf(action), goal)
-        assertEquals(1, plan?.actions?.size)
+        val plan = ExperimentalAi(listOf(action), goal).getActionPlan(emptyMap())
+        assertEquals(1, plan.size)
     }
 
     @Test
     fun fireTest() {
         val actions = listOf(MakeFire, GetTinderbox, GetWood)
         val goal = Goal(MakeFire, 1.0)
-        val plan = getActionPlan(emptyMap(), actions, goal)
-        assertEquals(80.0, plan?.cost)
-
+        val plan = ExperimentalAi(actions, goal).getActionPlan(emptyMap())
+        assertEquals(80.0, plan.sumByDouble { it.cost(emptyMap()) })
     }
 }
 
